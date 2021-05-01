@@ -1,0 +1,27 @@
+version: "3"
+
+services:
+  client:
+    container_name: spk_client
+    build: ./client
+    command: yarn dev
+    volumes:
+      - ./client:/app
+    ports:
+      - 3000:3000
+
+  server:
+    container_name: spk_server
+    build: ./server
+    volumes:
+      - ./server/:/go/src/speaking-exam/server
+    ports:
+      - 9090:9090
+
+  proxy:
+    container_name: spk_proxy
+    build: ./proxy
+    ports:
+      - "8080:8080"
+    depends_on:
+      - server
