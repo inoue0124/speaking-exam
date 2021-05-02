@@ -3,6 +3,7 @@ package main
 import (
 	"log"
 	"net"
+	"speaking-exam/server/dao"
 	pb "speaking-exam/server/grpc"
 	"speaking-exam/server/handler"
 
@@ -15,12 +16,16 @@ const (
 )
 
 func main() {
+	dao, err := dao.New()
+	if err != nil {
+		log.Fatal(err)
+	}
 	lis, err := net.Listen("tcp", port)
 	if err != nil {
 		log.Fatalf("failed to listen: %v", err)
 	}
 	s := grpc.NewServer()
-	pb.RegisterExamServiceServer(s, &handler.ExamServiceServer{})
+	pb.RegisterExamServiceServer(s, handler.NewExamServiceServer(&dao))
 	pb.RegisterUserServiceServer(s, &handler.UserServiceServer{})
 	reflection.Register(s)
 	if err := s.Serve(lis); err != nil {
