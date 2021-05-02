@@ -24,6 +24,30 @@ services:
       - ./server/:/go/src/speaking-exam/server
     ports:
       - 9090:9090
+    environment:
+      MYSQL_USER: speaking
+      MYSQL_PASSWORD: speaking
+      MYSQL_HOST: mysql
+      MYSQL_PORT: 3306
+      MYSQL_DATABASE: speaking
+
+  db:
+    container_name: spk_db
+    image: mysql:5.7
+    environment:
+      - TZ=Asia/Tokyo
+    volumes:
+      - ./.data/mysql:/var/lib/mysql
+      - "./ddl:/docker-entrypoint-initdb.d"
+    ports:
+      - 3306:3306
+    environment:
+      MYSQL_USER: speaking
+      MYSQL_PASSWORD: speaking
+      MYSQL_HOST: mysql
+      MYSQL_PORT: 3306
+      MYSQL_DATABASE: speaking
+      MYSQL_ALLOW_EMPTY_PASSWORD: "true"
 
   proxy:
     container_name: spk_proxy
