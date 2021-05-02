@@ -27,7 +27,7 @@ services:
     environment:
       MYSQL_USER: speaking
       MYSQL_PASSWORD: speaking
-      MYSQL_HOST: mysql
+      MYSQL_HOST: spk_db
       MYSQL_PORT: 3306
       MYSQL_DATABASE: speaking
 
@@ -44,8 +44,6 @@ services:
     environment:
       MYSQL_USER: speaking
       MYSQL_PASSWORD: speaking
-      MYSQL_HOST: mysql
-      MYSQL_PORT: 3306
       MYSQL_DATABASE: speaking
       MYSQL_ALLOW_EMPTY_PASSWORD: "true"
 
