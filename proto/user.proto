@@ -1,0 +1,37 @@
+syntax = "proto3";
+
+option go_package = ".;speakingExam";
+
+package speakingExam;
+
+import "google/protobuf/empty.proto";
+import "google/protobuf/timestamp.proto";
+
+
+service UserService {
+  rpc ListUsers(google.protobuf.Empty) returns (ListUserResponse);
+  rpc getUser(GetUserRequest) returns (User);
+  rpc createUser(CreateUserRequest) returns (User);
+}
+
+message ListUserResponse {
+  repeated User user = 1;
+}
+
+message GetUserRequest {
+  string id = 1;
+}
+
+message CreateUserRequest {
+  string exam_id = 1;
+}
+
+message User {
+  int32 id = 1;
+  string login_id = 2;
+  string password_hash = 3;
+  int32 type = 4;
+  int32 exam_id = 5;
+  google.protobuf.Timestamp created_at = 6;
+  google.protobuf.Timestamp updated_at = 7;
+}
