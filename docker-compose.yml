@@ -1,6 +1,13 @@
 version: "3"
 
 services:
+  protoc:
+    container_name: spk_protoc
+    command: ./proto/scripts/generate.sh
+    build: ./proto
+    volumes:
+      - .:/app
+
   client:
     container_name: spk_client
     build: ./client
