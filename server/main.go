@@ -26,7 +26,7 @@ func main() {
 	}
 	s := grpc.NewServer()
 	pb.RegisterExamServiceServer(s, handler.NewExamServiceServer(&dao))
-	pb.RegisterUserServiceServer(s, &handler.UserServiceServer{})
+	pb.RegisterUserServiceServer(s, handler.NewUserServiceServer(&dao))
 	reflection.Register(s)
 	if err := s.Serve(lis); err != nil {
 		log.Fatalf("failed to serve: %v", err)
