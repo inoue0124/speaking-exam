@@ -25,8 +25,8 @@ export namespace ListExamResponse {
 }
 
 export class GetExamRequest extends jspb.Message {
-  getId(): string;
-  setId(value: string): GetExamRequest;
+  getId(): number;
+  setId(value: number): GetExamRequest;
 
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): GetExamRequest.AsObject;
@@ -38,7 +38,7 @@ export class GetExamRequest extends jspb.Message {
 
 export namespace GetExamRequest {
   export type AsObject = {
-    id: string,
+    id: number,
   }
 }
 

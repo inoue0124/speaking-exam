@@ -25,8 +25,8 @@ export namespace ListUserResponse {
 }
 
 export class GetUserRequest extends jspb.Message {
-  getId(): string;
-  setId(value: string): GetUserRequest;
+  getId(): number;
+  setId(value: number): GetUserRequest;
 
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): GetUserRequest.AsObject;
@@ -38,13 +38,13 @@ export class GetUserRequest extends jspb.Message {
 
 export namespace GetUserRequest {
   export type AsObject = {
-    id: string,
+    id: number,
   }
 }
 
 export class CreateUserRequest extends jspb.Message {
-  getExamId(): string;
-  setExamId(value: string): CreateUserRequest;
+  getExamId(): number;
+  setExamId(value: number): CreateUserRequest;
 
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): CreateUserRequest.AsObject;
@@ -56,7 +56,7 @@ export class CreateUserRequest extends jspb.Message {
 
 export namespace CreateUserRequest {
   export type AsObject = {
-    examId: string,
+    examId: number,
   }
 }
 

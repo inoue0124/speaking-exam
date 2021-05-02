@@ -296,7 +296,7 @@ proto.speakingExam.GetUserRequest.prototype.toObject = function(opt_includeInsta
  */
 proto.speakingExam.GetUserRequest.toObject = function(includeInstance, msg) {
   var f, obj = {
-    id: jspb.Message.getFieldWithDefault(msg, 1, "")
+    id: jspb.Message.getFieldWithDefault(msg, 1, 0)
   };
 
   if (includeInstance) {
@@ -334,7 +334,7 @@ proto.speakingExam.GetUserRequest.deserializeBinaryFromReader = function(msg, re
     var field = reader.getFieldNumber();
     switch (field) {
     case 1:
-      var value = /** @type {string} */ (reader.readString());
+      var value = /** @type {number} */ (reader.readInt64());
       msg.setId(value);
       break;
     default:
@@ -367,8 +367,8 @@ proto.speakingExam.GetUserRequest.prototype.serializeBinary = function() {
 proto.speakingExam.GetUserRequest.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
   f = message.getId();
-  if (f.length > 0) {
-    writer.writeString(
+  if (f !== 0) {
+    writer.writeInt64(
       1,
       f
     );
@@ -377,20 +377,20 @@ proto.speakingExam.GetUserRequest.serializeBinaryToWriter = function(message, wr
 
 
 /**
- * optional string id = 1;
- * @return {string}
+ * optional int64 id = 1;
+ * @return {number}
  */
 proto.speakingExam.GetUserRequest.prototype.getId = function() {
-  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 1, ""));
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 1, 0));
 };
 
 
 /**
- * @param {string} value
+ * @param {number} value
  * @return {!proto.speakingExam.GetUserRequest} returns this
  */
 proto.speakingExam.GetUserRequest.prototype.setId = function(value) {
-  return jspb.Message.setProto3StringField(this, 1, value);
+  return jspb.Message.setProto3IntField(this, 1, value);
 };
 
 
@@ -426,7 +426,7 @@ proto.speakingExam.CreateUserRequest.prototype.toObject = function(opt_includeIn
  */
 proto.speakingExam.CreateUserRequest.toObject = function(includeInstance, msg) {
   var f, obj = {
-    examId: jspb.Message.getFieldWithDefault(msg, 1, "")
+    examId: jspb.Message.getFieldWithDefault(msg, 1, 0)
   };
 
   if (includeInstance) {
@@ -464,7 +464,7 @@ proto.speakingExam.CreateUserRequest.deserializeBinaryFromReader = function(msg,
     var field = reader.getFieldNumber();
     switch (field) {
     case 1:
-      var value = /** @type {string} */ (reader.readString());
+      var value = /** @type {number} */ (reader.readInt64());
       msg.setExamId(value);
       break;
     default:
@@ -497,8 +497,8 @@ proto.speakingExam.CreateUserRequest.prototype.serializeBinary = function() {
 proto.speakingExam.CreateUserRequest.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
   f = message.getExamId();
-  if (f.length > 0) {
-    writer.writeString(
+  if (f !== 0) {
+    writer.writeInt64(
       1,
       f
     );
@@ -507,20 +507,20 @@ proto.speakingExam.CreateUserRequest.serializeBinaryToWriter = function(message,
 
 
 /**
- * optional string exam_id = 1;
- * @return {string}
+ * optional int64 exam_id = 1;
+ * @return {number}
  */
 proto.speakingExam.CreateUserRequest.prototype.getExamId = function() {
-  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 1, ""));
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 1, 0));
 };
 
 
 /**
- * @param {string} value
+ * @param {number} value
  * @return {!proto.speakingExam.CreateUserRequest} returns this
  */
 proto.speakingExam.CreateUserRequest.prototype.setExamId = function(value) {
-  return jspb.Message.setProto3StringField(this, 1, value);
+  return jspb.Message.setProto3IntField(this, 1, value);
 };
 
 
@@ -600,7 +600,7 @@ proto.speakingExam.User.deserializeBinaryFromReader = function(msg, reader) {
     var field = reader.getFieldNumber();
     switch (field) {
     case 1:
-      var value = /** @type {number} */ (reader.readInt32());
+      var value = /** @type {number} */ (reader.readInt64());
       msg.setId(value);
       break;
     case 2:
@@ -612,11 +612,11 @@ proto.speakingExam.User.deserializeBinaryFromReader = function(msg, reader) {
       msg.setPasswordHash(value);
       break;
     case 4:
-      var value = /** @type {number} */ (reader.readInt32());
+      var value = /** @type {number} */ (reader.readInt64());
       msg.setType(value);
       break;
     case 5:
-      var value = /** @type {number} */ (reader.readInt32());
+      var value = /** @type {number} */ (reader.readInt64());
       msg.setExamId(value);
       break;
     case 6:
@@ -660,7 +660,7 @@ proto.speakingExam.User.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
   f = message.getId();
   if (f !== 0) {
-    writer.writeInt32(
+    writer.writeInt64(
       1,
       f
     );
@@ -681,14 +681,14 @@ proto.speakingExam.User.serializeBinaryToWriter = function(message, writer) {
   }
   f = message.getType();
   if (f !== 0) {
-    writer.writeInt32(
+    writer.writeInt64(
       4,
       f
     );
   }
   f = message.getExamId();
   if (f !== 0) {
-    writer.writeInt32(
+    writer.writeInt64(
       5,
       f
     );
@@ -713,7 +713,7 @@ proto.speakingExam.User.serializeBinaryToWriter = function(message, writer) {
 
 
 /**
- * optional int32 id = 1;
+ * optional int64 id = 1;
  * @return {number}
  */
 proto.speakingExam.User.prototype.getId = function() {
@@ -767,7 +767,7 @@ proto.speakingExam.User.prototype.setPasswordHash = function(value) {
 
 
 /**
- * optional int32 type = 4;
+ * optional int64 type = 4;
  * @return {number}
  */
 proto.speakingExam.User.prototype.getType = function() {
@@ -785,7 +785,7 @@ proto.speakingExam.User.prototype.setType = function(value) {
 
 
 /**
- * optional int32 exam_id = 5;
+ * optional int64 exam_id = 5;
  * @return {number}
  */
 proto.speakingExam.User.prototype.getExamId = function() {
