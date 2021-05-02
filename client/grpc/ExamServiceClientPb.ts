@@ -1,5 +1,5 @@
 /**
- * @fileoverview gRPC-Web generated client stub for generated
+ * @fileoverview gRPC-Web generated client stub for speakingExam
  * @enhanceable
  * @public
  */
@@ -62,7 +62,7 @@ export class ExamServiceClient {
     if (callback !== undefined) {
       return this.client_.rpcCall(
         this.hostname_ +
-          '/generated.ExamService/ListExams',
+          '/speakingExam.ExamService/ListExams',
         request,
         metadata || {},
         this.methodInfoListExams,
@@ -70,39 +70,39 @@ export class ExamServiceClient {
     }
     return this.client_.unaryCall(
     this.hostname_ +
-      '/generated.ExamService/ListExams',
+      '/speakingExam.ExamService/ListExams',
     request,
     metadata || {},
     this.methodInfoListExams);
   }
 
   methodInfogetExam = new grpcWeb.AbstractClientBase.MethodInfo(
-    exam_pb.GetExamResponse,
+    exam_pb.Exam,
     (request: exam_pb.GetExamRequest) => {
       return request.serializeBinary();
     },
-    exam_pb.GetExamResponse.deserializeBinary
+    exam_pb.Exam.deserializeBinary
   );
 
   getExam(
     request: exam_pb.GetExamRequest,
-    metadata: grpcWeb.Metadata | null): Promise<exam_pb.GetExamResponse>;
+    metadata: grpcWeb.Metadata | null): Promise<exam_pb.Exam>;
 
   getExam(
     request: exam_pb.GetExamRequest,
     metadata: grpcWeb.Metadata | null,
     callback: (err: grpcWeb.Error,
-               response: exam_pb.GetExamResponse) => void): grpcWeb.ClientReadableStream<exam_pb.GetExamResponse>;
+               response: exam_pb.Exam) => void): grpcWeb.ClientReadableStream<exam_pb.Exam>;
 
   getExam(
     request: exam_pb.GetExamRequest,
     metadata: grpcWeb.Metadata | null,
     callback?: (err: grpcWeb.Error,
-               response: exam_pb.GetExamResponse) => void) {
+               response: exam_pb.Exam) => void) {
     if (callback !== undefined) {
       return this.client_.rpcCall(
         this.hostname_ +
-          '/generated.ExamService/getExam',
+          '/speakingExam.ExamService/getExam',
         request,
         metadata || {},
         this.methodInfogetExam,
@@ -110,7 +110,7 @@ export class ExamServiceClient {
     }
     return this.client_.unaryCall(
     this.hostname_ +
-      '/generated.ExamService/getExam',
+      '/speakingExam.ExamService/getExam',
     request,
     metadata || {},
     this.methodInfogetExam);

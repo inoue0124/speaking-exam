@@ -25,8 +25,8 @@ export namespace ListExamResponse {
 }
 
 export class GetExamRequest extends jspb.Message {
-  getMessage(): string;
-  setMessage(value: string): GetExamRequest;
+  getId(): string;
+  setId(value: string): GetExamRequest;
 
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): GetExamRequest.AsObject;
@@ -38,27 +38,7 @@ export class GetExamRequest extends jspb.Message {
 
 export namespace GetExamRequest {
   export type AsObject = {
-    message: string,
-  }
-}
-
-export class GetExamResponse extends jspb.Message {
-  getExam(): Exam | undefined;
-  setExam(value?: Exam): GetExamResponse;
-  hasExam(): boolean;
-  clearExam(): GetExamResponse;
-
-  serializeBinary(): Uint8Array;
-  toObject(includeInstance?: boolean): GetExamResponse.AsObject;
-  static toObject(includeInstance: boolean, msg: GetExamResponse): GetExamResponse.AsObject;
-  static serializeBinaryToWriter(message: GetExamResponse, writer: jspb.BinaryWriter): void;
-  static deserializeBinary(bytes: Uint8Array): GetExamResponse;
-  static deserializeBinaryFromReader(message: GetExamResponse, reader: jspb.BinaryReader): GetExamResponse;
-}
-
-export namespace GetExamResponse {
-  export type AsObject = {
-    exam?: Exam.AsObject,
+    id: string,
   }
 }
 

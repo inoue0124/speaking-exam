@@ -1,8 +1,8 @@
 syntax = "proto3";
 
-option go_package = ".;generated";
+option go_package = ".;speakingExam";
 
-package generated;
+package speakingExam;
 
 import "google/protobuf/empty.proto";
 import "google/protobuf/timestamp.proto";
@@ -10,7 +10,7 @@ import "google/protobuf/timestamp.proto";
 
 service ExamService {
   rpc ListExams(google.protobuf.Empty) returns (ListExamResponse);
-  rpc getExam(GetExamRequest) returns (GetExamResponse);
+  rpc getExam(GetExamRequest) returns (Exam);
 }
 
 message ListExamResponse {
@@ -18,11 +18,7 @@ message ListExamResponse {
 }
 
 message GetExamRequest {
-  string message = 1;
-}
-
-message GetExamResponse {
-  Exam exam = 1;
+  string id = 1;
 }
 
 message Exam {

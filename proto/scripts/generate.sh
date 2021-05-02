@@ -2,8 +2,8 @@
 
 set -xe
 
-SERVER_OUTPUT_DIR=server/generated
-CLIENT_OUTPUT_DIR=client/generated
+SERVER_OUTPUT_DIR=server/grpc
+CLIENT_OUTPUT_DIR=client/grpc
 
 protoc --version
 protoc --proto_path=proto `find proto -iname "*.proto"` \

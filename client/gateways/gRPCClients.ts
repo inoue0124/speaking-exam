@@ -1,4 +1,4 @@
-import { ExamServiceClient } from "../generated/ExamServiceClientPb"
+import { ExamServiceClient } from "../grpc/ExamServiceClientPb"
 
 export type GRPCClients = {
   examServiceClient: ExamServiceClient;

@@ -1,10 +1,10 @@
 import { useEffect } from "react"
-import { ExamServiceClient } from "../generated/ExamServiceClientPb"
-import { GetExamRequest } from "../generated/exam_pb";
+import { ExamServiceClient } from "../grpc/ExamServiceClientPb"
+import { GetExamRequest } from "../grpc/exam_pb";
 
 export const useExams = (client: ExamServiceClient) => {
   useEffect(() => {
     const req = new GetExamRequest()
-    client.getExam(req, null, (err, res) => console.log(res.getExam().toObject()))
+    client.getExam(req, null, (err, res) => console.log(res))
   }, [client])
 }
