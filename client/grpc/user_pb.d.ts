@@ -4,59 +4,109 @@ import * as google_protobuf_empty_pb from 'google-protobuf/google/protobuf/empty
 import * as google_protobuf_timestamp_pb from 'google-protobuf/google/protobuf/timestamp_pb';
 
 
-export class ListUserResponse extends jspb.Message {
+export class LoginRequest extends jspb.Message {
+  getLoginId(): number;
+  setLoginId(value: number): LoginRequest;
+
+  getPassword(): string;
+  setPassword(value: string): LoginRequest;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): LoginRequest.AsObject;
+  static toObject(includeInstance: boolean, msg: LoginRequest): LoginRequest.AsObject;
+  static serializeBinaryToWriter(message: LoginRequest, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): LoginRequest;
+  static deserializeBinaryFromReader(message: LoginRequest, reader: jspb.BinaryReader): LoginRequest;
+}
+
+export namespace LoginRequest {
+  export type AsObject = {
+    loginId: number,
+    password: string,
+  }
+}
+
+export class LoginResponse extends jspb.Message {
+  getToken(): string;
+  setToken(value: string): LoginResponse;
+
+  getUser(): User | undefined;
+  setUser(value?: User): LoginResponse;
+  hasUser(): boolean;
+  clearUser(): LoginResponse;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): LoginResponse.AsObject;
+  static toObject(includeInstance: boolean, msg: LoginResponse): LoginResponse.AsObject;
+  static serializeBinaryToWriter(message: LoginResponse, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): LoginResponse;
+  static deserializeBinaryFromReader(message: LoginResponse, reader: jspb.BinaryReader): LoginResponse;
+}
+
+export namespace LoginResponse {
+  export type AsObject = {
+    token: string,
+    user?: User.AsObject,
+  }
+}
+
+export class CreateUsersRequest extends jspb.Message {
+  getPasswordListList(): Array<string>;
+  setPasswordListList(value: Array<string>): CreateUsersRequest;
+  clearPasswordListList(): CreateUsersRequest;
+  addPasswordList(value: string, index?: number): CreateUsersRequest;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): CreateUsersRequest.AsObject;
+  static toObject(includeInstance: boolean, msg: CreateUsersRequest): CreateUsersRequest.AsObject;
+  static serializeBinaryToWriter(message: CreateUsersRequest, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): CreateUsersRequest;
+  static deserializeBinaryFromReader(message: CreateUsersRequest, reader: jspb.BinaryReader): CreateUsersRequest;
+}
+
+export namespace CreateUsersRequest {
+  export type AsObject = {
+    passwordListList: Array<string>,
+  }
+}
+
+export class CreateUsersResponse extends jspb.Message {
   getUserList(): Array<User>;
-  setUserList(value: Array<User>): ListUserResponse;
-  clearUserList(): ListUserResponse;
+  setUserList(value: Array<User>): CreateUsersResponse;
+  clearUserList(): CreateUsersResponse;
   addUser(value?: User, index?: number): User;
 
   serializeBinary(): Uint8Array;
-  toObject(includeInstance?: boolean): ListUserResponse.AsObject;
-  static toObject(includeInstance: boolean, msg: ListUserResponse): ListUserResponse.AsObject;
-  static serializeBinaryToWriter(message: ListUserResponse, writer: jspb.BinaryWriter): void;
-  static deserializeBinary(bytes: Uint8Array): ListUserResponse;
-  static deserializeBinaryFromReader(message: ListUserResponse, reader: jspb.BinaryReader): ListUserResponse;
+  toObject(includeInstance?: boolean): CreateUsersResponse.AsObject;
+  static toObject(includeInstance: boolean, msg: CreateUsersResponse): CreateUsersResponse.AsObject;
+  static serializeBinaryToWriter(message: CreateUsersResponse, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): CreateUsersResponse;
+  static deserializeBinaryFromReader(message: CreateUsersResponse, reader: jspb.BinaryReader): CreateUsersResponse;
 }
 
-export namespace ListUserResponse {
+export namespace CreateUsersResponse {
   export type AsObject = {
     userList: Array<User.AsObject>,
   }
 }
 
-export class GetUserRequest extends jspb.Message {
-  getId(): number;
-  setId(value: number): GetUserRequest;
+export class ListUsersResponse extends jspb.Message {
+  getUserList(): Array<User>;
+  setUserList(value: Array<User>): ListUsersResponse;
+  clearUserList(): ListUsersResponse;
+  addUser(value?: User, index?: number): User;
 
   serializeBinary(): Uint8Array;
-  toObject(includeInstance?: boolean): GetUserRequest.AsObject;
-  static toObject(includeInstance: boolean, msg: GetUserRequest): GetUserRequest.AsObject;
-  static serializeBinaryToWriter(message: GetUserRequest, writer: jspb.BinaryWriter): void;
-  static deserializeBinary(bytes: Uint8Array): GetUserRequest;
-  static deserializeBinaryFromReader(message: GetUserRequest, reader: jspb.BinaryReader): GetUserRequest;
+  toObject(includeInstance?: boolean): ListUsersResponse.AsObject;
+  static toObject(includeInstance: boolean, msg: ListUsersResponse): ListUsersResponse.AsObject;
+  static serializeBinaryToWriter(message: ListUsersResponse, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): ListUsersResponse;
+  static deserializeBinaryFromReader(message: ListUsersResponse, reader: jspb.BinaryReader): ListUsersResponse;
 }
 
-export namespace GetUserRequest {
+export namespace ListUsersResponse {
   export type AsObject = {
-    id: number,
-  }
-}
-
-export class CreateUserRequest extends jspb.Message {
-  getExamId(): number;
-  setExamId(value: number): CreateUserRequest;
-
-  serializeBinary(): Uint8Array;
-  toObject(includeInstance?: boolean): CreateUserRequest.AsObject;
-  static toObject(includeInstance: boolean, msg: CreateUserRequest): CreateUserRequest.AsObject;
-  static serializeBinaryToWriter(message: CreateUserRequest, writer: jspb.BinaryWriter): void;
-  static deserializeBinary(bytes: Uint8Array): CreateUserRequest;
-  static deserializeBinaryFromReader(message: CreateUserRequest, reader: jspb.BinaryReader): CreateUserRequest;
-}
-
-export namespace CreateUserRequest {
-  export type AsObject = {
-    examId: number,
+    userList: Array<User.AsObject>,
   }
 }
 

@@ -9,21 +9,31 @@ import "google/protobuf/timestamp.proto";
 
 
 service UserService {
-  rpc ListUsers(google.protobuf.Empty) returns (ListUserResponse);
-  rpc getUser(GetUserRequest) returns (User);
-  rpc createUser(CreateUserRequest) returns (User);
+  rpc Login(LoginRequest) returns (LoginResponse);
+  rpc CreateUsers(CreateUsersRequest) returns (CreateUsersResponse);
+  rpc ListUsers(google.protobuf.Empty) returns (ListUsersResponse);
 }
 
-message ListUserResponse {
+message LoginRequest {
+  int64 login_id = 1;
+  string password = 2;
+}
+
+message LoginResponse {
+  string token = 1;
+  User user = 2;
+}
+
+message CreateUsersRequest {
+  repeated string password_list = 1;
+}
+
+message CreateUsersResponse {
   repeated User user = 1;
 }
 
-message GetUserRequest {
-  int64 id = 1;
-}
-
-message CreateUserRequest {
-  int64 exam_id = 1;
+message ListUsersResponse {
+  repeated User user = 1;
 }
 
 message User {

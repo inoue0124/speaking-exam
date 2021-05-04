@@ -36,29 +36,109 @@ export class UserServiceClient {
     this.options_ = options;
   }
 
+  methodInfoLogin = new grpcWeb.AbstractClientBase.MethodInfo(
+    user_pb.LoginResponse,
+    (request: user_pb.LoginRequest) => {
+      return request.serializeBinary();
+    },
+    user_pb.LoginResponse.deserializeBinary
+  );
+
+  login(
+    request: user_pb.LoginRequest,
+    metadata: grpcWeb.Metadata | null): Promise<user_pb.LoginResponse>;
+
+  login(
+    request: user_pb.LoginRequest,
+    metadata: grpcWeb.Metadata | null,
+    callback: (err: grpcWeb.Error,
+               response: user_pb.LoginResponse) => void): grpcWeb.ClientReadableStream<user_pb.LoginResponse>;
+
+  login(
+    request: user_pb.LoginRequest,
+    metadata: grpcWeb.Metadata | null,
+    callback?: (err: grpcWeb.Error,
+               response: user_pb.LoginResponse) => void) {
+    if (callback !== undefined) {
+      return this.client_.rpcCall(
+        this.hostname_ +
+          '/speakingExam.UserService/Login',
+        request,
+        metadata || {},
+        this.methodInfoLogin,
+        callback);
+    }
+    return this.client_.unaryCall(
+    this.hostname_ +
+      '/speakingExam.UserService/Login',
+    request,
+    metadata || {},
+    this.methodInfoLogin);
+  }
+
+  methodInfoCreateUsers = new grpcWeb.AbstractClientBase.MethodInfo(
+    user_pb.CreateUsersResponse,
+    (request: user_pb.CreateUsersRequest) => {
+      return request.serializeBinary();
+    },
+    user_pb.CreateUsersResponse.deserializeBinary
+  );
+
+  createUsers(
+    request: user_pb.CreateUsersRequest,
+    metadata: grpcWeb.Metadata | null): Promise<user_pb.CreateUsersResponse>;
+
+  createUsers(
+    request: user_pb.CreateUsersRequest,
+    metadata: grpcWeb.Metadata | null,
+    callback: (err: grpcWeb.Error,
+               response: user_pb.CreateUsersResponse) => void): grpcWeb.ClientReadableStream<user_pb.CreateUsersResponse>;
+
+  createUsers(
+    request: user_pb.CreateUsersRequest,
+    metadata: grpcWeb.Metadata | null,
+    callback?: (err: grpcWeb.Error,
+               response: user_pb.CreateUsersResponse) => void) {
+    if (callback !== undefined) {
+      return this.client_.rpcCall(
+        this.hostname_ +
+          '/speakingExam.UserService/CreateUsers',
+        request,
+        metadata || {},
+        this.methodInfoCreateUsers,
+        callback);
+    }
+    return this.client_.unaryCall(
+    this.hostname_ +
+      '/speakingExam.UserService/CreateUsers',
+    request,
+    metadata || {},
+    this.methodInfoCreateUsers);
+  }
+
   methodInfoListUsers = new grpcWeb.AbstractClientBase.MethodInfo(
-    user_pb.ListUserResponse,
+    user_pb.ListUsersResponse,
     (request: google_protobuf_empty_pb.Empty) => {
       return request.serializeBinary();
     },
-    user_pb.ListUserResponse.deserializeBinary
+    user_pb.ListUsersResponse.deserializeBinary
   );
 
   listUsers(
     request: google_protobuf_empty_pb.Empty,
-    metadata: grpcWeb.Metadata | null): Promise<user_pb.ListUserResponse>;
+    metadata: grpcWeb.Metadata | null): Promise<user_pb.ListUsersResponse>;
 
   listUsers(
     request: google_protobuf_empty_pb.Empty,
     metadata: grpcWeb.Metadata | null,
     callback: (err: grpcWeb.Error,
-               response: user_pb.ListUserResponse) => void): grpcWeb.ClientReadableStream<user_pb.ListUserResponse>;
+               response: user_pb.ListUsersResponse) => void): grpcWeb.ClientReadableStream<user_pb.ListUsersResponse>;
 
   listUsers(
     request: google_protobuf_empty_pb.Empty,
     metadata: grpcWeb.Metadata | null,
     callback?: (err: grpcWeb.Error,
-               response: user_pb.ListUserResponse) => void) {
+               response: user_pb.ListUsersResponse) => void) {
     if (callback !== undefined) {
       return this.client_.rpcCall(
         this.hostname_ +
@@ -74,86 +154,6 @@ export class UserServiceClient {
     request,
     metadata || {},
     this.methodInfoListUsers);
-  }
-
-  methodInfogetUser = new grpcWeb.AbstractClientBase.MethodInfo(
-    user_pb.User,
-    (request: user_pb.GetUserRequest) => {
-      return request.serializeBinary();
-    },
-    user_pb.User.deserializeBinary
-  );
-
-  getUser(
-    request: user_pb.GetUserRequest,
-    metadata: grpcWeb.Metadata | null): Promise<user_pb.User>;
-
-  getUser(
-    request: user_pb.GetUserRequest,
-    metadata: grpcWeb.Metadata | null,
-    callback: (err: grpcWeb.Error,
-               response: user_pb.User) => void): grpcWeb.ClientReadableStream<user_pb.User>;
-
-  getUser(
-    request: user_pb.GetUserRequest,
-    metadata: grpcWeb.Metadata | null,
-    callback?: (err: grpcWeb.Error,
-               response: user_pb.User) => void) {
-    if (callback !== undefined) {
-      return this.client_.rpcCall(
-        this.hostname_ +
-          '/speakingExam.UserService/getUser',
-        request,
-        metadata || {},
-        this.methodInfogetUser,
-        callback);
-    }
-    return this.client_.unaryCall(
-    this.hostname_ +
-      '/speakingExam.UserService/getUser',
-    request,
-    metadata || {},
-    this.methodInfogetUser);
-  }
-
-  methodInfocreateUser = new grpcWeb.AbstractClientBase.MethodInfo(
-    user_pb.User,
-    (request: user_pb.CreateUserRequest) => {
-      return request.serializeBinary();
-    },
-    user_pb.User.deserializeBinary
-  );
-
-  createUser(
-    request: user_pb.CreateUserRequest,
-    metadata: grpcWeb.Metadata | null): Promise<user_pb.User>;
-
-  createUser(
-    request: user_pb.CreateUserRequest,
-    metadata: grpcWeb.Metadata | null,
-    callback: (err: grpcWeb.Error,
-               response: user_pb.User) => void): grpcWeb.ClientReadableStream<user_pb.User>;
-
-  createUser(
-    request: user_pb.CreateUserRequest,
-    metadata: grpcWeb.Metadata | null,
-    callback?: (err: grpcWeb.Error,
-               response: user_pb.User) => void) {
-    if (callback !== undefined) {
-      return this.client_.rpcCall(
-        this.hostname_ +
-          '/speakingExam.UserService/createUser',
-        request,
-        metadata || {},
-        this.methodInfocreateUser,
-        callback);
-    }
-    return this.client_.unaryCall(
-    this.hostname_ +
-      '/speakingExam.UserService/createUser',
-    request,
-    metadata || {},
-    this.methodInfocreateUser);
   }
 
 }

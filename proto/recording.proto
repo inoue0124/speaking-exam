@@ -1,0 +1,25 @@
+syntax = "proto3";
+
+option go_package = ".;speakingExam";
+
+package speakingExam;
+
+import "google/protobuf/timestamp.proto";
+
+
+service RecordingService {
+  rpc CreateRecording(CreateRecordingRequest) returns (Recording);
+}
+
+message CreateRecordingRequest {
+  bytes audio_data = 1;
+}
+
+message Recording {
+  int64 id = 1;
+  int64 user_id = 2;
+  int64 task_id = 3;
+  string audio_obj_key = 4;
+  google.protobuf.Timestamp created_at = 5;
+  google.protobuf.Timestamp updated_at = 6;
+}
