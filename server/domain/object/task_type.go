@@ -1,0 +1,13 @@
+package object
+
+type TaskType int32
+
+const (
+	UNKNOWN TaskType = iota
+	READING
+	SHADOWING
+	ROLE_PLAYING
+	PICTURE_DESCRIPTION
+	STORY_RETELLING
+	OPEN_TELLING
+)

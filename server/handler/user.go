@@ -53,6 +53,8 @@ func (s *userServiceServer) CreateUsers(ctx context.Context, in *pb.CreateUsersR
 		pbUser.LoginId = user.LoginId
 		pbUser.Type = user.Type
 		pbUser.ExamId = user.ExamId
+		pbUser.CreatedAt = timestamppb.New(user.CreatedAt)
+		pbUser.UpdatedAt = timestamppb.New(user.UpdatedAt)
 		pbUsers = append(pbUsers, pbUser)
 	}
 	res := &pb.CreateUsersResponse{User: pbUsers}

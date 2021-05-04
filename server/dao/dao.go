@@ -8,8 +8,9 @@ import (
 
 type (
 	Dao interface {
-		User() repository.User
 		Auth() repository.Auth
+		User() repository.User
+		Task() repository.Task
 	}
 
 	dao struct {
@@ -25,10 +26,14 @@ func New() (Dao, error) {
 	return &dao{db: db}, nil
 }
 
+func (d *dao) Auth() repository.Auth {
+	return NewAuth()
+}
+
 func (d *dao) User() repository.User {
 	return NewUser(d.db)
 }
 
-func (d *dao) Auth() repository.Auth {
-	return NewAuth()
+func (d *dao) Task() repository.Task {
+	return NewTask(d.db)
 }

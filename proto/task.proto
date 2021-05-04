@@ -12,8 +12,8 @@ service TaskService {
 }
 
 message ListTasksRequest {
-  string type = 1;
-  int64 exam_id = 2;
+  int64 exam_id = 1;
+  TaskType type = 2;
 }
 
 message ListTasksResponse {
@@ -23,12 +23,23 @@ message ListTasksResponse {
 message Task {
   int64 id = 1;
   int64 exam_id = 2;
-  string text_obj_key = 3;
-  string image_obj_key = 4;
-  string audio_obj_key = 5;
-  int64 ms_before_starting = 6;
-  int64 ms_preparing = 7;
-  int64 ms_recording = 8;
-  google.protobuf.Timestamp created_at = 9;
-  google.protobuf.Timestamp updated_at = 10;
+  TaskType type = 3;
+  string text_obj_key = 4;
+  string image_obj_key = 5;
+  string audio_obj_key = 6;
+  int64 ms_before_starting = 7;
+  int64 ms_preparing = 8;
+  int64 ms_recording = 9;
+  google.protobuf.Timestamp created_at = 10;
+  google.protobuf.Timestamp updated_at = 11;
+}
+
+enum TaskType {
+  UNKNOWN = 0;
+  READING = 1;
+  SHADOWING = 2;
+  ROLE_PLAYING = 3;
+  PICTURE_DESCRIPTION = 4;
+  STORY_RETELLING = 5;
+  OPEN_TELLING = 6;
 }

@@ -4,11 +4,11 @@ import * as google_protobuf_timestamp_pb from 'google-protobuf/google/protobuf/t
 
 
 export class ListTasksRequest extends jspb.Message {
-  getType(): string;
-  setType(value: string): ListTasksRequest;
-
   getExamId(): number;
   setExamId(value: number): ListTasksRequest;
+
+  getType(): TaskType;
+  setType(value: TaskType): ListTasksRequest;
 
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): ListTasksRequest.AsObject;
@@ -20,8 +20,8 @@ export class ListTasksRequest extends jspb.Message {
 
 export namespace ListTasksRequest {
   export type AsObject = {
-    type: string,
     examId: number,
+    type: TaskType,
   }
 }
 
@@ -51,6 +51,9 @@ export class Task extends jspb.Message {
 
   getExamId(): number;
   setExamId(value: number): Task;
+
+  getType(): TaskType;
+  setType(value: TaskType): Task;
 
   getTextObjKey(): string;
   setTextObjKey(value: string): Task;
@@ -92,6 +95,7 @@ export namespace Task {
   export type AsObject = {
     id: number,
     examId: number,
+    type: TaskType,
     textObjKey: string,
     imageObjKey: string,
     audioObjKey: string,
@@ -103,3 +107,12 @@ export namespace Task {
   }
 }
 
+export enum TaskType { 
+  UNKNOWN = 0,
+  READING = 1,
+  SHADOWING = 2,
+  ROLE_PLAYING = 3,
+  PICTURE_DESCRIPTION = 4,
+  STORY_RETELLING = 5,
+  OPEN_TELLING = 6,
+}
