@@ -15,7 +15,7 @@ service UserService {
 }
 
 message LoginRequest {
-  int64 login_id = 1;
+  string login_id = 1;
   string password = 2;
 }
 
@@ -25,7 +25,9 @@ message LoginResponse {
 }
 
 message CreateUsersRequest {
-  repeated string password_list = 1;
+  repeated string login_ids = 1;
+  repeated string passwords = 2;
+  int64 exam_id = 3;
 }
 
 message CreateUsersResponse {

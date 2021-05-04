@@ -180,7 +180,7 @@ proto.speakingExam.LoginRequest.prototype.toObject = function(opt_includeInstanc
  */
 proto.speakingExam.LoginRequest.toObject = function(includeInstance, msg) {
   var f, obj = {
-    loginId: jspb.Message.getFieldWithDefault(msg, 1, 0),
+    loginId: jspb.Message.getFieldWithDefault(msg, 1, ""),
     password: jspb.Message.getFieldWithDefault(msg, 2, "")
   };
 
@@ -219,7 +219,7 @@ proto.speakingExam.LoginRequest.deserializeBinaryFromReader = function(msg, read
     var field = reader.getFieldNumber();
     switch (field) {
     case 1:
-      var value = /** @type {number} */ (reader.readInt64());
+      var value = /** @type {string} */ (reader.readString());
       msg.setLoginId(value);
       break;
     case 2:
@@ -256,8 +256,8 @@ proto.speakingExam.LoginRequest.prototype.serializeBinary = function() {
 proto.speakingExam.LoginRequest.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
   f = message.getLoginId();
-  if (f !== 0) {
-    writer.writeInt64(
+  if (f.length > 0) {
+    writer.writeString(
       1,
       f
     );
@@ -273,20 +273,20 @@ proto.speakingExam.LoginRequest.serializeBinaryToWriter = function(message, writ
 
 
 /**
- * optional int64 login_id = 1;
- * @return {number}
+ * optional string login_id = 1;
+ * @return {string}
  */
 proto.speakingExam.LoginRequest.prototype.getLoginId = function() {
-  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 1, 0));
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 1, ""));
 };
 
 
 /**
- * @param {number} value
+ * @param {string} value
  * @return {!proto.speakingExam.LoginRequest} returns this
  */
 proto.speakingExam.LoginRequest.prototype.setLoginId = function(value) {
-  return jspb.Message.setProto3IntField(this, 1, value);
+  return jspb.Message.setProto3StringField(this, 1, value);
 };
 
 
@@ -495,7 +495,7 @@ proto.speakingExam.LoginResponse.prototype.hasUser = function() {
  * @private {!Array<number>}
  * @const
  */
-proto.speakingExam.CreateUsersRequest.repeatedFields_ = [1];
+proto.speakingExam.CreateUsersRequest.repeatedFields_ = [1,2];
 
 
 
@@ -528,7 +528,9 @@ proto.speakingExam.CreateUsersRequest.prototype.toObject = function(opt_includeI
  */
 proto.speakingExam.CreateUsersRequest.toObject = function(includeInstance, msg) {
   var f, obj = {
-    passwordListList: (f = jspb.Message.getRepeatedField(msg, 1)) == null ? undefined : f
+    loginIdsList: (f = jspb.Message.getRepeatedField(msg, 1)) == null ? undefined : f,
+    passwordsList: (f = jspb.Message.getRepeatedField(msg, 2)) == null ? undefined : f,
+    examId: jspb.Message.getFieldWithDefault(msg, 3, 0)
   };
 
   if (includeInstance) {
@@ -567,7 +569,15 @@ proto.speakingExam.CreateUsersRequest.deserializeBinaryFromReader = function(msg
     switch (field) {
     case 1:
       var value = /** @type {string} */ (reader.readString());
-      msg.addPasswordList(value);
+      msg.addLoginIds(value);
+      break;
+    case 2:
+      var value = /** @type {string} */ (reader.readString());
+      msg.addPasswords(value);
+      break;
+    case 3:
+      var value = /** @type {number} */ (reader.readInt64());
+      msg.setExamId(value);
       break;
     default:
       reader.skipField();
@@ -598,10 +608,24 @@ proto.speakingExam.CreateUsersRequest.prototype.serializeBinary = function() {
  */
 proto.speakingExam.CreateUsersRequest.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-  f = message.getPasswordListList();
+  f = message.getLoginIdsList();
   if (f.length > 0) {
     writer.writeRepeatedString(
       1,
+      f
+    );
+  }
+  f = message.getPasswordsList();
+  if (f.length > 0) {
+    writer.writeRepeatedString(
+      2,
+      f
+    );
+  }
+  f = message.getExamId();
+  if (f !== 0) {
+    writer.writeInt64(
+      3,
       f
     );
   }
@@ -609,10 +633,10 @@ proto.speakingExam.CreateUsersRequest.serializeBinaryToWriter = function(message
 
 
 /**
- * repeated string password_list = 1;
+ * repeated string login_ids = 1;
  * @return {!Array<string>}
  */
-proto.speakingExam.CreateUsersRequest.prototype.getPasswordListList = function() {
+proto.speakingExam.CreateUsersRequest.prototype.getLoginIdsList = function() {
   return /** @type {!Array<string>} */ (jspb.Message.getRepeatedField(this, 1));
 };
 
@@ -621,7 +645,7 @@ proto.speakingExam.CreateUsersRequest.prototype.getPasswordListList = function()
  * @param {!Array<string>} value
  * @return {!proto.speakingExam.CreateUsersRequest} returns this
  */
-proto.speakingExam.CreateUsersRequest.prototype.setPasswordListList = function(value) {
+proto.speakingExam.CreateUsersRequest.prototype.setLoginIdsList = function(value) {
   return jspb.Message.setField(this, 1, value || []);
 };
 
@@ -631,7 +655,7 @@ proto.speakingExam.CreateUsersRequest.prototype.setPasswordListList = function(v
  * @param {number=} opt_index
  * @return {!proto.speakingExam.CreateUsersRequest} returns this
  */
-proto.speakingExam.CreateUsersRequest.prototype.addPasswordList = function(value, opt_index) {
+proto.speakingExam.CreateUsersRequest.prototype.addLoginIds = function(value, opt_index) {
   return jspb.Message.addToRepeatedField(this, 1, value, opt_index);
 };
 
@@ -640,8 +664,63 @@ proto.speakingExam.CreateUsersRequest.prototype.addPasswordList = function(value
  * Clears the list making it empty but non-null.
  * @return {!proto.speakingExam.CreateUsersRequest} returns this
  */
-proto.speakingExam.CreateUsersRequest.prototype.clearPasswordListList = function() {
-  return this.setPasswordListList([]);
+proto.speakingExam.CreateUsersRequest.prototype.clearLoginIdsList = function() {
+  return this.setLoginIdsList([]);
+};
+
+
+/**
+ * repeated string passwords = 2;
+ * @return {!Array<string>}
+ */
+proto.speakingExam.CreateUsersRequest.prototype.getPasswordsList = function() {
+  return /** @type {!Array<string>} */ (jspb.Message.getRepeatedField(this, 2));
+};
+
+
+/**
+ * @param {!Array<string>} value
+ * @return {!proto.speakingExam.CreateUsersRequest} returns this
+ */
+proto.speakingExam.CreateUsersRequest.prototype.setPasswordsList = function(value) {
+  return jspb.Message.setField(this, 2, value || []);
+};
+
+
+/**
+ * @param {string} value
+ * @param {number=} opt_index
+ * @return {!proto.speakingExam.CreateUsersRequest} returns this
+ */
+proto.speakingExam.CreateUsersRequest.prototype.addPasswords = function(value, opt_index) {
+  return jspb.Message.addToRepeatedField(this, 2, value, opt_index);
+};
+
+
+/**
+ * Clears the list making it empty but non-null.
+ * @return {!proto.speakingExam.CreateUsersRequest} returns this
+ */
+proto.speakingExam.CreateUsersRequest.prototype.clearPasswordsList = function() {
+  return this.setPasswordsList([]);
+};
+
+
+/**
+ * optional int64 exam_id = 3;
+ * @return {number}
+ */
+proto.speakingExam.CreateUsersRequest.prototype.getExamId = function() {
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 3, 0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.speakingExam.CreateUsersRequest} returns this
+ */
+proto.speakingExam.CreateUsersRequest.prototype.setExamId = function(value) {
+  return jspb.Message.setProto3IntField(this, 3, value);
 };
 
 

@@ -5,8 +5,8 @@ import * as google_protobuf_timestamp_pb from 'google-protobuf/google/protobuf/t
 
 
 export class LoginRequest extends jspb.Message {
-  getLoginId(): number;
-  setLoginId(value: number): LoginRequest;
+  getLoginId(): string;
+  setLoginId(value: string): LoginRequest;
 
   getPassword(): string;
   setPassword(value: string): LoginRequest;
@@ -21,7 +21,7 @@ export class LoginRequest extends jspb.Message {
 
 export namespace LoginRequest {
   export type AsObject = {
-    loginId: number,
+    loginId: string,
     password: string,
   }
 }
@@ -51,10 +51,18 @@ export namespace LoginResponse {
 }
 
 export class CreateUsersRequest extends jspb.Message {
-  getPasswordListList(): Array<string>;
-  setPasswordListList(value: Array<string>): CreateUsersRequest;
-  clearPasswordListList(): CreateUsersRequest;
-  addPasswordList(value: string, index?: number): CreateUsersRequest;
+  getLoginIdsList(): Array<string>;
+  setLoginIdsList(value: Array<string>): CreateUsersRequest;
+  clearLoginIdsList(): CreateUsersRequest;
+  addLoginIds(value: string, index?: number): CreateUsersRequest;
+
+  getPasswordsList(): Array<string>;
+  setPasswordsList(value: Array<string>): CreateUsersRequest;
+  clearPasswordsList(): CreateUsersRequest;
+  addPasswords(value: string, index?: number): CreateUsersRequest;
+
+  getExamId(): number;
+  setExamId(value: number): CreateUsersRequest;
 
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): CreateUsersRequest.AsObject;
@@ -66,7 +74,9 @@ export class CreateUsersRequest extends jspb.Message {
 
 export namespace CreateUsersRequest {
   export type AsObject = {
-    passwordListList: Array<string>,
+    loginIdsList: Array<string>,
+    passwordsList: Array<string>,
+    examId: number,
   }
 }
 
