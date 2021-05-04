@@ -5,8 +5,6 @@ import (
 	"speaking-exam/server/dao"
 
 	grpc_auth "github.com/grpc-ecosystem/go-grpc-middleware/auth"
-	"google.golang.org/grpc"
-	"google.golang.org/grpc/codes"
 )
 
 func AuthFunc(ctx context.Context) (context.Context, error) {
@@ -20,7 +18,7 @@ func AuthFunc(ctx context.Context) (context.Context, error) {
 	}
 	ctx, err = dao.Auth().ValidateToken(ctx, token)
 	if err != nil {
-		return nil, grpc.Errorf(codes.Unauthenticated, "invalid api password")
+		return nil, err
 	}
 	return ctx, nil
 }

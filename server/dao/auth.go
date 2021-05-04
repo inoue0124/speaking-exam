@@ -66,11 +66,11 @@ func (r *auth) ValidateToken(ctx context.Context, signedString string) (context.
 	if !ok {
 		return nil, fmt.Errorf("not found claims in %s", signedString)
 	}
-	userId, ok := claims["sub"].(int64)
+	userId, ok := claims["sub"].(float64)
 	if !ok {
 		return nil, fmt.Errorf("not found %s in %s", "sub", signedString)
 	}
-	context.WithValue(ctx, "userId", userId)
+	context.WithValue(ctx, "userId", int64(userId))
 
 	return ctx, nil
 }
