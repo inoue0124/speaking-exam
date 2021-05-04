@@ -8,7 +8,8 @@ import (
 
 type (
 	Dao interface {
-		Exam() repository.Exam
+		User() repository.User
+		Auth() repository.Auth
 	}
 
 	dao struct {
@@ -24,6 +25,10 @@ func New() (Dao, error) {
 	return &dao{db: db}, nil
 }
 
-func (d *dao) Exam() repository.Exam {
-	return NewExam(d.db)
+func (d *dao) User() repository.User {
+	return NewUser(d.db)
+}
+
+func (d *dao) Auth() repository.Auth {
+	return NewAuth()
 }

@@ -6,5 +6,7 @@ import (
 )
 
 type User interface {
+	Login(ctx context.Context, loginId string, password string) (*object.User, error)
+	CreateUsers(ctx context.Context, loginIds []string, passwords []string, examId int64) ([]*object.User, error)
 	FindById(ctx context.Context, id int64) (*object.User, error)
 }
