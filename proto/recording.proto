@@ -12,7 +12,8 @@ service RecordingService {
 }
 
 message CreateRecordingRequest {
-  bytes audio_data = 1;
+  int64 task_id = 1;
+  bytes audio_data = 2;
 }
 
 message Recording {

@@ -90,6 +90,7 @@ proto.speakingExam.CreateRecordingRequest.prototype.toObject = function(opt_incl
  */
 proto.speakingExam.CreateRecordingRequest.toObject = function(includeInstance, msg) {
   var f, obj = {
+    taskId: jspb.Message.getFieldWithDefault(msg, 1, 0),
     audioData: msg.getAudioData_asB64()
   };
 
@@ -128,6 +129,10 @@ proto.speakingExam.CreateRecordingRequest.deserializeBinaryFromReader = function
     var field = reader.getFieldNumber();
     switch (field) {
     case 1:
+      var value = /** @type {number} */ (reader.readInt64());
+      msg.setTaskId(value);
+      break;
+    case 2:
       var value = /** @type {!Uint8Array} */ (reader.readBytes());
       msg.setAudioData(value);
       break;
@@ -160,10 +165,17 @@ proto.speakingExam.CreateRecordingRequest.prototype.serializeBinary = function()
  */
 proto.speakingExam.CreateRecordingRequest.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
+  f = message.getTaskId();
+  if (f !== 0) {
+    writer.writeInt64(
+      1,
+      f
+    );
+  }
   f = message.getAudioData_asU8();
   if (f.length > 0) {
     writer.writeBytes(
-      1,
+      2,
       f
     );
   }
@@ -171,16 +183,34 @@ proto.speakingExam.CreateRecordingRequest.serializeBinaryToWriter = function(mes
 
 
 /**
- * optional bytes audio_data = 1;
- * @return {string}
+ * optional int64 task_id = 1;
+ * @return {number}
  */
-proto.speakingExam.CreateRecordingRequest.prototype.getAudioData = function() {
-  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 1, ""));
+proto.speakingExam.CreateRecordingRequest.prototype.getTaskId = function() {
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 1, 0));
 };
 
 
 /**
- * optional bytes audio_data = 1;
+ * @param {number} value
+ * @return {!proto.speakingExam.CreateRecordingRequest} returns this
+ */
+proto.speakingExam.CreateRecordingRequest.prototype.setTaskId = function(value) {
+  return jspb.Message.setProto3IntField(this, 1, value);
+};
+
+
+/**
+ * optional bytes audio_data = 2;
+ * @return {string}
+ */
+proto.speakingExam.CreateRecordingRequest.prototype.getAudioData = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 2, ""));
+};
+
+
+/**
+ * optional bytes audio_data = 2;
  * This is a type-conversion wrapper around `getAudioData()`
  * @return {string}
  */
@@ -191,7 +221,7 @@ proto.speakingExam.CreateRecordingRequest.prototype.getAudioData_asB64 = functio
 
 
 /**
- * optional bytes audio_data = 1;
+ * optional bytes audio_data = 2;
  * Note that Uint8Array is not supported on all browsers.
  * @see http://caniuse.com/Uint8Array
  * This is a type-conversion wrapper around `getAudioData()`
@@ -208,7 +238,7 @@ proto.speakingExam.CreateRecordingRequest.prototype.getAudioData_asU8 = function
  * @return {!proto.speakingExam.CreateRecordingRequest} returns this
  */
 proto.speakingExam.CreateRecordingRequest.prototype.setAudioData = function(value) {
-  return jspb.Message.setProto3BytesField(this, 1, value);
+  return jspb.Message.setProto3BytesField(this, 2, value);
 };
 
 

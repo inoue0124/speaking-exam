@@ -4,6 +4,9 @@ import * as google_protobuf_timestamp_pb from 'google-protobuf/google/protobuf/t
 
 
 export class CreateRecordingRequest extends jspb.Message {
+  getTaskId(): number;
+  setTaskId(value: number): CreateRecordingRequest;
+
   getAudioData(): Uint8Array | string;
   getAudioData_asU8(): Uint8Array;
   getAudioData_asB64(): string;
@@ -19,6 +22,7 @@ export class CreateRecordingRequest extends jspb.Message {
 
 export namespace CreateRecordingRequest {
   export type AsObject = {
+    taskId: number,
     audioData: Uint8Array | string,
   }
 }
