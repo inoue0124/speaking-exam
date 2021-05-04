@@ -57,12 +57,3 @@ func (r *user) CreateUsers(ctx context.Context, loginIds []string, passwords []s
 	gormbulk.BulkInsert(r.db, users, 3000)
 	return res, nil
 }
-
-func (r *user) FindById(ctx context.Context, id int64) (*object.User, error) {
-	user := new(object.User)
-	result := r.db.First(&user, id)
-	if result.Error != nil {
-		return nil, result.Error
-	}
-	return user, nil
-}
