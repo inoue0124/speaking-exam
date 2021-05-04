@@ -1,22 +1,18 @@
-import React from "react";
-import { Messages } from "components/Messages";
-import { MessageForm } from "components/MessageForm";
-import { GRPCClients } from "gRPCClients";
-import { useMessages } from "./hooks/useMessages";
-import { useMessageForm } from "./hooks/useMessageForm";
+import React from "react"
+import { LoginForm } from "../../components/LoginForm"
+import { GRPCClients } from "../../gateways/gRPCClients"
+import { useLoginForm } from "./hooks/useLoginForm"
 
 type Props = {
   clients: GRPCClients;
 };
 
-export const MessagesContainer: React.FC<Props> = ({ clients }) => {
-  const messengerClient = clients.messengerClient;
-  const messagesState = useMessages(messengerClient);
-  const messageFormState = useMessageForm(messengerClient);
+export const LoginFormContainer: React.FC<Props> = ({ clients }) => {
+  const userServiceClient = clients.userServiceClient
+  const loginFormState = useLoginForm(userServiceClient)
   return (
     <div>
-      <MessageForm {...messageFormState} />
-      <Messages {...messagesState} />
+      <LoginForm {...loginFormState} />
     </div>
   );
 };

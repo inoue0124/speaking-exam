@@ -4,29 +4,69 @@ import { UserServiceClient } from "../../../grpc/UserServiceClientPb"
 
 export const useLoginForm = (client: UserServiceClient) => {
   const [loginId, setLoginId] = useState<string>("")
+  const [password, setPassword] = useState<string>("")
+  const [errorMsg, setErrorMsg] = useState<string>("")
+  const [isLoading, setIsLoading] = useState<boolean>(false)
 
-  const onChange = useCallback(
+  const login = () => {
+    setIsLoading(true)
+    const req = new LoginRequest()
+    req.setLoginId(loginId)
+    req.setPassword(password)
+    client.login(req, null, (err, res) => {
+      setIsLoading(false)
+      if (err) {
+        setErrorMsg(err.message)
+        return
+      }
+      localStorage.setItem("token", res.getToken())
+      localStorage.setItem("user", JSON.stringify(res.getUser().toObject()))
+    })
+  }
+  
+  const onChangeLoginId = useCallback(
     (event: SyntheticEvent) => {
-      const target = event.target as HTMLInputElement;
-      setLoginId(target.value);
+      const target = event.target as HTMLInputElement
+      setLoginId(target.value)
+      setErrorMsg("")
     },
     [setLoginId]
-  );
+  )
 
-  const onSubmit = useCallback(
+  const onChangePassword = useCallback(
     (event: SyntheticEvent) => {
-      event.preventDefault();
-      const req = new LoginRequest();
-      req.setLoginId(loginId);
-      client.createMessage(req, null, res => console.log(res));
-      setLoginId("");
+      const target = event.target as HTMLInputElement
+      setPassword(target.value)
+      setErrorMsg("")
     },
-    [client, loginId]
-  );
+    [setPassword]
+  )
+
+  const onKeyPress = useCallback(
+    (event: React.KeyboardEvent) => {
+      if (event.key === "Enter") {
+        login()
+      }
+    },
+    [client, loginId, password]
+  )
+
+  const onClickLoginBtn = useCallback(
+    (event: SyntheticEvent) => {
+      event.preventDefault()
+      login()
+    },
+    [client, loginId, password]
+  )
 
   return {
     loginId,
-    onChange,
-    onSubmit
-  };
-};
+    password,
+    errorMsg,
+    isLoading,
+    onChangeLoginId,
+    onChangePassword,
+    onKeyPress,
+    onClickLoginBtn
+  }
+}
