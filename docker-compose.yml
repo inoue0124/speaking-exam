@@ -30,6 +30,8 @@ services:
       MYSQL_HOST: spk_db
       MYSQL_PORT: 3306
       MYSQL_DATABASE: speaking
+    depends_on: 
+      - db
 
   db:
     container_name: spk_db
