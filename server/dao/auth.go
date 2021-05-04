@@ -70,7 +70,7 @@ func (r *auth) ValidateToken(ctx context.Context, signedString string) (context.
 	if !ok {
 		return nil, fmt.Errorf("not found %s in %s", "sub", signedString)
 	}
-	context.WithValue(ctx, "userId", int64(userId))
+	ctx = context.WithValue(ctx, "userId", int64(userId))
 
 	return ctx, nil
 }
