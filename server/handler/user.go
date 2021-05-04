@@ -63,8 +63,16 @@ func (s *userServiceServer) ListUsers(ctx context.Context, in *empty.Empty) (*pb
 	return nil, nil
 }
 
-func (s *userServiceServer) GetUser(ctx context.Context, in *pb.GetUserRequest) (*pb.User, error) {
-	res := &pb.User{Id: 1, LoginId: "T00001", Type: 1, ExamId: 1, CreatedAt: nil, UpdatedAt: nil}
-	fmt.Println(res)
-	return res, nil
+func (s *userServiceServer) AuthFuncOverride(ctx context.Context, fullMethodName string) (context.Context, error) {
+	// Login がコールされた場合は認証のチェックをskipする
+	if fullMethodName == "/speakingExam.UserService/Login" || fullMethodName == "/speakingExam.UserService/CreateUsers" {
+		return ctx, nil
+	}
+
+	ctx, err := middleware.AuthFunc(ctx)
+	if err != nil {
+		return ctx, err
+	}
+
+	return ctx, nil
 }

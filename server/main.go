@@ -6,7 +6,10 @@ import (
 	"speaking-exam/server/dao"
 	pb "speaking-exam/server/grpc"
 	"speaking-exam/server/handler"
+	"speaking-exam/server/middleware"
 
+	grpc_middleware "github.com/grpc-ecosystem/go-grpc-middleware"
+	grpc_auth "github.com/grpc-ecosystem/go-grpc-middleware/auth"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
 )
@@ -24,8 +27,11 @@ func main() {
 	if err != nil {
 		log.Fatalf("failed to listen: %v", err)
 	}
-	s := grpc.NewServer()
-	pb.RegisterExamServiceServer(s, handler.NewExamServiceServer(&dao))
+	s := grpc.NewServer(
+		grpc.UnaryInterceptor(grpc_middleware.ChainUnaryServer(
+			grpc_auth.UnaryServerInterceptor(middleware.AuthFunc),
+		)),
+	)
 	pb.RegisterUserServiceServer(s, handler.NewUserServiceServer(&dao))
 	reflection.Register(s)
 	if err := s.Serve(lis); err != nil {
