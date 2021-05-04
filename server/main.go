@@ -34,6 +34,7 @@ func main() {
 	)
 	pb.RegisterUserServiceServer(s, handler.NewUserServiceServer(&dao))
 	pb.RegisterTaskServiceServer(s, handler.NewTaskServiceServer(&dao))
+	pb.RegisterRecordingServiceServer(s, handler.NewRecordingServiceServer(&dao))
 	reflection.Register(s)
 	if err := s.Serve(lis); err != nil {
 		log.Fatalf("failed to serve: %v", err)

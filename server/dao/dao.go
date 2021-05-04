@@ -11,6 +11,7 @@ type (
 		Auth() repository.Auth
 		User() repository.User
 		Task() repository.Task
+		Recording() repository.Recording
 	}
 
 	dao struct {
@@ -36,4 +37,8 @@ func (d *dao) User() repository.User {
 
 func (d *dao) Task() repository.Task {
 	return NewTask(d.db)
+}
+
+func (d *dao) Recording() repository.Recording {
+	return NewRecording(d.db)
 }
