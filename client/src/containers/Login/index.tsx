@@ -4,8 +4,8 @@ import { GRPCClients } from "../../gateways/gRPCClients"
 import { useLoginForm } from "./hooks/useLoginForm"
 
 type Props = {
-  clients: GRPCClients;
-};
+  clients: GRPCClients
+}
 
 export const LoginFormContainer: React.FC<Props> = ({ clients }) => {
   const userServiceClient = clients.userServiceClient
@@ -14,5 +14,5 @@ export const LoginFormContainer: React.FC<Props> = ({ clients }) => {
     <div>
       <LoginForm {...loginFormState} />
     </div>
-  );
-};
+  )
+}

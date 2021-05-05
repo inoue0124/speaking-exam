@@ -1,13 +1,13 @@
 import React from "react"
 import { useRequireLogin } from "../hooks/useRequireLogin"
 
-const Index: React.FC = ({}) => {
-
-  useRequireLogin()
+const Reading: React.FC = () => {
   
+  useRequireLogin()
+
   return (
-    <div>Logged in!</div>
+    <div>aiueo</div>
   )
 }
 
-export default Index
+export default Reading

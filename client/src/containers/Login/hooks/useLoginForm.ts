@@ -1,5 +1,8 @@
 import { LoginRequest } from "../../../grpc/user_pb"
 import { useState, useCallback, SyntheticEvent } from "react"
+import { useRouter } from 'next/router'
+import { useSetRecoilState } from 'recoil'
+import { currentUserState } from '../../../hooks/states/currentUser'
 import { UserServiceClient } from "../../../grpc/UserServiceClientPb"
 
 export const useLoginForm = (client: UserServiceClient) => {
@@ -7,6 +10,9 @@ export const useLoginForm = (client: UserServiceClient) => {
   const [password, setPassword] = useState<string>("")
   const [errorMsg, setErrorMsg] = useState<string>("")
   const [isLoading, setIsLoading] = useState<boolean>(false)
+  const router = useRouter()
+  const setCurrentUser = useSetRecoilState(currentUserState)
+
 
   const login = () => {
     setIsLoading(true)
@@ -21,6 +27,8 @@ export const useLoginForm = (client: UserServiceClient) => {
       }
       localStorage.setItem("token", res.getToken())
       localStorage.setItem("user", JSON.stringify(res.getUser().toObject()))
+      setCurrentUser(res.getUser())
+      router.push("/")
     })
   }
   
