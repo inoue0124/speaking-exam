@@ -3,7 +3,7 @@
 set -xe
 
 SERVER_OUTPUT_DIR=server/grpc
-CLIENT_OUTPUT_DIR=client/grpc
+CLIENT_OUTPUT_DIR=client/src/grpc
 
 protoc --version
 protoc --proto_path=proto `find proto -iname "*.proto"` \

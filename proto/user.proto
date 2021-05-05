@@ -10,6 +10,7 @@ import "google/protobuf/timestamp.proto";
 
 service UserService {
   rpc Login(LoginRequest) returns (LoginResponse);
+  rpc GetCurrentUser(google.protobuf.Empty) returns (User);
   rpc CreateUsers(CreateUsersRequest) returns (CreateUsersResponse);
   rpc ListUsers(google.protobuf.Empty) returns (ListUsersResponse);
 }

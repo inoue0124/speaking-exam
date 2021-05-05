@@ -76,6 +76,46 @@ export class UserServiceClient {
     this.methodInfoLogin);
   }
 
+  methodInfoGetCurrentUser = new grpcWeb.AbstractClientBase.MethodInfo(
+    user_pb.User,
+    (request: google_protobuf_empty_pb.Empty) => {
+      return request.serializeBinary();
+    },
+    user_pb.User.deserializeBinary
+  );
+
+  getCurrentUser(
+    request: google_protobuf_empty_pb.Empty,
+    metadata: grpcWeb.Metadata | null): Promise<user_pb.User>;
+
+  getCurrentUser(
+    request: google_protobuf_empty_pb.Empty,
+    metadata: grpcWeb.Metadata | null,
+    callback: (err: grpcWeb.Error,
+               response: user_pb.User) => void): grpcWeb.ClientReadableStream<user_pb.User>;
+
+  getCurrentUser(
+    request: google_protobuf_empty_pb.Empty,
+    metadata: grpcWeb.Metadata | null,
+    callback?: (err: grpcWeb.Error,
+               response: user_pb.User) => void) {
+    if (callback !== undefined) {
+      return this.client_.rpcCall(
+        this.hostname_ +
+          '/speakingExam.UserService/GetCurrentUser',
+        request,
+        metadata || {},
+        this.methodInfoGetCurrentUser,
+        callback);
+    }
+    return this.client_.unaryCall(
+    this.hostname_ +
+      '/speakingExam.UserService/GetCurrentUser',
+    request,
+    metadata || {},
+    this.methodInfoGetCurrentUser);
+  }
+
   methodInfoCreateUsers = new grpcWeb.AbstractClientBase.MethodInfo(
     user_pb.CreateUsersResponse,
     (request: user_pb.CreateUsersRequest) => {
