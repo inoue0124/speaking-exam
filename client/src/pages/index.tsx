@@ -1,12 +1,14 @@
 import React from "react"
-import { useRequireLogin } from "../hooks/useRequireLogin"
+import { Row } from 'antd'
+import { TopContainer } from "../containers/Top"
 
 const Index: React.FC = ({}) => {
-
-  useRequireLogin()
-  
   return (
-    <div>Logged in!</div>
+    <>
+      <Row justify="center" style={{ marginTop: 50 }}>
+        <TopContainer />
+      </Row>
+    </>
   )
 }
 
