@@ -4,8 +4,8 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
-    "start": "next start"
+    "build": "next build && next export",
+    "serve": "npm run build && serve ./out"
   },
   "dependencies": {
     "antd": "^4.15.4",
@@ -17,6 +17,7 @@
   },
   "devDependencies": {
     "@types/react": "^17.0.4",
+    "serve": "^11.3.2",
     "typescript": "^4.2.4"
   }
 }
