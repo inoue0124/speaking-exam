@@ -14,7 +14,7 @@ func NewTaskServiceServer(dao *dao.Dao) *taskServiceServer {
 }
 
 type taskServiceServer struct {
-	pb.UnimplementedTaskServiceServer
+	pb.TaskServiceServer
 	dao dao.Dao
 }
 

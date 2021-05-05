@@ -14,7 +14,7 @@ func NewRecordingServiceServer(dao *dao.Dao) *recordingServiceServer {
 }
 
 type recordingServiceServer struct {
-	pb.UnimplementedRecordingServiceServer
+	pb.RecordingServiceServer
 	dao dao.Dao
 }
 

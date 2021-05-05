@@ -36,6 +36,17 @@ func (r *user) Login(ctx context.Context, loginId string, password string) (*obj
 	}
 }
 
+func (r *user) GetCurrentUser(ctx context.Context) (*object.User, error) {
+	userId := ctx.Value("userId").(int64)
+	user := new(object.User)
+	user.Id = userId
+	result := r.db.Where(user).First(&user)
+	if result.Error != nil {
+		return nil, result.Error
+	}
+	return user, nil
+}
+
 func (r *user) CreateUsers(ctx context.Context, loginIds []string, passwords []string, examId int64) ([]*object.User, error) {
 	// Validate input
 	if len(loginIds) != len(passwords) {

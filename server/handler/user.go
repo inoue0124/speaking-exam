@@ -16,7 +16,7 @@ func NewUserServiceServer(dao *dao.Dao) *userServiceServer {
 }
 
 type userServiceServer struct {
-	pb.UnimplementedUserServiceServer
+	pb.UserServiceServer
 	dao dao.Dao
 }
 
@@ -58,6 +58,22 @@ func (s *userServiceServer) CreateUsers(ctx context.Context, in *pb.CreateUsersR
 		pbUsers = append(pbUsers, pbUser)
 	}
 	res := &pb.CreateUsersResponse{User: pbUsers}
+	return res, nil
+}
+
+func (s *userServiceServer) GetCurrentUser(ctx context.Context, in *empty.Empty) (*pb.User, error) {
+	user, err := s.dao.User().GetCurrentUser(ctx)
+	if err != nil {
+		return nil, err
+	}
+	// object.userからpb.userに変換
+	res := &pb.User{
+		Id:        user.Id,
+		LoginId:   user.LoginId,
+		Type:      user.Type,
+		ExamId:    user.ExamId,
+		CreatedAt: timestamppb.New(user.CreatedAt),
+		UpdatedAt: timestamppb.New(user.UpdatedAt)}
 	return res, nil
 }
 
