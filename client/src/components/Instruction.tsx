@@ -1,7 +1,7 @@
 import React from "react"
 import { Typography } from 'antd'
 
-export const Instruction: React.FC = ({}) => {
+export const Instruction: React.FC = () => {
   const { Title, Paragraph, Text } = Typography
   
   return (
