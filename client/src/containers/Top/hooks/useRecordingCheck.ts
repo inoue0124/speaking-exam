@@ -1,7 +1,6 @@
-import { useState, useCallback, SyntheticEvent, useEffect } from "react"
+import { useState, SyntheticEvent, useEffect } from "react"
 import { useReactMediaRecorder } from "react-media-recorder"
 import { useValueRef } from "../.../../../../hooks/useValueRef"
-import { useRouter } from 'next/router'
 
 export const useRecordingCheck = () => {
   const RECORDING_TIME = 5

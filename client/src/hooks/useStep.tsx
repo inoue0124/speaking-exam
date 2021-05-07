@@ -11,6 +11,8 @@ export const useStep = (lastStep: number, nextRoute: string) => {
   })
 
   useEffect(()=>{
+    // taskリスト読込中はlastStepが0になるのでリダイレクトしない
+    if (lastStep === 0) return
     if (step >= lastStep) {
       router.push(nextRoute)
     }
