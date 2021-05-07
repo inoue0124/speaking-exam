@@ -65,6 +65,6 @@ func (r *user) CreateUsers(ctx context.Context, loginIds []string, passwords []s
 		res = append(res, user)
 	}
 	// Insert to db
-	gormbulk.BulkInsert(r.db, users, 3000)
-	return res, nil
+	err := gormbulk.BulkInsert(r.db, users, 3000)
+	return res, err
 }
