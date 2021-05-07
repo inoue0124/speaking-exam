@@ -4,37 +4,64 @@ import { useValueRef } from "../.../../../../hooks/useValueRef"
 import { useRouter } from 'next/router'
 
 export const useRecordingCheck = () => {
-  const RECORDING_TIME = 15
+  const RECORDING_TIME = 5
   const [count, setCount] = useState<number>(0)
   const [timer, setTimer] = useState<any>()
+  const [isRecording, setIsRecording] = useState<boolean>(false)
+  const [isReady, setIsReady] = useState<boolean>(false)
+  const [isPlaying, setIsPlaying] = useState<boolean>(false)
+  const [audio, setAudio] = useState<HTMLAudioElement>(undefined)
   const refCount = useValueRef(count)
   const [percent, setPercent] = useState<number>(0)
   const {
     startRecording,
     stopRecording,
-    mediaBlobUrl,
-  } = useReactMediaRecorder({ audio: true })
+    mediaBlobUrl
+  } = useReactMediaRecorder({ 
+    audio: true,
+    onStop: (blobUrl: string, _: Blob) => {
+      setAudio(new Audio(blobUrl))
+      setIsReady(true)
+  }})
 
-  const onClickRecordBtn = useCallback((event: SyntheticEvent) => {
-      event.preventDefault()
-      startRecording()
-      setTimer(setInterval(() => {
-        setPercent(refCount.current/RECORDING_TIME*100)
-        setCount(refCount.current + 0.1)
-      }, 100))
-    },[])
+  const onClickRecordBtn = ((event: SyntheticEvent) => {
+    event.preventDefault()
+    setCount(0)
+    startRecording()
+    setIsRecording(true)
+    setTimer(setInterval(() => {
+      setCount(refCount.current + 1)
+    }, 1000))
+  })
+
+  const onClickPlayBtn = (async (event: SyntheticEvent) => {
+    event.preventDefault()
+    audio.addEventListener('ended', () => {
+      setIsPlaying(false)
+    })
+    audio.play()
+    setIsPlaying(true)
+  })
 
   useEffect(()=>{
-    console.log(count)
+    setPercent(count/RECORDING_TIME*100)
+    //　録音終了処理
     if (count >= RECORDING_TIME) {
       stopRecording()
+      setIsRecording(false)
       clearInterval(timer)
     }
   },[count])
 
   return {
+    RECORDING_TIME,
+    count,
     percent,
     mediaBlobUrl,
-    onClickRecordBtn
+    isRecording,
+    isReady,
+    isPlaying,
+    onClickRecordBtn,
+    onClickPlayBtn
   }
 }
