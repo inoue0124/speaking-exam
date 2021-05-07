@@ -6,11 +6,9 @@ import { useRequireLogin } from "../hooks/useRequireLogin"
 const Index: React.FC = ({}) => {
   useRequireLogin()
   return (
-    <>
-      <Row justify="center" style={{ marginTop: 50 }}>
-        <TopContainer />
-      </Row>
-    </>
+    <Row justify="center" style={{ marginTop: 50 }}>
+      <TopContainer />
+    </Row>
   )
 }
 
