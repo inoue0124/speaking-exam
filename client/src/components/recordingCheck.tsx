@@ -62,7 +62,7 @@ export const RecordingCheck: React.FC<Props> = ({
             '100%': '#87d068',
           }}
           percent={percent}
-          format={() => RECORDING_TIME - count}
+          format={() => (RECORDING_TIME - Math.floor(count))}
           status={isRecording ? "active" : "normal"}
           width={50}
           />

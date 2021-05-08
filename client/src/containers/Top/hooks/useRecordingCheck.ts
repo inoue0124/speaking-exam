@@ -29,8 +29,8 @@ export const useRecordingCheck = () => {
     startRecording()
     setIsRecording(true)
     setTimer(setInterval(() => {
-      setCount(refCount.current + 1)
-    }, 1000))
+      setCount(refCount.current + 0.05)
+    }, 50))
   })
 
   const onClickPlayBtn = (async (event: SyntheticEvent) => {
