@@ -1,6 +1,6 @@
 import React from "react"
 import { Button, Row, Col, Tooltip, Progress, Typography } from 'antd'
-import { AudioFilled, CaretRightOutlined, AudioTwoTone} from '@ant-design/icons'
+import { AudioFilled, CaretRightOutlined } from '@ant-design/icons'
 import { useRecordingCheck } from "../containers/Top/hooks/useRecordingCheck"
 
 type Props = ReturnType<typeof useRecordingCheck>
@@ -9,14 +9,13 @@ export const RecordingCheck: React.FC<Props> = ({
   RECORDING_TIME,
   count,
   percent,
-  mediaBlobUrl,
   isRecording,
-  isReady,
+  isRecorded,
   isPlaying,
   onClickRecordBtn,
   onClickPlayBtn
 }) => {
-  const { Title, Paragraph, Text } = Typography
+  const { Title, Paragraph } = Typography
 
   return (
     <>
@@ -45,7 +44,7 @@ export const RecordingCheck: React.FC<Props> = ({
               <Button
                 type="primary"
                 onClick={onClickPlayBtn}
-                disabled={isRecording || !isReady || isPlaying}
+                disabled={isRecording || !isRecorded || isPlaying}
                 loading={isPlaying}
                 shape="circle"
                 size="large"
@@ -66,7 +65,7 @@ export const RecordingCheck: React.FC<Props> = ({
           status={isRecording ? "active" : "normal"}
           width={50}
           />
-        {(isReady || isRecording) && (
+        {(isRecorded || isRecording) && (
           <Paragraph>Recording progress is shown in this bar.</Paragraph>
         )}
       </Row>

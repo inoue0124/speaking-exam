@@ -7,20 +7,16 @@ export const useRecordingCheck = () => {
   const [count, setCount] = useState<number>(0)
   const [timer, setTimer] = useState<any>()
   const [isRecording, setIsRecording] = useState<boolean>(false)
-  const [isReady, setIsReady] = useState<boolean>(false)
+  const [isRecorded, setIsRecorded] = useState<boolean>(false)
   const [isPlaying, setIsPlaying] = useState<boolean>(false)
   const [audio, setAudio] = useState<HTMLAudioElement>(undefined)
   const refCount = useValueRef(count)
   const [percent, setPercent] = useState<number>(0)
-  const {
-    startRecording,
-    stopRecording,
-    mediaBlobUrl
-  } = useReactMediaRecorder({ 
+  const {startRecording, stopRecording} = useReactMediaRecorder({ 
     audio: true,
     onStop: (blobUrl: string, _: Blob) => {
       setAudio(new Audio(blobUrl))
-      setIsReady(true)
+      setIsRecorded(true)
   }})
 
   const onClickRecordBtn = ((event: SyntheticEvent) => {
@@ -56,9 +52,8 @@ export const useRecordingCheck = () => {
     RECORDING_TIME,
     count,
     percent,
-    mediaBlobUrl,
     isRecording,
-    isReady,
+    isRecorded,
     isPlaying,
     onClickRecordBtn,
     onClickPlayBtn

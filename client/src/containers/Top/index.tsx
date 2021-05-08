@@ -22,7 +22,7 @@ export const TopContainer: React.FC = () => {
           type="primary"
           onClick={onClickNextBtn}
           loading={step>=2}
-          disabled={(step==1 && !recordingCheckHook.isReady) || step>=2}
+          disabled={(step==1 && !recordingCheckHook.isRecorded) || step>=2}
         >
           Next
         </Button>

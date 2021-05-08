@@ -5,8 +5,7 @@ export const useStep = (lastStep: number, nextRoute: string) => {
   const [step, setStep] = useState<number>(0)
   const router = useRouter()
   
-  const onClickNextBtn = ((event: SyntheticEvent) => {
-    event.preventDefault()
+  const incrementStep = (() => {
     setStep(step + 1)
   })
 
@@ -20,6 +19,6 @@ export const useStep = (lastStep: number, nextRoute: string) => {
 
   return {
     step,
-    onClickNextBtn
+    incrementStep
   }
 }
