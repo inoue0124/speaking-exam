@@ -436,9 +436,9 @@ proto.speakingExam.Task.toObject = function(includeInstance, msg) {
     id: jspb.Message.getFieldWithDefault(msg, 1, 0),
     examId: jspb.Message.getFieldWithDefault(msg, 2, 0),
     type: jspb.Message.getFieldWithDefault(msg, 3, 0),
-    textObjKey: jspb.Message.getFieldWithDefault(msg, 4, ""),
-    imageObjKey: jspb.Message.getFieldWithDefault(msg, 5, ""),
-    audioObjKey: jspb.Message.getFieldWithDefault(msg, 6, ""),
+    textUrl: jspb.Message.getFieldWithDefault(msg, 4, ""),
+    imageUrl: jspb.Message.getFieldWithDefault(msg, 5, ""),
+    audioUrl: jspb.Message.getFieldWithDefault(msg, 6, ""),
     msBeforeStarting: jspb.Message.getFieldWithDefault(msg, 7, 0),
     msPreparing: jspb.Message.getFieldWithDefault(msg, 8, 0),
     msRecording: jspb.Message.getFieldWithDefault(msg, 9, 0),
@@ -494,15 +494,15 @@ proto.speakingExam.Task.deserializeBinaryFromReader = function(msg, reader) {
       break;
     case 4:
       var value = /** @type {string} */ (reader.readString());
-      msg.setTextObjKey(value);
+      msg.setTextUrl(value);
       break;
     case 5:
       var value = /** @type {string} */ (reader.readString());
-      msg.setImageObjKey(value);
+      msg.setImageUrl(value);
       break;
     case 6:
       var value = /** @type {string} */ (reader.readString());
-      msg.setAudioObjKey(value);
+      msg.setAudioUrl(value);
       break;
     case 7:
       var value = /** @type {number} */ (reader.readInt64());
@@ -576,21 +576,21 @@ proto.speakingExam.Task.serializeBinaryToWriter = function(message, writer) {
       f
     );
   }
-  f = message.getTextObjKey();
+  f = message.getTextUrl();
   if (f.length > 0) {
     writer.writeString(
       4,
       f
     );
   }
-  f = message.getImageObjKey();
+  f = message.getImageUrl();
   if (f.length > 0) {
     writer.writeString(
       5,
       f
     );
   }
-  f = message.getAudioObjKey();
+  f = message.getAudioUrl();
   if (f.length > 0) {
     writer.writeString(
       6,
@@ -692,10 +692,10 @@ proto.speakingExam.Task.prototype.setType = function(value) {
 
 
 /**
- * optional string text_obj_key = 4;
+ * optional string text_url = 4;
  * @return {string}
  */
-proto.speakingExam.Task.prototype.getTextObjKey = function() {
+proto.speakingExam.Task.prototype.getTextUrl = function() {
   return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 4, ""));
 };
 
@@ -704,16 +704,16 @@ proto.speakingExam.Task.prototype.getTextObjKey = function() {
  * @param {string} value
  * @return {!proto.speakingExam.Task} returns this
  */
-proto.speakingExam.Task.prototype.setTextObjKey = function(value) {
+proto.speakingExam.Task.prototype.setTextUrl = function(value) {
   return jspb.Message.setProto3StringField(this, 4, value);
 };
 
 
 /**
- * optional string image_obj_key = 5;
+ * optional string image_url = 5;
  * @return {string}
  */
-proto.speakingExam.Task.prototype.getImageObjKey = function() {
+proto.speakingExam.Task.prototype.getImageUrl = function() {
   return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 5, ""));
 };
 
@@ -722,16 +722,16 @@ proto.speakingExam.Task.prototype.getImageObjKey = function() {
  * @param {string} value
  * @return {!proto.speakingExam.Task} returns this
  */
-proto.speakingExam.Task.prototype.setImageObjKey = function(value) {
+proto.speakingExam.Task.prototype.setImageUrl = function(value) {
   return jspb.Message.setProto3StringField(this, 5, value);
 };
 
 
 /**
- * optional string audio_obj_key = 6;
+ * optional string audio_url = 6;
  * @return {string}
  */
-proto.speakingExam.Task.prototype.getAudioObjKey = function() {
+proto.speakingExam.Task.prototype.getAudioUrl = function() {
   return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 6, ""));
 };
 
@@ -740,7 +740,7 @@ proto.speakingExam.Task.prototype.getAudioObjKey = function() {
  * @param {string} value
  * @return {!proto.speakingExam.Task} returns this
  */
-proto.speakingExam.Task.prototype.setAudioObjKey = function(value) {
+proto.speakingExam.Task.prototype.setAudioUrl = function(value) {
   return jspb.Message.setProto3StringField(this, 6, value);
 };
 

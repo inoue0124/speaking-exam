@@ -24,9 +24,9 @@ message Task {
   int64 id = 1;
   int64 exam_id = 2;
   TaskType type = 3;
-  string text_obj_key = 4;
-  string image_obj_key = 5;
-  string audio_obj_key = 6;
+  string text_url = 4;
+  string image_url = 5;
+  string audio_url = 6;
   int64 ms_before_starting = 7;
   int64 ms_preparing = 8;
   int64 ms_recording = 9;

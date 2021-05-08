@@ -55,14 +55,14 @@ export class Task extends jspb.Message {
   getType(): TaskType;
   setType(value: TaskType): Task;
 
-  getTextObjKey(): string;
-  setTextObjKey(value: string): Task;
+  getTextUrl(): string;
+  setTextUrl(value: string): Task;
 
-  getImageObjKey(): string;
-  setImageObjKey(value: string): Task;
+  getImageUrl(): string;
+  setImageUrl(value: string): Task;
 
-  getAudioObjKey(): string;
-  setAudioObjKey(value: string): Task;
+  getAudioUrl(): string;
+  setAudioUrl(value: string): Task;
 
   getMsBeforeStarting(): number;
   setMsBeforeStarting(value: number): Task;
@@ -96,9 +96,9 @@ export namespace Task {
     id: number,
     examId: number,
     type: TaskType,
-    textObjKey: string,
-    imageObjKey: string,
-    audioObjKey: string,
+    textUrl: string,
+    imageUrl: string,
+    audioUrl: string,
     msBeforeStarting: number,
     msPreparing: number,
     msRecording: number,
