@@ -3,6 +3,7 @@ package dao
 import (
 	"speaking-exam/server/domain/repository"
 
+	"github.com/aws/aws-sdk-go/service/s3"
 	"github.com/jinzhu/gorm"
 )
 
@@ -16,6 +17,7 @@ type (
 
 	dao struct {
 		db *gorm.DB
+		s3 *s3.S3
 	}
 )
 
@@ -24,7 +26,8 @@ func New() (Dao, error) {
 	if err != nil {
 		return nil, err
 	}
-	return &dao{db: db}, nil
+	s3 := initS3()
+	return &dao{db: db, s3: s3}, nil
 }
 
 func (d *dao) Auth() repository.Auth {
@@ -36,7 +39,7 @@ func (d *dao) User() repository.User {
 }
 
 func (d *dao) Task() repository.Task {
-	return NewTask(d.db)
+	return NewTask(d.db, d.s3)
 }
 
 func (d *dao) Recording() repository.Recording {

@@ -30,6 +30,10 @@ services:
       MYSQL_HOST: spk_db
       MYSQL_PORT: 3306
       MYSQL_DATABASE: speaking
+      AWS_ACCESS_KEY: ${AWS_ACCESS_KEY}
+      AWS_SECRET_KEY: ${AWS_SECRET_KEY}
+      AWS_REGION: ap-northeast-1
+      AWS_S3_BUCKET: speaking-exam
     depends_on: 
       - db
 

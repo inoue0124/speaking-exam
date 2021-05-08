@@ -30,9 +30,9 @@ func (s *taskServiceServer) ListTasks(ctx context.Context, in *pb.ListTasksReque
 		pbTask.Id = task.Id
 		pbTask.ExamId = task.ExamId
 		pbTask.Type = pb.TaskType(int32(task.Type))
-		pbTask.TextObjKey = task.TextObjKey
-		pbTask.ImageObjKey = task.ImageObjKey
-		pbTask.AudioObjKey = task.AudioObjKey
+		pbTask.TextUrl = task.TextUrl
+		pbTask.ImageUrl = task.ImageUrl
+		pbTask.AudioUrl = task.AudioUrl
 		pbTask.MsBeforeStarting = task.MsBeforeStarting
 		pbTask.MsPreparing = task.MsPreparing
 		pbTask.MsRecording = task.MsRecording

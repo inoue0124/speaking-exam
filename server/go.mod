@@ -3,6 +3,7 @@ module speaking-exam/server
 go 1.16
 
 require (
+	github.com/aws/aws-sdk-go v1.38.36 // indirect
 	github.com/form3tech-oss/jwt-go v3.2.2+incompatible // indirect
 	github.com/golang/protobuf v1.5.2 // indirect
 	github.com/grpc-ecosystem/go-grpc-middleware v1.3.0 // indirect
