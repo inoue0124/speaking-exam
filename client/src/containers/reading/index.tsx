@@ -19,7 +19,7 @@ export const ReadingContainer: React.FC<Props> = ({ clients }) => {
 
   return (
     <div style={{width: 800}}>
-      <Title>A. Reading　(音読)</Title>
+      <Title>A. Reading (音読)</Title>
       {step===0 ? (
         <>
         <Paragraph>

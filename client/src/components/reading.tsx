@@ -1,6 +1,5 @@
 import React from "react"
-import { Button, Row, Col, Tooltip, Progress, Typography } from 'antd'
-import { AudioFilled, CaretRightOutlined, AudioTwoTone} from '@ant-design/icons'
+import { Row, Progress, Typography } from 'antd'
 import { useReading } from "../containers/reading/hooks/useReading"
 
 type Props = ReturnType<typeof useReading>
