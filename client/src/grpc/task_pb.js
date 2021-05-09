@@ -883,7 +883,7 @@ proto.speakingExam.TaskType = {
   ROLE_PLAYING: 3,
   PICTURE_DESCRIPTION: 4,
   STORY_RETELLING: 5,
-  OPEN_TELLING: 6
+  OPINION_TELLING: 6
 };
 
 goog.object.extend(exports, proto.speakingExam);
