@@ -6,16 +6,16 @@ import { RecordingServiceClient } from "../../../grpc/RecordingServiceClientPb"
 import { upload } from "../.../../../../utility/upload"
 
 export const useReading = (client: RecordingServiceClient, tasks: Task.AsObject[], index: number, incrementStep: ()=>void) => {
-  const [countBefore, setCountBefore] = useState<number>()
-  const refCountBefore = useValueRef(countBefore)
+  const [countPreparing, setCountPreparing] = useState<number>()
+  const refCountPreparing = useValueRef(countPreparing)
   const [countRecording, setCountRecording] = useState<number>()
   const refCountRecording = useValueRef(countRecording)
   const [task, setTask] = useState<Task.AsObject>()
   const [timerBefore, setTimerBefore] = useState<any>()
   const [timerRecording, setTimerRecording] = useState<any>()
   const [percent, setPercent] = useState<number>(0)
+  const [isPreparing, setIsPreparing] = useState<boolean>(false)
   const [isRecording, setIsRecording] = useState<boolean>(false)
-  const [isRecorded, setIsRecorded] = useState<boolean>(false)
   const isSkipRender = tasks.length === 0 || index < 0 || index === tasks.length
   const [audio, setAudio] = useState<Blob>(undefined)
   const {startRecording, stopRecording} = useReactMediaRecorder({ 
@@ -27,26 +27,29 @@ export const useReading = (client: RecordingServiceClient, tasks: Task.AsObject[
   useEffect(() => {
     if (isSkipRender) return
     setTask(tasks[index])
-    setIsRecorded(false)
   }, [index])
 
   // カウントダウン前の処理
   useEffect(() => {
     if (isSkipRender) return
-    setCountBefore(task.msBeforeStarting / 1000)
+    setCountPreparing(task.msPreparing / 1000)
     setCountRecording(task.msRecording / 1000)
     // テキスト提示前のカウントダウンタイマー
+    setIsPreparing(true)
     setTimerBefore(setInterval(() => {
-      setCountBefore(refCountBefore.current - 1)
-    }, 1000))
+      setCountPreparing(refCountPreparing.current - 0.05)
+    }, 50))
   }, [task])
 
   // カウントダウン後の処理
   useEffect(() => {
-    if (countBefore <= 0) {
+    if (isSkipRender) return
+    setPercent((task.msPreparing/1000-refCountPreparing.current) / (task.msPreparing/1000) * 100)
+    if (countPreparing <= 0) {
       clearInterval(timerBefore)
       const beep = new Audio('/beep.mp3')
       beep.addEventListener('ended', () => {
+        setIsPreparing(false)
         startRecording()
         setIsRecording(true)
         // 録音タイマー
@@ -56,7 +59,7 @@ export const useReading = (client: RecordingServiceClient, tasks: Task.AsObject[
       })
       beep.play()
     }
-  }, [countBefore])
+  }, [countPreparing])
 
   // 録音開始前の処理
   useEffect(() => {
@@ -66,7 +69,6 @@ export const useReading = (client: RecordingServiceClient, tasks: Task.AsObject[
       clearInterval(timerRecording)
       stopRecording()
       setIsRecording(false)
-      setIsRecorded(true)
     }
   }, [countRecording])
 
@@ -78,10 +80,10 @@ export const useReading = (client: RecordingServiceClient, tasks: Task.AsObject[
   }, [audio])
 
   return {
-    countBefore,
+    countPreparing,
     countRecording,
+    isPreparing,
     isRecording,
-    isRecorded,
     percent,
     task
   }
