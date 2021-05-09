@@ -4,6 +4,7 @@ import (
 	"speaking-exam/server/domain/repository"
 
 	"github.com/aws/aws-sdk-go/service/s3"
+	"github.com/aws/aws-sdk-go/service/s3/s3manager"
 	"github.com/jinzhu/gorm"
 )
 
@@ -16,8 +17,9 @@ type (
 	}
 
 	dao struct {
-		db *gorm.DB
-		s3 *s3.S3
+		db           *gorm.DB
+		s3Downloader *s3.S3
+		s3Uploader   *s3manager.Uploader
 	}
 )
 
@@ -26,8 +28,9 @@ func New() (Dao, error) {
 	if err != nil {
 		return nil, err
 	}
-	s3 := initS3()
-	return &dao{db: db, s3: s3}, nil
+	s3Downloader := getDownloader()
+	s3Uploader := getUploader()
+	return &dao{db: db, s3Downloader: s3Downloader, s3Uploader: s3Uploader}, nil
 }
 
 func (d *dao) Auth() repository.Auth {
@@ -39,9 +42,9 @@ func (d *dao) User() repository.User {
 }
 
 func (d *dao) Task() repository.Task {
-	return NewTask(d.db, d.s3)
+	return NewTask(d.db, d.s3Downloader)
 }
 
 func (d *dao) Recording() repository.Recording {
-	return NewRecording(d.db)
+	return NewRecording(d.db, d.s3Uploader)
 }
