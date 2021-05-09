@@ -24,9 +24,7 @@ export const Shadowing: React.FC<Props> = ({
           </div>
         )}
         {isShowRecorder && (
-          <>
-            <Spin tip="Recording..."></Spin>
-          </>
+          <Spin tip="Recording..."></Spin>
         )}
       </Row>
     </>

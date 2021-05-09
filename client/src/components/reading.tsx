@@ -1,5 +1,5 @@
 import React from "react"
-import { Row, Progress, Typography } from 'antd'
+import { Row, Progress, Typography, Spin } from 'antd'
 import { useReading } from "../containers/reading/hooks/useReading"
 
 type Props = ReturnType<typeof useReading>
@@ -40,6 +40,7 @@ export const Reading: React.FC<Props> = ({
               status={isRecording ? "active" : "normal"}
               width={50}
             />
+            <Spin tip="Recording..."></Spin>
           </>
         )}
       </Row>
