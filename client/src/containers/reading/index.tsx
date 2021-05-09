@@ -13,10 +13,9 @@ type Props = {
 
 export const ReadingContainer: React.FC<Props> = ({ clients }) => {
   const { Title, Paragraph, Text } = Typography
-  const taskServiceClient = clients.taskServiceClient
-  const { tasks } = useFetchTask(taskServiceClient, TaskType.READING)
+  const { tasks } = useFetchTask(clients.taskServiceClient, TaskType.READING)
   const {step, incrementStep} = useStep(tasks.length+1, "/shadowing")
-  const readingState = useReading(tasks, (step-1), incrementStep)
+  const readingState = useReading(clients.recordingServiceClient, tasks, (step-1), incrementStep)
 
   return (
     <div style={{width: 800}}>
