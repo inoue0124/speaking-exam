@@ -1,0 +1,4 @@
+FROM envoyproxy/envoy:v1.16.3
+COPY ./envoy.prod.yaml /etc/envoy/envoy.prod.yaml
+CMD /usr/local/bin/envoy -c /etc/envoy/envoy.prod.yaml
+EXPOSE 8080

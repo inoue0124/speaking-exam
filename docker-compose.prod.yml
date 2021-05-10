@@ -41,7 +41,9 @@ services:
 
   proxy:
     container_name: spk_proxy
-    build: ./proxy
+    build: 
+      context: ./proxy
+      dockerfile: Dockerfile.prod
     ports:
       - "8080:8080"
     depends_on:
