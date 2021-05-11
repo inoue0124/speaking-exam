@@ -6,7 +6,7 @@ import { useStep } from "../../hooks/useStep"
 import { useRecordingCheck } from "./hooks/useRecordingCheck"
 
 export const TopContainer: React.FC = () => {
-  const {step, onClickNextBtn} = useStep(2, "/reading")
+  const {step, incrementStep} = useStep(2, "/reading")
   const recordingCheckHook = useRecordingCheck()
 
   return (
@@ -20,7 +20,7 @@ export const TopContainer: React.FC = () => {
       <Row justify="center" style={{ marginTop: 50 }}>
         <Button 
           type="primary"
-          onClick={onClickNextBtn}
+          onClick={incrementStep}
           loading={step>=2}
           disabled={(step==1 && !recordingCheckHook.isRecorded) || step>=2}
         >
