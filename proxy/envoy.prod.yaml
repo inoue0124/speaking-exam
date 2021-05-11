@@ -26,6 +26,9 @@ static_resources:
                     - name: local_service
                       domains: ["*"]
                       routes:
+                        - match: { prefix: "/health" }
+                          route:
+                            cluster: service_google
                         - match: { prefix: "/" }
                           route:
                             cluster: speaking-exam
@@ -60,3 +63,13 @@ static_resources:
                     socket_address:
                       address: 0.0.0.0
                       port_value: 9090
+    - name: service_google
+      connect_timeout: 0.25s
+      type: LOGICAL_DNS
+      dns_lookup_family: V4_ONLY
+      lb_policy: ROUND_ROBIN
+      hosts:
+        - socket_address:
+            address: google.com
+            port_value: 443
+      tls_context: { sni: www.google.com }
