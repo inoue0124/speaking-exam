@@ -39,3 +39,42 @@ jobs:
         run: |
           docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:latest -f proxy/Dockerfile.prod ./proxy
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:latest
+
+  build-and-deploy-client:
+    runs-on: ubuntu-18.04
+    timeout-minutes: 300
+
+    steps:
+      - uses: actions/checkout@v1
+
+      - name: setup node
+        uses: actions/setup-node@v1
+        with:
+          node-version: "12.x"
+
+      - name: Cache dependencies
+        uses: actions/cache@v1
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      - name: install
+        working-directory: ./client
+        run: yarn install --frozen-lockfile
+
+      - name: build
+        working-directory: ./client
+        run: yarn build
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_KEY }}
+          aws-region: ap-northeast-1
+
+      - name: S3 sync
+        working-directory: ./client/out
+        run: aws s3 sync . s3://speaking-exam-client --delete --grants read=uri=http://acs.amazonaws.com/groups/global/AllUsers
