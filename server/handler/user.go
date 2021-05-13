@@ -78,7 +78,23 @@ func (s *userServiceServer) GetCurrentUser(ctx context.Context, in *empty.Empty)
 }
 
 func (s *userServiceServer) ListUsers(ctx context.Context, in *empty.Empty) (*pb.ListUsersResponse, error) {
-	return nil, nil
+	users, err := s.dao.User().ListUsers(ctx)
+	if err != nil {
+		return nil, err
+	}
+	// object.userからpb.userに変換
+	var pbUsers []*pb.User
+	for _, user := range users {
+		pbUser := new(pb.User)
+		pbUser.LoginId = user.LoginId
+		pbUser.Type = user.Type
+		pbUser.ExamId = user.ExamId
+		pbUser.CreatedAt = timestamppb.New(user.CreatedAt)
+		pbUser.UpdatedAt = timestamppb.New(user.UpdatedAt)
+		pbUsers = append(pbUsers, pbUser)
+	}
+	res := &pb.ListUsersResponse{User: pbUsers}
+	return res, nil
 }
 
 func (s *userServiceServer) AuthFuncOverride(ctx context.Context, fullMethodName string) (context.Context, error) {
