@@ -17,7 +17,7 @@ export type GRPCClients = {
 
 // 本番
 export const gRPCClients = {
-  userServiceClient: new UserServiceClient(`http://speaking-exam-lb-327276559.ap-northeast-1.elb.amazonaws.com`),
-  taskServiceClient: new TaskServiceClient(`http://speaking-exam-lb-327276559.ap-northeast-1.elb.amazonaws.com`),
-  recordingServiceClient: new RecordingServiceClient(`http://speaking-exam-lb-327276559.ap-northeast-1.elb.amazonaws.com`)
+  userServiceClient: new UserServiceClient(`https://api-speaking.komabastar.com`),
+  taskServiceClient: new TaskServiceClient(`https://api-speaking.komabastar.com`),
+  recordingServiceClient: new RecordingServiceClient(`http:s//api-speaking.komabastar.com`)
 }
