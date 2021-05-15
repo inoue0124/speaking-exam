@@ -68,3 +68,13 @@ func (r *user) CreateUsers(ctx context.Context, loginIds []string, passwords []s
 	err := gormbulk.BulkInsert(r.db, users, 3000)
 	return res, err
 }
+
+func (r *user) ListUsers(ctx context.Context) ([]*object.User, error) {
+	// Create user list
+	users := new([]*object.User)
+	result := r.db.Find(users)
+	if result.Error != nil {
+		return nil, result.Error
+	}
+	return *users, nil
+}
