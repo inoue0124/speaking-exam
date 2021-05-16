@@ -1,17 +1,31 @@
 import React from "react"
 import { useRouter } from 'next/router'
-import { Layout, Menu, Typography } from 'antd'
-import { UserOutlined, DatabaseOutlined } from '@ant-design/icons'
+import { Layout, Menu, Typography, Row, Col, Tooltip } from 'antd'
+import { UserOutlined, DatabaseOutlined, LoginOutlined } from '@ant-design/icons'
 
 export const AdminLayout: React.FC = ({children}) => {
   const router = useRouter()
   const { Header, Content, Sider } = Layout
   const { Text } = Typography
+  const onClickLogoutBtn = () => {
+    localStorage.removeItem('user')
+    localStorage.removeItem('token')
+    router.push('/login')
+  }
   return (
     <>
       <Layout style={{ minHeight: '100vh' }}>
-        <Header>
-          <Text>スピーキングテスト</Text>
+        <Header style={{ padding: '0 30px' }}>
+          <Row>
+            <Col span={8}>
+              <Text style={{ color: '#fff'}}>STAR SPEAKING TEST</Text>
+            </Col>
+            <Col span={8} offset={8} style={{textAlign: "right"}}>
+              <Tooltip title="ログアウト">
+                <LoginOutlined style={{ color: '#fff', fontSize: '18px'}} onClick={onClickLogoutBtn} />
+              </Tooltip>
+            </Col>
+          </Row>
         </Header>
         <Layout>
           <Sider width={200}>
