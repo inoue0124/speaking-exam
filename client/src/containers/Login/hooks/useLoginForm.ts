@@ -28,7 +28,12 @@ export const useLoginForm = (client: UserServiceClient) => {
       localStorage.setItem("token", res.getToken())
       localStorage.setItem("user", JSON.stringify(res.getUser().toObject()))
       setCurrentUser(res.getUser())
-      router.push("/")
+      // typeによってリダイレクト先を変更
+      if (res.getUser().getType() === 0) {
+        router.push("/admin/users")
+      } else {
+        router.push("/")
+      }
     })
   }
   
