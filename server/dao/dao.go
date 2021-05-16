@@ -19,8 +19,9 @@ type (
 
 	dao struct {
 		db           *gorm.DB
-		s3Downloader *s3.S3
+		s3           *s3.S3
 		s3Uploader   *s3manager.Uploader
+		s3Downloader *s3manager.Downloader
 	}
 )
 
@@ -29,9 +30,10 @@ func New() (Dao, error) {
 	if err != nil {
 		return nil, err
 	}
+	s3 := getS3()
 	s3Downloader := getDownloader()
 	s3Uploader := getUploader()
-	return &dao{db: db, s3Downloader: s3Downloader, s3Uploader: s3Uploader}, nil
+	return &dao{db: db, s3: s3, s3Uploader: s3Uploader, s3Downloader: s3Downloader}, nil
 }
 
 func (d *dao) Auth() repository.Auth {
@@ -43,7 +45,7 @@ func (d *dao) User() repository.User {
 }
 
 func (d *dao) Task() repository.Task {
-	return NewTask(d.db, d.s3Downloader)
+	return NewTask(d.db, d.s3)
 }
 
 func (d *dao) Exam() repository.Exam {
@@ -51,5 +53,5 @@ func (d *dao) Exam() repository.Exam {
 }
 
 func (d *dao) Recording() repository.Recording {
-	return NewRecording(d.db, d.s3Uploader)
+	return NewRecording(d.db, d.s3Downloader, d.s3Uploader)
 }

@@ -1,6 +1,8 @@
 package handler
 
 import (
+	"io"
+	"os"
 	"speaking-exam/server/dao"
 	pb "speaking-exam/server/grpc"
 
@@ -54,4 +56,41 @@ func (s *recordingServiceServer) ListRecordings(ctx context.Context, in *empty.E
 	}
 	res := &pb.ListRecordingsResponse{Recording: pbRecordings}
 	return res, nil
+}
+
+func (s *recordingServiceServer) DownloadRecordings(in *pb.DownloadRecordingsRequest, stream pb.RecordingService_DownloadRecordingsServer) error {
+	// 保存先のディレクトリ作成
+	if err := os.MkdirAll("/tmp/record", 0755); err != nil {
+		return err
+	}
+	// 録音音声をs3からダウンロード
+	if err := s.dao.Recording().DownloadRecordings(in.AudioObjKeys); err != nil {
+		return err
+	}
+	// zipファイル化
+	if err := s.dao.Recording().ArchiveRecordings(in.AudioObjKeys); err != nil {
+		return err
+	}
+	// レスポンスをストリームで送信
+	zipFile, err := os.Open("/tmp/record/record.zip")
+	if err != nil {
+		return err
+	}
+	buf := make([]byte, 1024)
+	for {
+		_, err := zipFile.Read(buf)
+		if err == io.EOF {
+			break
+		}
+		if err != nil {
+			return err
+		}
+		data := &pb.DownloadRecordingsResponse{AudioData: buf}
+		stream.Send(data)
+	}
+	// 一時ファイルの削除
+	if err := os.RemoveAll("/tmp/record"); err != nil {
+		return err
+	}
+	return nil
 }
