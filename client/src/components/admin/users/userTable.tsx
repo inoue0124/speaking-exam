@@ -1,12 +1,11 @@
 import React from "react";
-import { Table } from 'antd'
+import { Button, Table } from 'antd'
 import { useTable } from "../../../containers/admin/users/table/hooks/useTable";
+import { Timestamp } from "google-protobuf/google/protobuf/timestamp_pb"
 
 type Props = ReturnType<typeof useTable>
 
-export const UserTable: React.FC<Props> = ({
-  users
-}) => {
+export const UserTable: React.FC<Props> = (props) => {
   const columns = [
     {
       title: 'ログインID',
@@ -19,15 +18,35 @@ export const UserTable: React.FC<Props> = ({
       key: 'examId',
     },
     {
+      title: 'テスト名',
+      key: 'examName',
+      render: (_, record) => {
+        return(
+          <>
+            {props.exams?.examList.find((exam) => exam.id === record.examId)?.name}
+          </>
+      )}
+    },
+    {
       title: '作成日',
-      dataIndex: 'createdAt',
-      key: 'createdAt'
+      key: 'createdAt',
+      render: (_, record) => {
+        const timestamp = new Timestamp()
+        timestamp.setSeconds(record.createdAt.seconds)
+        timestamp.setNanos(record.createdAt.nanos)
+        return(
+          <>
+            {timestamp.toDate().toLocaleString()}
+          </>
+      )}
     }
-
   ]
   return (
     <>
-      <Table dataSource={users?.userList} columns={columns} />
+      <Button onClick={()=>props.setIsShowModal(true)} type="primary" style={{ marginBottom: 16 }}>
+        新規登録
+      </Button>
+      <Table dataSource={props.users?.userList} columns={columns} />
     </>
   );
 };
