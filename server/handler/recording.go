@@ -60,7 +60,7 @@ func (s *recordingServiceServer) ListRecordings(ctx context.Context, in *empty.E
 
 func (s *recordingServiceServer) DownloadRecordings(in *pb.DownloadRecordingsRequest, stream pb.RecordingService_DownloadRecordingsServer) error {
 	// 保存先のディレクトリ作成
-	if err := os.MkdirAll("/tmp/record", 0755); err != nil {
+	if err := os.MkdirAll("/record", 0755); err != nil {
 		return err
 	}
 	// 録音音声をs3からダウンロード
@@ -72,7 +72,7 @@ func (s *recordingServiceServer) DownloadRecordings(in *pb.DownloadRecordingsReq
 		return err
 	}
 	// レスポンスをストリームで送信
-	zipFile, err := os.Open("/tmp/record/record.zip")
+	zipFile, err := os.Open("/record/record.zip")
 	if err != nil {
 		return err
 	}
@@ -89,7 +89,7 @@ func (s *recordingServiceServer) DownloadRecordings(in *pb.DownloadRecordingsReq
 		stream.Send(data)
 	}
 	// 一時ファイルの削除
-	if err := os.RemoveAll("/tmp/record"); err != nil {
+	if err := os.RemoveAll("/record"); err != nil {
 		return err
 	}
 	return nil

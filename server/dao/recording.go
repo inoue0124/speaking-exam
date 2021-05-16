@@ -106,8 +106,8 @@ func (r *recording) DownloadRecordings(audioObjKeys []string) error {
 func (r *recording) download(audioObjKey string) error {
 	// ダウンロード領域を作成
 	splited := strings.Split(audioObjKey, "/")
-	os.MkdirAll("/tmp/"+strings.Join(splited[:len(splited)-1], "/"), 0755)
-	file, _ := os.Create("/tmp/" + audioObjKey)
+	os.MkdirAll("/"+strings.Join(splited[:len(splited)-1], "/"), 0755)
+	file, _ := os.Create("/" + audioObjKey)
 	defer file.Close()
 
 	// download実行
@@ -119,7 +119,7 @@ func (r *recording) download(audioObjKey string) error {
 }
 
 func (r *recording) ArchiveRecordings(audioObjKeys []string) error {
-	zipFile, err := os.Create("/tmp/record/record.zip")
+	zipFile, err := os.Create("/record/record.zip")
 	if err != nil {
 		return err
 	}
@@ -127,13 +127,13 @@ func (r *recording) ArchiveRecordings(audioObjKeys []string) error {
 	defer zipWriter.Close()
 	for _, audioObjKey := range audioObjKeys {
 		// ファイルを開く
-		file, err := os.Open("/tmp/" + audioObjKey)
+		file, err := os.Open("/" + audioObjKey)
 		if err != nil {
 			return err
 		}
 		defer file.Close()
 		// zipディレクトリのファイルを作成
-		writer, err := zipWriter.Create("/tmp/" + audioObjKey)
+		writer, err := zipWriter.Create("/" + audioObjKey)
 		if err != nil {
 			return err
 		}
