@@ -28,7 +28,7 @@ message LoginResponse {
 message CreateUsersRequest {
   repeated string login_ids = 1;
   repeated string passwords = 2;
-  int64 exam_id = 3;
+  repeated int64 exam_ids = 3;
 }
 
 message CreateUsersResponse {

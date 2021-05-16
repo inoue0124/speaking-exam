@@ -42,7 +42,7 @@ func (s *userServiceServer) Login(ctx context.Context, in *pb.LoginRequest) (*pb
 }
 
 func (s *userServiceServer) CreateUsers(ctx context.Context, in *pb.CreateUsersRequest) (*pb.CreateUsersResponse, error) {
-	users, err := s.dao.User().CreateUsers(ctx, in.LoginIds, in.Passwords, in.ExamId)
+	users, err := s.dao.User().CreateUsers(ctx, in.LoginIds, in.Passwords, in.ExamIds)
 	if err != nil {
 		return nil, err
 	}

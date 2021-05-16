@@ -47,7 +47,7 @@ func (r *user) GetCurrentUser(ctx context.Context) (*object.User, error) {
 	return user, nil
 }
 
-func (r *user) CreateUsers(ctx context.Context, loginIds []string, passwords []string, examId int64) ([]*object.User, error) {
+func (r *user) CreateUsers(ctx context.Context, loginIds []string, passwords []string, examIds []int64) ([]*object.User, error) {
 	// Validate input
 	if len(loginIds) != len(passwords) {
 		return nil, fmt.Errorf("the lengths of loginIds and passwords are not correct")
@@ -60,7 +60,7 @@ func (r *user) CreateUsers(ctx context.Context, loginIds []string, passwords []s
 		user.LoginId = loginId
 		user.SetPassword(passwords[index])
 		user.Type = 1
-		user.ExamId = examId
+		user.ExamId = examIds[index]
 		users = append(users, user)
 		res = append(res, user)
 	}

@@ -61,8 +61,10 @@ export class CreateUsersRequest extends jspb.Message {
   clearPasswordsList(): CreateUsersRequest;
   addPasswords(value: string, index?: number): CreateUsersRequest;
 
-  getExamId(): number;
-  setExamId(value: number): CreateUsersRequest;
+  getExamIdsList(): Array<number>;
+  setExamIdsList(value: Array<number>): CreateUsersRequest;
+  clearExamIdsList(): CreateUsersRequest;
+  addExamIds(value: number, index?: number): CreateUsersRequest;
 
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): CreateUsersRequest.AsObject;
@@ -76,7 +78,7 @@ export namespace CreateUsersRequest {
   export type AsObject = {
     loginIdsList: Array<string>,
     passwordsList: Array<string>,
-    examId: number,
+    examIdsList: Array<number>,
   }
 }
 

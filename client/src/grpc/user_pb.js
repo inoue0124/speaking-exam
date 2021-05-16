@@ -495,7 +495,7 @@ proto.speakingExam.LoginResponse.prototype.hasUser = function() {
  * @private {!Array<number>}
  * @const
  */
-proto.speakingExam.CreateUsersRequest.repeatedFields_ = [1,2];
+proto.speakingExam.CreateUsersRequest.repeatedFields_ = [1,2,3];
 
 
 
@@ -530,7 +530,7 @@ proto.speakingExam.CreateUsersRequest.toObject = function(includeInstance, msg) 
   var f, obj = {
     loginIdsList: (f = jspb.Message.getRepeatedField(msg, 1)) == null ? undefined : f,
     passwordsList: (f = jspb.Message.getRepeatedField(msg, 2)) == null ? undefined : f,
-    examId: jspb.Message.getFieldWithDefault(msg, 3, 0)
+    examIdsList: (f = jspb.Message.getRepeatedField(msg, 3)) == null ? undefined : f
   };
 
   if (includeInstance) {
@@ -576,8 +576,8 @@ proto.speakingExam.CreateUsersRequest.deserializeBinaryFromReader = function(msg
       msg.addPasswords(value);
       break;
     case 3:
-      var value = /** @type {number} */ (reader.readInt64());
-      msg.setExamId(value);
+      var value = /** @type {!Array<number>} */ (reader.readPackedInt64());
+      msg.setExamIdsList(value);
       break;
     default:
       reader.skipField();
@@ -622,9 +622,9 @@ proto.speakingExam.CreateUsersRequest.serializeBinaryToWriter = function(message
       f
     );
   }
-  f = message.getExamId();
-  if (f !== 0) {
-    writer.writeInt64(
+  f = message.getExamIdsList();
+  if (f.length > 0) {
+    writer.writePackedInt64(
       3,
       f
     );
@@ -707,20 +707,39 @@ proto.speakingExam.CreateUsersRequest.prototype.clearPasswordsList = function() 
 
 
 /**
- * optional int64 exam_id = 3;
- * @return {number}
+ * repeated int64 exam_ids = 3;
+ * @return {!Array<number>}
  */
-proto.speakingExam.CreateUsersRequest.prototype.getExamId = function() {
-  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 3, 0));
+proto.speakingExam.CreateUsersRequest.prototype.getExamIdsList = function() {
+  return /** @type {!Array<number>} */ (jspb.Message.getRepeatedField(this, 3));
+};
+
+
+/**
+ * @param {!Array<number>} value
+ * @return {!proto.speakingExam.CreateUsersRequest} returns this
+ */
+proto.speakingExam.CreateUsersRequest.prototype.setExamIdsList = function(value) {
+  return jspb.Message.setField(this, 3, value || []);
 };
 
 
 /**
  * @param {number} value
+ * @param {number=} opt_index
  * @return {!proto.speakingExam.CreateUsersRequest} returns this
  */
-proto.speakingExam.CreateUsersRequest.prototype.setExamId = function(value) {
-  return jspb.Message.setProto3IntField(this, 3, value);
+proto.speakingExam.CreateUsersRequest.prototype.addExamIds = function(value, opt_index) {
+  return jspb.Message.addToRepeatedField(this, 3, value, opt_index);
+};
+
+
+/**
+ * Clears the list making it empty but non-null.
+ * @return {!proto.speakingExam.CreateUsersRequest} returns this
+ */
+proto.speakingExam.CreateUsersRequest.prototype.clearExamIdsList = function() {
+  return this.setExamIdsList([]);
 };
 
 
