@@ -8,6 +8,11 @@ type Props = ReturnType<typeof useTable>
 export const UserTable: React.FC<Props> = (props) => {
   const columns = [
     {
+      title: 'ユーザID',
+      dataIndex: 'id',
+      key: 'id',
+    },
+    {
       title: 'ログインID',
       dataIndex: 'loginId',
       key: 'loginId',
