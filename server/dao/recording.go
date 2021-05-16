@@ -50,3 +50,13 @@ func (r *recording) CreateRecording(ctx context.Context, taskId int64, audioData
 	}
 	return recording, nil
 }
+
+func (r *recording) ListRecordings(ctx context.Context) ([]*object.Recording, error) {
+	// Create user list
+	recordings := new([]*object.Recording)
+	result := r.db.Find(recordings)
+	if result.Error != nil {
+		return nil, result.Error
+	}
+	return *recordings, nil
+}
