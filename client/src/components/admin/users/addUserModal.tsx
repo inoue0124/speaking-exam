@@ -1,5 +1,5 @@
 import React from "react";
-import { Modal, InputNumber, Select, Table, Button } from 'antd'
+import { Modal, InputNumber, Select, Table, Button, Row } from 'antd'
 import { useTable } from "../../../containers/admin/users/table/hooks/useTable";
 
 type Props = ReturnType<typeof useTable>
@@ -33,32 +33,40 @@ export const AddUserModal: React.FC<Props> = (props) => {
         <Modal
           title="ユーザ新規登録"
           visible={props.isShowModal}
-          onCancel={()=>props.setIsShowModal(false)}
+          onCancel={props.onClickModalCancel}
           onOk={props.onClickModalOk}
           confirmLoading={props.confirmLoading}
         >
-          <Select
-            showSearch
-            style={{ width: 300 }}
-            placeholder="対象のテスト"
-            optionFilterProp="children"
-            onChange={props.onSelectExam}
-            filterOption={(input, option) =>
-              option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
-            }
-          >
-            {props.exams?.examList.map((exam) => (
-              <Option value={exam.id}>テストID:{exam.id} {exam.name}</Option>
-            ))}
-          </Select>
-          <InputNumber
-            min={1}
-            max={100}
-            defaultValue={props.numGenerate}
-            onChange={(value)=>props.setNumGenerate(value)}
+          <Row>
+            <Select
+              showSearch
+              style={{ width: 300 }}
+              placeholder="対象のテスト"
+              optionFilterProp="children"
+              onChange={props.onSelectExam}
+              filterOption={(input, option) =>
+                option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+              }
+            >
+              {props.exams?.examList.map((exam) => (
+                <Option value={exam.id} key={exam.id}>テストID:{exam.id} {exam.name}</Option>
+              ))}
+            </Select>
+            <InputNumber
+              style={{ margin: "0 5px" }}
+              min={1}
+              max={100}
+              defaultValue={props.numGenerate}
+              onChange={(value)=>props.setNumGenerate(value)}
+            />
+            <Button type="primary" onClick={props.onClickGenerateBtn}>生成</Button>
+          </Row>
+          <Table
+            style={{ marginTop: 20 }}
+            rowKey={user => user.loginId}
+            dataSource={props.generateUsers}
+            columns={columns}
           />
-          <Button type="primary" onClick={props.onClickGenerateBtn}>生成</Button>
-          <Table dataSource={props.generateUsers} columns={columns} />
         </Modal>
     </>
   )

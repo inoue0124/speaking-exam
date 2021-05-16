@@ -95,6 +95,10 @@ export const useTable = (userClient: UserServiceClient, examClient: ExamServiceC
     })
     return
   }
+  const onClickModalCancel = () => {
+    setIsShowModal(false)
+    setGenerateUsers([])
+  }
   
   return {
     users,
@@ -108,6 +112,7 @@ export const useTable = (userClient: UserServiceClient, examClient: ExamServiceC
     setNumGenerate,
     onClickGenerateBtn,
     onSelectExam,
-    onClickModalOk
+    onClickModalOk,
+    onClickModalCancel
   }
 }

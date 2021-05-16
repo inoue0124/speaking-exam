@@ -55,7 +55,8 @@ export const UserTable: React.FC<Props> = (props) => {
         rowKey={user => user.id}
         dataSource={props.users?.userList}
         columns={columns}
-        pagination={{showSizeChanger: true}} />
+        pagination={{showSizeChanger: true}}
+      />
     </>
   );
 };
