@@ -17,7 +17,7 @@ export const LoginForm: React.FC<Props> = ({
 }) => {
   return (
     <>
-    <Card title="Speaking Test" style={{ width: 400 }}>
+    <Card title="SPEAKING TEST" style={{ width: 400 }}>
       <Row justify="center">
         <Space direction="vertical">
           <Input 
@@ -39,6 +39,7 @@ export const LoginForm: React.FC<Props> = ({
               type="primary"
               onClick={onClickLoginBtn}
               loading={isLoading}
+              disabled={isLoading}
             >
               Login
             </Button>

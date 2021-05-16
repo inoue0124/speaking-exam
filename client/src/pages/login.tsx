@@ -5,8 +5,10 @@ import { gRPCClients } from "../gateways/gRPCClients"
 
 const Login: React.FC = ({}) => {
   return (
-    <Row justify="center" style={{ marginTop: 300 }}>
-      <LoginFormContainer clients={gRPCClients} />
+    <Row justify="center">
+      <div style={{ marginTop: 200 }}>
+        <LoginFormContainer clients={gRPCClients} />
+      </div>
     </Row>
   )
 }

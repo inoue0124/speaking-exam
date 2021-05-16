@@ -20,8 +20,8 @@ export const useLoginForm = (client: UserServiceClient) => {
     req.setLoginId(loginId)
     req.setPassword(password)
     client.login(req, null, (err, res) => {
-      setIsLoading(false)
       if (err) {
+        setIsLoading(false)
         setErrorMsg(err.message)
         return
       }
