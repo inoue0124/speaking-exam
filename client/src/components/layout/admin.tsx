@@ -48,7 +48,7 @@ export const AdminLayout: React.FC = ({children}) => {
             </Content>
           </Layout>
         </Layout>
-      </Layout>,
+      </Layout>
     </>
   )
 }
