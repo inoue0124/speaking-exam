@@ -4,6 +4,7 @@ package speakingExam
 
 import (
 	context "context"
+	empty "github.com/golang/protobuf/ptypes/empty"
 	grpc "google.golang.org/grpc"
 	codes "google.golang.org/grpc/codes"
 	status "google.golang.org/grpc/status"
@@ -19,6 +20,7 @@ const _ = grpc.SupportPackageIsVersion7
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type RecordingServiceClient interface {
 	CreateRecording(ctx context.Context, in *CreateRecordingRequest, opts ...grpc.CallOption) (*Recording, error)
+	ListRecordings(ctx context.Context, in *empty.Empty, opts ...grpc.CallOption) (*ListRecordingsResponse, error)
 }
 
 type recordingServiceClient struct {
@@ -38,11 +40,21 @@ func (c *recordingServiceClient) CreateRecording(ctx context.Context, in *Create
 	return out, nil
 }
 
+func (c *recordingServiceClient) ListRecordings(ctx context.Context, in *empty.Empty, opts ...grpc.CallOption) (*ListRecordingsResponse, error) {
+	out := new(ListRecordingsResponse)
+	err := c.cc.Invoke(ctx, "/speakingExam.RecordingService/ListRecordings", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // RecordingServiceServer is the server API for RecordingService service.
 // All implementations must embed UnimplementedRecordingServiceServer
 // for forward compatibility
 type RecordingServiceServer interface {
 	CreateRecording(context.Context, *CreateRecordingRequest) (*Recording, error)
+	ListRecordings(context.Context, *empty.Empty) (*ListRecordingsResponse, error)
 	mustEmbedUnimplementedRecordingServiceServer()
 }
 
@@ -52,6 +64,9 @@ type UnimplementedRecordingServiceServer struct {
 
 func (UnimplementedRecordingServiceServer) CreateRecording(context.Context, *CreateRecordingRequest) (*Recording, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateRecording not implemented")
+}
+func (UnimplementedRecordingServiceServer) ListRecordings(context.Context, *empty.Empty) (*ListRecordingsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListRecordings not implemented")
 }
 func (UnimplementedRecordingServiceServer) mustEmbedUnimplementedRecordingServiceServer() {}
 
@@ -84,6 +99,24 @@ func _RecordingService_CreateRecording_Handler(srv interface{}, ctx context.Cont
 	return interceptor(ctx, in, info, handler)
 }
 
+func _RecordingService_ListRecordings_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(empty.Empty)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(RecordingServiceServer).ListRecordings(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/speakingExam.RecordingService/ListRecordings",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(RecordingServiceServer).ListRecordings(ctx, req.(*empty.Empty))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // RecordingService_ServiceDesc is the grpc.ServiceDesc for RecordingService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -94,6 +127,10 @@ var RecordingService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "CreateRecording",
 			Handler:    _RecordingService_CreateRecording_Handler,
+		},
+		{
+			MethodName: "ListRecordings",
+			Handler:    _RecordingService_ListRecordings_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

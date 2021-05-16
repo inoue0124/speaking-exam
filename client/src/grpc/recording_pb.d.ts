@@ -1,5 +1,6 @@
 import * as jspb from 'google-protobuf'
 
+import * as google_protobuf_empty_pb from 'google-protobuf/google/protobuf/empty_pb';
 import * as google_protobuf_timestamp_pb from 'google-protobuf/google/protobuf/timestamp_pb';
 
 
@@ -24,6 +25,26 @@ export namespace CreateRecordingRequest {
   export type AsObject = {
     taskId: number,
     audioData: Uint8Array | string,
+  }
+}
+
+export class ListRecordingsResponse extends jspb.Message {
+  getRecordingList(): Array<Recording>;
+  setRecordingList(value: Array<Recording>): ListRecordingsResponse;
+  clearRecordingList(): ListRecordingsResponse;
+  addRecording(value?: Recording, index?: number): Recording;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): ListRecordingsResponse.AsObject;
+  static toObject(includeInstance: boolean, msg: ListRecordingsResponse): ListRecordingsResponse.AsObject;
+  static serializeBinaryToWriter(message: ListRecordingsResponse, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): ListRecordingsResponse;
+  static deserializeBinaryFromReader(message: ListRecordingsResponse, reader: jspb.BinaryReader): ListRecordingsResponse;
+}
+
+export namespace ListRecordingsResponse {
+  export type AsObject = {
+    recordingList: Array<Recording.AsObject>,
   }
 }
 

@@ -13,6 +13,7 @@
 
 import * as grpcWeb from 'grpc-web';
 
+import * as google_protobuf_empty_pb from 'google-protobuf/google/protobuf/empty_pb';
 import * as recording_pb from './recording_pb';
 
 
@@ -73,6 +74,46 @@ export class RecordingServiceClient {
     request,
     metadata || {},
     this.methodInfoCreateRecording);
+  }
+
+  methodInfoListRecordings = new grpcWeb.AbstractClientBase.MethodInfo(
+    recording_pb.ListRecordingsResponse,
+    (request: google_protobuf_empty_pb.Empty) => {
+      return request.serializeBinary();
+    },
+    recording_pb.ListRecordingsResponse.deserializeBinary
+  );
+
+  listRecordings(
+    request: google_protobuf_empty_pb.Empty,
+    metadata: grpcWeb.Metadata | null): Promise<recording_pb.ListRecordingsResponse>;
+
+  listRecordings(
+    request: google_protobuf_empty_pb.Empty,
+    metadata: grpcWeb.Metadata | null,
+    callback: (err: grpcWeb.Error,
+               response: recording_pb.ListRecordingsResponse) => void): grpcWeb.ClientReadableStream<recording_pb.ListRecordingsResponse>;
+
+  listRecordings(
+    request: google_protobuf_empty_pb.Empty,
+    metadata: grpcWeb.Metadata | null,
+    callback?: (err: grpcWeb.Error,
+               response: recording_pb.ListRecordingsResponse) => void) {
+    if (callback !== undefined) {
+      return this.client_.rpcCall(
+        this.hostname_ +
+          '/speakingExam.RecordingService/ListRecordings',
+        request,
+        metadata || {},
+        this.methodInfoListRecordings,
+        callback);
+    }
+    return this.client_.unaryCall(
+    this.hostname_ +
+      '/speakingExam.RecordingService/ListRecordings',
+    request,
+    metadata || {},
+    this.methodInfoListRecordings);
   }
 
 }
