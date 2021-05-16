@@ -92,6 +92,7 @@ func (r *recording) DownloadRecordings(audioObjKeys []string) error {
 	eg := errgroup.Group{}
 
 	for _, audioObjKey := range audioObjKeys {
+		audioObjKey := audioObjKey
 		eg.Go(func() error {
 			err := r.download(audioObjKey)
 			return err
