@@ -86,6 +86,7 @@ func (s *userServiceServer) ListUsers(ctx context.Context, in *empty.Empty) (*pb
 	var pbUsers []*pb.User
 	for _, user := range users {
 		pbUser := new(pb.User)
+		pbUser.Id = user.Id
 		pbUser.LoginId = user.LoginId
 		pbUser.Type = user.Type
 		pbUser.ExamId = user.ExamId

@@ -13,6 +13,7 @@ type (
 		Auth() repository.Auth
 		User() repository.User
 		Task() repository.Task
+		Exam() repository.Exam
 		Recording() repository.Recording
 	}
 
@@ -43,6 +44,10 @@ func (d *dao) User() repository.User {
 
 func (d *dao) Task() repository.Task {
 	return NewTask(d.db, d.s3Downloader)
+}
+
+func (d *dao) Exam() repository.Exam {
+	return NewExam(d.db)
 }
 
 func (d *dao) Recording() repository.Recording {
