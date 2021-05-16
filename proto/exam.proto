@@ -1,0 +1,24 @@
+syntax = "proto3";
+
+option go_package = ".;speakingExam";
+
+package speakingExam;
+
+import "google/protobuf/empty.proto";
+import "google/protobuf/timestamp.proto";
+
+
+service ExamService {
+  rpc ListExams(google.protobuf.Empty) returns (ListExamsResponse);
+}
+
+message ListExamsResponse {
+  repeated Exam exam = 1;
+}
+
+message Exam {
+  int64 id = 1;
+  string name = 2;
+  google.protobuf.Timestamp created_at = 3;
+  google.protobuf.Timestamp updated_at = 4;
+}
