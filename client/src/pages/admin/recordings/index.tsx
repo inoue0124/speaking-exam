@@ -3,7 +3,7 @@ import { AdminLayout } from "../../../components/layout/admin"
 import { UserTableContainer } from "../../../containers/admin/users/table"
 import { gRPCClients } from "../../../gateways/gRPCClients"
 
-const Users: React.FC = () => {
+const Recordings: React.FC = () => {
   return (
     <>
       <AdminLayout>
@@ -13,4 +13,4 @@ const Users: React.FC = () => {
   )
 }
 
-export default Users
+export default Recordings
