@@ -17,7 +17,7 @@ export const useTable = (userClient: UserServiceClient, examClient: ExamServiceC
   const [generateUsers, setGenerateUsers] = useState<GenerateUser[]>([])
   const [createUsersRequest, setCreateUsersRequest] = useState<CreateUsersRequest>()
   const [exams, setExams] = useState<ListExamsResponse.AsObject>()
-  const [selectedExam, setSelectedExamd] = useState<Exam.AsObject>()
+  const [selectedExam, setSelectedExam] = useState<Exam.AsObject>()
   const [numGenerate, setNumGenerate] = useState<number>(1)
   const [isShowModal, setIsShowModal] = useState<boolean>(false)
   const [confirmLoading, setConfirmLoading] = useState<boolean>(false)
@@ -54,7 +54,7 @@ export const useTable = (userClient: UserServiceClient, examClient: ExamServiceC
     })
   }, [setExams])
   const onSelectExam = (value: number) => {
-    setSelectedExamd(exams.examList.find((exam => exam.id === value)))
+    setSelectedExam(exams.examList.find((exam => exam.id === value)))
   }
   const onClickGenerateBtn = () => {
     const login_ids = []
@@ -108,6 +108,7 @@ export const useTable = (userClient: UserServiceClient, examClient: ExamServiceC
     createUsersRequest,
     generateUsers,
     confirmLoading,
+    selectedExam,
     setIsShowModal,
     setNumGenerate,
     onClickGenerateBtn,
