@@ -1,13 +1,13 @@
 import React from "react"
 import { AdminLayout } from "../../../components/layout/admin"
-import { UserTableContainer } from "../../../containers/admin/users/table"
+import { RecordingTableContainer } from "../../../containers/admin/recordings/table"
 import { gRPCClients } from "../../../gateways/gRPCClients"
 
 const Recordings: React.FC = () => {
   return (
     <>
       <AdminLayout>
-        <UserTableContainer clients={gRPCClients} />
+        <RecordingTableContainer clients={gRPCClients} />
       </AdminLayout>
     </>
   )
