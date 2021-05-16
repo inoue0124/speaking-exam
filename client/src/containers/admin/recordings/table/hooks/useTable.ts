@@ -4,21 +4,24 @@ import { ListRecordingsResponse, DownloadRecordingsRequest, DownloadRecordingsRe
 import { RecordingServiceClient } from "../../../../../grpc/RecordingServiceClientPb"
 import { UserServiceClient } from "../../../../../grpc/UserServiceClientPb"
 import { ListUsersResponse } from "../../../../../grpc/user_pb"
+import { message } from 'antd'
 
 export const useTable = (userClient: UserServiceClient, recordingClient: RecordingServiceClient) => {
   const [recordings, setRecordings] = useState<ListRecordingsResponse.AsObject>()
   const [users, setUsers] = useState<ListUsersResponse.AsObject>()
   const [selectedRecordingKeys, setSelectedRecordingKeys] = useState<string[]>([])
   const [isDownloading, setIsDownloading] = useState<boolean>(false)
+  const [isLoadingData, setIsLoadingData] = useState<boolean>(true)
   useEffect(()=>{
     const req = new Empty()
     const metadata = {'Authorization': 'bearer ' + localStorage.getItem("token")}
     recordingClient.listRecordings(req, metadata, (err, res) => {
       if (err) {
-        alert(err.message)
+        message.error(err.message)
         return
       }
       setRecordings(res.toObject())
+      setIsLoadingData(false)
     })
   }, [setRecordings])
   useEffect(()=>{
@@ -26,7 +29,7 @@ export const useTable = (userClient: UserServiceClient, recordingClient: Recordi
     const metadata = {'Authorization': 'bearer ' + localStorage.getItem("token")}
     userClient.listUsers(req, metadata, (err, res) => {
       if (err) {
-        alert(err.message)
+        message.error(err.message)
         return
       }
       setUsers(res.toObject())
@@ -52,7 +55,7 @@ export const useTable = (userClient: UserServiceClient, recordingClient: Recordi
       setIsDownloading(false)
     })
     stream.on("error", (err) => {
-      alert(err.message)
+      message.error(err.message)
       setIsDownloading(false)
     })
   }, [selectedRecordingKeys])
@@ -71,6 +74,7 @@ export const useTable = (userClient: UserServiceClient, recordingClient: Recordi
     hasSelected,
     filters,
     isDownloading,
+    isLoadingData,
     onClickDownloadBtn,
     onSelectChange,
   }

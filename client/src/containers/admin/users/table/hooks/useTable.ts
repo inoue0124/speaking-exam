@@ -4,6 +4,7 @@ import { useState, useEffect } from "react"
 import { Exam, ListExamsResponse } from "../../../../../grpc/exam_pb"
 import { UserServiceClient } from "../../../../../grpc/UserServiceClientPb"
 import { ExamServiceClient } from "../../../../../grpc/ExamServiceClientPb"
+import { message } from 'antd'
 
 export type GenerateUser = {
   loginId: string
@@ -21,6 +22,7 @@ export const useTable = (userClient: UserServiceClient, examClient: ExamServiceC
   const [numGenerate, setNumGenerate] = useState<number>(1)
   const [isShowModal, setIsShowModal] = useState<boolean>(false)
   const [confirmLoading, setConfirmLoading] = useState<boolean>(false)
+  const [isLoadingData, setIsLoadingData] = useState<boolean>(true)
   const getRandomStr = (len: number) => {
     const LENGTH = len
     const SOURCE = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+-@*~^"
@@ -36,10 +38,11 @@ export const useTable = (userClient: UserServiceClient, examClient: ExamServiceC
     const metadata = {'Authorization': 'bearer ' + localStorage.getItem("token")}
     userClient.listUsers(req, metadata, (err, res) => {
       if (err) {
-        alert(err.message)
+        message.error(err.message)
         return
       }
       setUsers(res.toObject())
+      setIsLoadingData(false)
     })
   }, [confirmLoading])
   useEffect(()=>{
@@ -47,7 +50,7 @@ export const useTable = (userClient: UserServiceClient, examClient: ExamServiceC
     const metadata = {'Authorization': 'bearer ' + localStorage.getItem("token")}
     examClient.listExams(req, metadata, (err, res) => {
       if (err) {
-        alert(err.message)
+        message.error(err.message)
         return
       }
       setExams(res.toObject())
@@ -86,7 +89,7 @@ export const useTable = (userClient: UserServiceClient, examClient: ExamServiceC
     const metadata = {'Authorization': 'bearer ' + localStorage.getItem("token")}
     userClient.createUsers(createUsersRequest, metadata, (err, res) => {
       if (err) {
-        alert(err.message)
+        message.error(err.message)
         return
       }
       setConfirmLoading(false)
@@ -109,6 +112,7 @@ export const useTable = (userClient: UserServiceClient, examClient: ExamServiceC
     generateUsers,
     confirmLoading,
     selectedExam,
+    isLoadingData,
     setIsShowModal,
     setNumGenerate,
     onClickGenerateBtn,

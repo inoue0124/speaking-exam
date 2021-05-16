@@ -56,6 +56,7 @@ export const UserTable: React.FC<Props> = (props) => {
         dataSource={props.users?.userList}
         columns={columns}
         pagination={{showSizeChanger: true}}
+        loading={props.isLoadingData}
       />
     </>
   );

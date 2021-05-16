@@ -1,6 +1,7 @@
 import { RecordingServiceClient } from "../grpc/RecordingServiceClientPb"
 import { Task } from "../grpc/task_pb"
 import { CreateRecordingRequest } from "../grpc/recording_pb"
+import { message } from 'antd'
 
 export const upload = (client: RecordingServiceClient, task: Task.AsObject, audio: Blob) => {
   if (audio === undefined) return
@@ -15,7 +16,7 @@ export const upload = (client: RecordingServiceClient, task: Task.AsObject, audi
     const metadata = {'Authorization': 'bearer ' + localStorage.getItem("token")}
     client.createRecording(req, metadata, (err, res) => {
       if (err) {
-        alert(err.message)
+        message.error(err.message)
         return
       }
     })

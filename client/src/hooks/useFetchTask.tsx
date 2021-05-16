@@ -3,6 +3,7 @@ import { TaskServiceClient } from "../grpc/TaskServiceClientPb"
 import { ListTasksRequest, Task } from "../grpc/task_pb"
 import { User } from "../grpc/user_pb"
 import { TaskType } from "../grpc/task_pb"
+import { message } from 'antd'
 
 export const useFetchTask = (client: TaskServiceClient, type: TaskType) => {
   const [tasks, setTasks] = useState<Task.AsObject[]>([])
@@ -14,7 +15,7 @@ export const useFetchTask = (client: TaskServiceClient, type: TaskType) => {
     const metadata = {'Authorization': 'bearer ' + localStorage.getItem("token")}
     client.listTasks(req, metadata, (err, res) => {
       if (err) {
-        alert(err.message)
+        message.error(err.message)
         return
       }
       setTasks(res.toObject().taskList)

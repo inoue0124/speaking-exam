@@ -69,6 +69,7 @@ export const RecordingTable: React.FC<Props> = (props) => {
         dataSource={props.recordings?.recordingList}
         columns={columns}
         pagination={{showSizeChanger: true}}
+        loading={props.isLoadingData}
       />
     </>
   );

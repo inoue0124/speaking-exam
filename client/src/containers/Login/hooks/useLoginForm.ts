@@ -4,11 +4,11 @@ import { useRouter } from 'next/router'
 import { useSetRecoilState } from 'recoil'
 import { currentUserState } from '../../../hooks/states/currentUser'
 import { UserServiceClient } from "../../../grpc/UserServiceClientPb"
+import { message } from 'antd'
 
 export const useLoginForm = (client: UserServiceClient) => {
   const [loginId, setLoginId] = useState<string>("")
   const [password, setPassword] = useState<string>("")
-  const [errorMsg, setErrorMsg] = useState<string>("")
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const router = useRouter()
   const setCurrentUser = useSetRecoilState(currentUserState)
@@ -22,7 +22,7 @@ export const useLoginForm = (client: UserServiceClient) => {
     client.login(req, null, (err, res) => {
       if (err) {
         setIsLoading(false)
-        setErrorMsg(err.message)
+        message.error(err.message)
         return
       }
       localStorage.setItem("token", res.getToken())
@@ -36,7 +36,6 @@ export const useLoginForm = (client: UserServiceClient) => {
     (event: SyntheticEvent) => {
       const target = event.target as HTMLInputElement
       setLoginId(target.value)
-      setErrorMsg("")
     },
     [setLoginId]
   )
@@ -45,7 +44,6 @@ export const useLoginForm = (client: UserServiceClient) => {
     (event: SyntheticEvent) => {
       const target = event.target as HTMLInputElement
       setPassword(target.value)
-      setErrorMsg("")
     },
     [setPassword]
   )
@@ -70,7 +68,6 @@ export const useLoginForm = (client: UserServiceClient) => {
   return {
     loginId,
     password,
-    errorMsg,
     isLoading,
     onChangeLoginId,
     onChangePassword,

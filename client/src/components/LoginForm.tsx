@@ -8,7 +8,6 @@ type Props = ReturnType<typeof useLoginForm>
 export const LoginForm: React.FC<Props> = ({
   loginId,
   password,
-  errorMsg,
   isLoading,
   onChangeLoginId,
   onChangePassword,
@@ -43,9 +42,6 @@ export const LoginForm: React.FC<Props> = ({
             >
               Login
             </Button>
-            <Text type="danger">
-              {errorMsg}
-            </Text>
           </Space>
         </Space>
       </Row>
