@@ -116,5 +116,24 @@ export class RecordingServiceClient {
     this.methodInfoListRecordings);
   }
 
+  methodInfodownloadRecordings = new grpcWeb.AbstractClientBase.MethodInfo(
+    recording_pb.DownloadRecordingsResponse,
+    (request: recording_pb.DownloadRecordingsRequest) => {
+      return request.serializeBinary();
+    },
+    recording_pb.DownloadRecordingsResponse.deserializeBinary
+  );
+
+  downloadRecordings(
+    request: recording_pb.DownloadRecordingsRequest,
+    metadata?: grpcWeb.Metadata) {
+    return this.client_.serverStreaming(
+      this.hostname_ +
+        '/speakingExam.RecordingService/downloadRecordings',
+      request,
+      metadata || {},
+      this.methodInfodownloadRecordings);
+  }
+
 }
 

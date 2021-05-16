@@ -21,6 +21,7 @@ const _ = grpc.SupportPackageIsVersion7
 type RecordingServiceClient interface {
 	CreateRecording(ctx context.Context, in *CreateRecordingRequest, opts ...grpc.CallOption) (*Recording, error)
 	ListRecordings(ctx context.Context, in *empty.Empty, opts ...grpc.CallOption) (*ListRecordingsResponse, error)
+	DownloadRecordings(ctx context.Context, in *DownloadRecordingsRequest, opts ...grpc.CallOption) (RecordingService_DownloadRecordingsClient, error)
 }
 
 type recordingServiceClient struct {
@@ -49,12 +50,45 @@ func (c *recordingServiceClient) ListRecordings(ctx context.Context, in *empty.E
 	return out, nil
 }
 
+func (c *recordingServiceClient) DownloadRecordings(ctx context.Context, in *DownloadRecordingsRequest, opts ...grpc.CallOption) (RecordingService_DownloadRecordingsClient, error) {
+	stream, err := c.cc.NewStream(ctx, &RecordingService_ServiceDesc.Streams[0], "/speakingExam.RecordingService/downloadRecordings", opts...)
+	if err != nil {
+		return nil, err
+	}
+	x := &recordingServiceDownloadRecordingsClient{stream}
+	if err := x.ClientStream.SendMsg(in); err != nil {
+		return nil, err
+	}
+	if err := x.ClientStream.CloseSend(); err != nil {
+		return nil, err
+	}
+	return x, nil
+}
+
+type RecordingService_DownloadRecordingsClient interface {
+	Recv() (*DownloadRecordingsResponse, error)
+	grpc.ClientStream
+}
+
+type recordingServiceDownloadRecordingsClient struct {
+	grpc.ClientStream
+}
+
+func (x *recordingServiceDownloadRecordingsClient) Recv() (*DownloadRecordingsResponse, error) {
+	m := new(DownloadRecordingsResponse)
+	if err := x.ClientStream.RecvMsg(m); err != nil {
+		return nil, err
+	}
+	return m, nil
+}
+
 // RecordingServiceServer is the server API for RecordingService service.
 // All implementations must embed UnimplementedRecordingServiceServer
 // for forward compatibility
 type RecordingServiceServer interface {
 	CreateRecording(context.Context, *CreateRecordingRequest) (*Recording, error)
 	ListRecordings(context.Context, *empty.Empty) (*ListRecordingsResponse, error)
+	DownloadRecordings(*DownloadRecordingsRequest, RecordingService_DownloadRecordingsServer) error
 	mustEmbedUnimplementedRecordingServiceServer()
 }
 
@@ -67,6 +101,9 @@ func (UnimplementedRecordingServiceServer) CreateRecording(context.Context, *Cre
 }
 func (UnimplementedRecordingServiceServer) ListRecordings(context.Context, *empty.Empty) (*ListRecordingsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListRecordings not implemented")
+}
+func (UnimplementedRecordingServiceServer) DownloadRecordings(*DownloadRecordingsRequest, RecordingService_DownloadRecordingsServer) error {
+	return status.Errorf(codes.Unimplemented, "method DownloadRecordings not implemented")
 }
 func (UnimplementedRecordingServiceServer) mustEmbedUnimplementedRecordingServiceServer() {}
 
@@ -117,6 +154,27 @@ func _RecordingService_ListRecordings_Handler(srv interface{}, ctx context.Conte
 	return interceptor(ctx, in, info, handler)
 }
 
+func _RecordingService_DownloadRecordings_Handler(srv interface{}, stream grpc.ServerStream) error {
+	m := new(DownloadRecordingsRequest)
+	if err := stream.RecvMsg(m); err != nil {
+		return err
+	}
+	return srv.(RecordingServiceServer).DownloadRecordings(m, &recordingServiceDownloadRecordingsServer{stream})
+}
+
+type RecordingService_DownloadRecordingsServer interface {
+	Send(*DownloadRecordingsResponse) error
+	grpc.ServerStream
+}
+
+type recordingServiceDownloadRecordingsServer struct {
+	grpc.ServerStream
+}
+
+func (x *recordingServiceDownloadRecordingsServer) Send(m *DownloadRecordingsResponse) error {
+	return x.ServerStream.SendMsg(m)
+}
+
 // RecordingService_ServiceDesc is the grpc.ServiceDesc for RecordingService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -133,6 +191,12 @@ var RecordingService_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _RecordingService_ListRecordings_Handler,
 		},
 	},
-	Streams:  []grpc.StreamDesc{},
+	Streams: []grpc.StreamDesc{
+		{
+			StreamName:    "downloadRecordings",
+			Handler:       _RecordingService_DownloadRecordings_Handler,
+			ServerStreams: true,
+		},
+	},
 	Metadata: "recording.proto",
 }

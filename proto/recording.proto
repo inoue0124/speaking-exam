@@ -11,6 +11,7 @@ import "google/protobuf/timestamp.proto";
 service RecordingService {
   rpc CreateRecording(CreateRecordingRequest) returns (Recording);
   rpc ListRecordings(google.protobuf.Empty) returns (ListRecordingsResponse);
+  rpc downloadRecordings(DownloadRecordingsRequest) returns (stream DownloadRecordingsResponse);
 }
 
 message CreateRecordingRequest {
@@ -20,6 +21,14 @@ message CreateRecordingRequest {
 
 message ListRecordingsResponse {
   repeated Recording recording = 1;
+}
+
+message DownloadRecordingsRequest {
+  repeated string audio_obj_keys = 1;
+}
+
+message DownloadRecordingsResponse {
+  bytes audio_data = 1;
 }
 
 message Recording {

@@ -48,6 +48,46 @@ export namespace ListRecordingsResponse {
   }
 }
 
+export class DownloadRecordingsRequest extends jspb.Message {
+  getAudioObjKeysList(): Array<string>;
+  setAudioObjKeysList(value: Array<string>): DownloadRecordingsRequest;
+  clearAudioObjKeysList(): DownloadRecordingsRequest;
+  addAudioObjKeys(value: string, index?: number): DownloadRecordingsRequest;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): DownloadRecordingsRequest.AsObject;
+  static toObject(includeInstance: boolean, msg: DownloadRecordingsRequest): DownloadRecordingsRequest.AsObject;
+  static serializeBinaryToWriter(message: DownloadRecordingsRequest, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): DownloadRecordingsRequest;
+  static deserializeBinaryFromReader(message: DownloadRecordingsRequest, reader: jspb.BinaryReader): DownloadRecordingsRequest;
+}
+
+export namespace DownloadRecordingsRequest {
+  export type AsObject = {
+    audioObjKeysList: Array<string>,
+  }
+}
+
+export class DownloadRecordingsResponse extends jspb.Message {
+  getAudioData(): Uint8Array | string;
+  getAudioData_asU8(): Uint8Array;
+  getAudioData_asB64(): string;
+  setAudioData(value: Uint8Array | string): DownloadRecordingsResponse;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): DownloadRecordingsResponse.AsObject;
+  static toObject(includeInstance: boolean, msg: DownloadRecordingsResponse): DownloadRecordingsResponse.AsObject;
+  static serializeBinaryToWriter(message: DownloadRecordingsResponse, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): DownloadRecordingsResponse;
+  static deserializeBinaryFromReader(message: DownloadRecordingsResponse, reader: jspb.BinaryReader): DownloadRecordingsResponse;
+}
+
+export namespace DownloadRecordingsResponse {
+  export type AsObject = {
+    audioData: Uint8Array | string,
+  }
+}
+
 export class Recording extends jspb.Message {
   getId(): number;
   setId(value: number): Recording;
