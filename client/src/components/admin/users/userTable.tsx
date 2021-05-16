@@ -51,7 +51,11 @@ export const UserTable: React.FC<Props> = (props) => {
       <Button onClick={()=>props.setIsShowModal(true)} type="primary" style={{ marginBottom: 16 }}>
         新規登録
       </Button>
-      <Table dataSource={props.users?.userList} columns={columns} />
+      <Table
+        rowKey={user => user.id}
+        dataSource={props.users?.userList}
+        columns={columns}
+        pagination={{showSizeChanger: true}} />
     </>
   );
 };

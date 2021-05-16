@@ -1,11 +1,15 @@
 import { Empty } from "google-protobuf/google/protobuf/empty_pb"
-import { useState, useEffect } from "react"
-import { ListRecordingsResponse } from "../../../../../grpc/recording_pb"
+import { useState, useEffect, useCallback, useMemo } from "react"
+import { ListRecordingsResponse, DownloadRecordingsRequest, DownloadRecordingsResponse } from "../../../../../grpc/recording_pb"
 import { RecordingServiceClient } from "../../../../../grpc/RecordingServiceClientPb"
-import { ExamServiceClient } from "../../../../../grpc/ExamServiceClientPb"
+import { UserServiceClient } from "../../../../../grpc/UserServiceClientPb"
+import { ListUsersResponse } from "../../../../../grpc/user_pb"
 
-export const useTable = (recordingClient: RecordingServiceClient) => {
+export const useTable = (userClient: UserServiceClient, recordingClient: RecordingServiceClient) => {
   const [recordings, setRecordings] = useState<ListRecordingsResponse.AsObject>()
+  const [users, setUsers] = useState<ListUsersResponse.AsObject>()
+  const [selectedRecordingKeys, setSelectedRecordingKeys] = useState<string[]>([])
+  const [isDownloading, setIsDownloading] = useState<boolean>(false)
   useEffect(()=>{
     const req = new Empty()
     const metadata = {'Authorization': 'bearer ' + localStorage.getItem("token")}
@@ -17,8 +21,57 @@ export const useTable = (recordingClient: RecordingServiceClient) => {
       setRecordings(res.toObject())
     })
   }, [setRecordings])
-  
+  useEffect(()=>{
+    const req = new Empty()
+    const metadata = {'Authorization': 'bearer ' + localStorage.getItem("token")}
+    userClient.listUsers(req, metadata, (err, res) => {
+      if (err) {
+        alert(err.message)
+        return
+      }
+      setUsers(res.toObject())
+    })
+  }, [setUsers])
+  const onClickDownloadBtn = useCallback(() => {
+    setIsDownloading(true)
+    const req = new DownloadRecordingsRequest()
+    req.setAudioObjKeysList(selectedRecordingKeys)
+    const metadata = {'Authorization': 'bearer ' + localStorage.getItem("token")}
+    const stream = recordingClient.downloadRecordings(req, metadata)
+    const audioData = []
+    stream.on("data", (data: DownloadRecordingsResponse) => {
+      audioData.push(data.getAudioData())
+    })
+    stream.on("end", ()=>{
+      const blob = new Blob(audioData, {type: 'application/zip'})
+      const url = (window.URL || window.webkitURL).createObjectURL(blob)
+      const a = document.createElement('a')
+      a.download = 'record.zip'
+      a.href = url
+      a.click()
+      setIsDownloading(false)
+    })
+    stream.on("error", (err) => {
+      alert(err.message)
+      setIsDownloading(false)
+    })
+  }, [selectedRecordingKeys])
+  const onSelectChange = (selectedRowKeys) => {
+    setSelectedRecordingKeys(selectedRowKeys)
+  }
+  const hasSelected = useMemo<boolean>(()=>{
+    return selectedRecordingKeys.length > 0
+  } ,[selectedRecordingKeys])
+  const filters = users?.userList.flatMap(user => {
+    return { text: user.id, value: user.id }
+  })
   return {
-    recordings
+    recordings,
+    selectedRecordingKeys,
+    hasSelected,
+    filters,
+    isDownloading,
+    onClickDownloadBtn,
+    onSelectChange,
   }
 }

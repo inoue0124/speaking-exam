@@ -16,6 +16,8 @@ export const RecordingTable: React.FC<Props> = (props) => {
       title: 'ユーザID',
       dataIndex: 'userId',
       key: 'userId',
+      filters: props.filters,
+      onFilter: (value, record) => record.userId === value
     },
     {
       title: 'タスクID',
@@ -41,12 +43,33 @@ export const RecordingTable: React.FC<Props> = (props) => {
       )}
     }
   ]
+  const rowSelection = {
+    selectedRowKeys: props.selectedRecordingKeys,
+    onChange: props.onSelectChange,
+    getCheckboxProps: () => ({
+      disabled: props.isDownloading
+    }),
+  }
   return (
     <>
-      <Button type="primary" style={{ marginBottom: 16 }}>
+      <Button
+        type="primary"
+        style={{ marginBottom: 16 }}
+        disabled={!props.hasSelected || props.isDownloading}
+        loading={props.isDownloading}
+        onClick={props.onClickDownloadBtn}>
         一括ダウンロード
       </Button>
-      <Table dataSource={props.recordings?.recordingList} columns={columns} />
+      <span style={{ marginLeft: 8 }}>
+        {props.hasSelected ? `${props.selectedRecordingKeys.length}項目を選択中です。` : ''}
+      </span>
+      <Table
+        rowSelection={rowSelection}
+        rowKey={recording => recording.audioObjKey}
+        dataSource={props.recordings?.recordingList}
+        columns={columns}
+        pagination={{showSizeChanger: true}}
+      />
     </>
   );
 };

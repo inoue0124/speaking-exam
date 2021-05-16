@@ -8,8 +8,9 @@ type Props = {
 }
 
 export const RecordingTableContainer: React.FC<Props> = ({ clients }) => {
+  const userServiceClient = clients.userServiceClient
   const recordingServiceClient = clients.recordingServiceClient
-  const tableState = useTable(recordingServiceClient)
+  const tableState = useTable(userServiceClient, recordingServiceClient)
   return (
     <>
       <RecordingTable {...tableState} />
