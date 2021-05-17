@@ -100,13 +100,20 @@ func (s *userServiceServer) ListUsers(ctx context.Context, in *empty.Empty) (*pb
 
 func (s *userServiceServer) AuthFuncOverride(ctx context.Context, fullMethodName string) (context.Context, error) {
 	// Login がコールされた場合は認証のチェックをskipする
-	if fullMethodName == "/speakingExam.UserService/Login" || fullMethodName == "/speakingExam.UserService/CreateUsers" {
+	if fullMethodName == "/speakingExam.UserService/Login" {
 		return ctx, nil
 	}
 
 	ctx, err := middleware.AuthFunc(ctx)
 	if err != nil {
 		return ctx, err
+	}
+
+	if fullMethodName == "/speakingExam.UserService/CreateUsers" || fullMethodName == "/speakingExam.UserService/ListUsers" {
+		ctx, err := middleware.AuthAdmin(ctx)
+		if err != nil {
+			return ctx, err
+		}
 	}
 
 	return ctx, nil

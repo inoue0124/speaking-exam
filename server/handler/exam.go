@@ -3,6 +3,7 @@ package handler
 import (
 	"speaking-exam/server/dao"
 	pb "speaking-exam/server/grpc"
+	"speaking-exam/server/middleware"
 
 	"github.com/golang/protobuf/ptypes/empty"
 	"golang.org/x/net/context"
@@ -36,4 +37,20 @@ func (s *examServiceServer) ListExams(ctx context.Context, in *empty.Empty) (*pb
 	}
 	res := &pb.ListExamsResponse{Exam: pbExams}
 	return res, nil
+}
+
+func (s *examServiceServer) AuthFuncOverride(ctx context.Context, fullMethodName string) (context.Context, error) {
+	ctx, err := middleware.AuthFunc(ctx)
+	if err != nil {
+		return ctx, err
+	}
+
+	if fullMethodName == "/speakingExam.ExamService/ListExams" {
+		ctx, err := middleware.AuthAdmin(ctx)
+		if err != nil {
+			return ctx, err
+		}
+	}
+
+	return ctx, nil
 }

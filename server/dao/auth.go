@@ -4,18 +4,22 @@ import (
 	"context"
 	"fmt"
 	"os"
+	"speaking-exam/server/domain/object"
 	"speaking-exam/server/domain/repository"
 	"time"
 
 	jwt "github.com/form3tech-oss/jwt-go"
+	"github.com/jinzhu/gorm"
 )
 
 type (
-	auth struct{}
+	auth struct {
+		db *gorm.DB
+	}
 )
 
-func NewAuth() repository.Auth {
-	return &auth{}
+func NewAuth(db *gorm.DB) repository.Auth {
+	return &auth{db: db}
 }
 
 func (r *auth) GetToken(ctx context.Context, id int64) (*string, error) {
@@ -72,5 +76,16 @@ func (r *auth) ValidateToken(ctx context.Context, signedString string) (context.
 	}
 	ctx = context.WithValue(ctx, "userId", int64(userId))
 
+	return ctx, nil
+}
+
+func (r *auth) ValidateAdmin(ctx context.Context, user *object.User) (context.Context, error) {
+	result := r.db.Where(user).First(&user)
+	if result.Error != nil {
+		return nil, result.Error
+	}
+	if user.Type != 0 {
+		return nil, fmt.Errorf("not authorized")
+	}
 	return ctx, nil
 }

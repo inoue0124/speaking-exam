@@ -5,6 +5,7 @@ import (
 	"os"
 	"speaking-exam/server/dao"
 	pb "speaking-exam/server/grpc"
+	"speaking-exam/server/middleware"
 
 	"github.com/golang/protobuf/ptypes/empty"
 	"golang.org/x/net/context"
@@ -93,4 +94,20 @@ func (s *recordingServiceServer) DownloadRecordings(in *pb.DownloadRecordingsReq
 		return err
 	}
 	return nil
+}
+
+func (s *recordingServiceServer) AuthFuncOverride(ctx context.Context, fullMethodName string) (context.Context, error) {
+	ctx, err := middleware.AuthFunc(ctx)
+	if err != nil {
+		return ctx, err
+	}
+
+	if fullMethodName == "/speakingExam.RecordingService/ListRecordings" || fullMethodName == "/speakingExam.RecordingService/DownloadRecordings" {
+		ctx, err := middleware.AuthAdmin(ctx)
+		if err != nil {
+			return ctx, err
+		}
+	}
+
+	return ctx, nil
 }

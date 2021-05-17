@@ -37,7 +37,7 @@ func New() (Dao, error) {
 }
 
 func (d *dao) Auth() repository.Auth {
-	return NewAuth()
+	return NewAuth(d.db)
 }
 
 func (d *dao) User() repository.User {
