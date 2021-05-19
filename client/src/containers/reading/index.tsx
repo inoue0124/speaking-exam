@@ -6,16 +6,18 @@ import { Reading } from "../../components/reading"
 import { GRPCClients } from "../../gateways/gRPCClients"
 import { TaskType } from "../../grpc/task_pb"
 import { Button, Row, Typography } from 'antd'
+import { useUpdateDoneTask } from "../../hooks/useUpdateDoneTask"
 
 type Props = {
   clients: GRPCClients
 }
 
 export const ReadingContainer: React.FC<Props> = ({ clients }) => {
-  const { Title, Paragraph, Text } = Typography
+  const { Title, Paragraph } = Typography
   const { tasks } = useFetchTask(clients.taskServiceClient, TaskType.READING)
+  const { setDoneTaskId } = useUpdateDoneTask(clients.userServiceClient)
   const {step, incrementStep} = useStep(tasks.length+1, "/shadowing")
-  const readingState = useReading(clients.recordingServiceClient, tasks, (step-1), incrementStep)
+  const readingState = useReading(clients.recordingServiceClient, tasks, (step-1), incrementStep, setDoneTaskId)
 
   return (
     <div style={{width: 800}}>

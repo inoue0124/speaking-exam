@@ -1,11 +1,11 @@
-import { useEffect, SyntheticEvent, useState } from "react"
+import { Dispatch, SetStateAction, useEffect, SyntheticEvent, useState } from "react"
 import { useValueRef } from "../.../../../../hooks/useValueRef"
 import { Task } from "../../../grpc/task_pb"
 import { useReactMediaRecorder } from "react-media-recorder"
 import { RecordingServiceClient } from "../../../grpc/RecordingServiceClientPb"
 import { upload } from "../.../../../../utility/upload"
 
-export const useShadowing = (client: RecordingServiceClient, tasks: Task.AsObject[], index: number, incrementStep: ()=>void) => {
+export const useShadowing = (client: RecordingServiceClient, tasks: Task.AsObject[], index: number, incrementStep: ()=>void, setDoneTaskId: Dispatch<SetStateAction<number>>) => {
   const [countBefore, setCountBefore] = useState<number>()
   const refCountBefore = useValueRef(countBefore)
   const [task, setTask] = useState<Task.AsObject>()
@@ -30,6 +30,7 @@ export const useShadowing = (client: RecordingServiceClient, tasks: Task.AsObjec
   // タスク切り替え処理
   useEffect(() => {
     if (isSkipRender) return
+    setDoneTaskId(tasks[index-1]?.id)
     setTask(tasks[index])
     setIsRecorded(false)
     setIsScriptShadow(false)

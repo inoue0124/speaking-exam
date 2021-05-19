@@ -1,11 +1,11 @@
-import { useEffect, useState } from "react"
+import { Dispatch, SetStateAction, useEffect, useState } from "react"
 import { useValueRef } from "../.../../../../hooks/useValueRef"
 import { Task } from "../../../grpc/task_pb"
 import { useReactMediaRecorder } from "react-media-recorder"
 import { RecordingServiceClient } from "../../../grpc/RecordingServiceClientPb"
 import { upload } from "../.../../../../utility/upload"
 
-export const useOpinionTelling = (client: RecordingServiceClient, tasks: Task.AsObject[], index: number, incrementStep: ()=>void) => {
+export const useOpinionTelling = (client: RecordingServiceClient, tasks: Task.AsObject[], index: number, incrementStep: ()=>void, setDoneTaskId: Dispatch<SetStateAction<number>>) => {
   const [countPreparing, setCountPreparing] = useState<number>()
   const refCountPreparing = useValueRef(countPreparing)
   const [countRecording, setCountRecording] = useState<number>()
@@ -26,6 +26,7 @@ export const useOpinionTelling = (client: RecordingServiceClient, tasks: Task.As
   // タスク切り替え処理
   useEffect(() => {
     if (isSkipRender) return
+    setDoneTaskId(tasks[index-1]?.id)
     setTask(tasks[index])
   }, [index])
 

@@ -6,6 +6,7 @@ import { OpinionTelling } from "../../components/opinionTelling"
 import { GRPCClients } from "../../gateways/gRPCClients"
 import { TaskType } from "../../grpc/task_pb"
 import { Button, Row, Typography } from 'antd'
+import { useUpdateDoneTask } from "../../hooks/useUpdateDoneTask"
 
 type Props = {
   clients: GRPCClients
@@ -14,8 +15,9 @@ type Props = {
 export const OpinionTellingContainer: React.FC<Props> = ({ clients }) => {
   const { Title, Paragraph, Text } = Typography
   const { tasks } = useFetchTask(clients.taskServiceClient, TaskType.OPINION_TELLING)
+  const { setDoneTaskId } = useUpdateDoneTask(clients.userServiceClient)
   const {step, incrementStep} = useStep(tasks.length+1, "/finish")
-  const readingState = useOpinionTelling(clients.recordingServiceClient, tasks, (step-1), incrementStep)
+  const readingState = useOpinionTelling(clients.recordingServiceClient, tasks, (step-1), incrementStep, setDoneTaskId)
 
   return (
     <div style={{width: 800}}>

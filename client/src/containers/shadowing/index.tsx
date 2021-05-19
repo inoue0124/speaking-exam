@@ -6,6 +6,7 @@ import { Shadowing } from "../../components/shadowing"
 import { GRPCClients } from "../../gateways/gRPCClients"
 import { TaskType } from "../../grpc/task_pb"
 import { Button, Row, Typography } from 'antd'
+import { useUpdateDoneTask } from "../../hooks/useUpdateDoneTask"
 
 type Props = {
   clients: GRPCClients
@@ -14,8 +15,9 @@ type Props = {
 export const ShadowingContainer: React.FC<Props> = ({ clients }) => {
   const { Title, Paragraph, Text } = Typography
   const { tasks } = useFetchTask(clients.taskServiceClient, TaskType.SHADOWING)
+  const { setDoneTaskId } = useUpdateDoneTask(clients.userServiceClient)
   const {step, incrementStep} = useStep(tasks.length+1, "/roleplaying")
-  const shadowingState = useShadowing(clients.recordingServiceClient, tasks, (step-1), incrementStep)
+  const shadowingState = useShadowing(clients.recordingServiceClient, tasks, (step-1), incrementStep, setDoneTaskId)
 
   return (
     <div style={{width: 800}}>
