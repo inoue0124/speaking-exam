@@ -10,7 +10,7 @@ const Finish: React.FC = ({}) => {
       <Result
         status="success"
         title="The test is finished!"
-        subTitle="Please close the browser. If you have any inquiries, please contact the following."
+        subTitle="If you have any inquiries, please contact the following."
       />
       <Row justify="center">
       <Card title="Contact Information" style={{ width: 400 }}>

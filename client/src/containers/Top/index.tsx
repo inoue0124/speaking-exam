@@ -23,6 +23,7 @@ export const TopContainer: React.FC = () => {
           onClick={incrementStep}
           loading={step>=2}
           disabled={(step==1 && !recordingCheckHook.isRecorded) || step>=2}
+          style={{marginBottom:50}}
         >
           Next
         </Button>

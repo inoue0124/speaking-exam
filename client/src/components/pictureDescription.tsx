@@ -14,24 +14,33 @@ export const PictureDescription: React.FC<Props> = ({
 }) => {
   const sCountPreparing = Math.ceil(countPreparing)
   const sCountRecording = Math.ceil(countRecording)
+  const { Text } = Typography
   return (
     <>
+    <Row justify="center">
+      <img src={task?.imageUrl} style={{height: "80vh"}} />
+    </Row>
+    {isPreparing && (
       <Row justify="center">
-        <img src={task?.imageUrl} width={'30%'} />
-        <Progress
-          strokeColor={{
-            '0%': '#108ee9',
-            '100%': '#87d068',
-          }}
-          percent={percent}
-          format={() => (isPreparing ? sCountPreparing : sCountRecording)}
-          status={isRecording ? "active" : "normal"}
-          width={50}
-        />
-        {isRecording && (
-          <Spin tip="Recording..."></Spin>
-        )}
+        <Text type="danger">Recording will start in {sCountPreparing} seconds ...</Text>
       </Row>
+    )}
+    
+    {isRecording && (
+      <Row justify="center">
+      <Spin tip="Recording..."></Spin>
+      <Progress
+        strokeColor={{
+          '0%': '#108ee9',
+          '100%': '#87d068',
+        }}
+        percent={percent}
+        format={() => (isPreparing ? sCountPreparing : sCountRecording)}
+        status={isRecording ? "active" : "normal"}
+        width={50}
+      />
+      </Row>
+    )}
     </>
   )
 }
