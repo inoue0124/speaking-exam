@@ -32,12 +32,13 @@ func (s *userServiceServer) Login(ctx context.Context, in *pb.LoginRequest) (*pb
 	res := &pb.LoginResponse{
 		Token: *token,
 		User: &pb.User{
-			Id:        user.Id,
-			LoginId:   user.LoginId,
-			Type:      user.Type,
-			ExamId:    user.ExamId,
-			CreatedAt: timestamppb.New(user.CreatedAt),
-			UpdatedAt: timestamppb.New(user.UpdatedAt)}}
+			Id:         user.Id,
+			LoginId:    user.LoginId,
+			Type:       user.Type,
+			ExamId:     user.ExamId,
+			DoneTaskId: user.DoneTaskId,
+			CreatedAt:  timestamppb.New(user.CreatedAt),
+			UpdatedAt:  timestamppb.New(user.UpdatedAt)}}
 	return res, nil
 }
 
@@ -53,6 +54,7 @@ func (s *userServiceServer) CreateUsers(ctx context.Context, in *pb.CreateUsersR
 		pbUser.LoginId = user.LoginId
 		pbUser.Type = user.Type
 		pbUser.ExamId = user.ExamId
+		pbUser.DoneTaskId = user.DoneTaskId
 		pbUser.CreatedAt = timestamppb.New(user.CreatedAt)
 		pbUser.UpdatedAt = timestamppb.New(user.UpdatedAt)
 		pbUsers = append(pbUsers, pbUser)
@@ -68,12 +70,13 @@ func (s *userServiceServer) GetCurrentUser(ctx context.Context, in *empty.Empty)
 	}
 	// object.userからpb.userに変換
 	res := &pb.User{
-		Id:        user.Id,
-		LoginId:   user.LoginId,
-		Type:      user.Type,
-		ExamId:    user.ExamId,
-		CreatedAt: timestamppb.New(user.CreatedAt),
-		UpdatedAt: timestamppb.New(user.UpdatedAt)}
+		Id:         user.Id,
+		LoginId:    user.LoginId,
+		Type:       user.Type,
+		ExamId:     user.ExamId,
+		DoneTaskId: user.DoneTaskId,
+		CreatedAt:  timestamppb.New(user.CreatedAt),
+		UpdatedAt:  timestamppb.New(user.UpdatedAt)}
 	return res, nil
 }
 
@@ -90,6 +93,7 @@ func (s *userServiceServer) ListUsers(ctx context.Context, in *empty.Empty) (*pb
 		pbUser.LoginId = user.LoginId
 		pbUser.Type = user.Type
 		pbUser.ExamId = user.ExamId
+		pbUser.DoneTaskId = user.DoneTaskId
 		pbUser.CreatedAt = timestamppb.New(user.CreatedAt)
 		pbUser.UpdatedAt = timestamppb.New(user.UpdatedAt)
 		pbUsers = append(pbUsers, pbUser)

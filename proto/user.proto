@@ -45,6 +45,7 @@ message User {
   string password_hash = 3;
   int64 type = 4;
   int64 exam_id = 5;
-  google.protobuf.Timestamp created_at = 6;
-  google.protobuf.Timestamp updated_at = 7;
+  int64 done_task_id = 6;
+  google.protobuf.Timestamp created_at = 7;
+  google.protobuf.Timestamp updated_at = 8;
 }

@@ -14,6 +14,7 @@ type User struct {
 	PasswordHash string
 	Type         int64
 	ExamId       int64
+	DoneTaskId   int64
 	CreatedAt    time.Time `gorm:"type:datetime()"`
 	UpdatedAt    time.Time `gorm:"type:datetime()"`
 }

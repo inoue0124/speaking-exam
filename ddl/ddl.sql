@@ -12,6 +12,7 @@ CREATE TABLE `users` (
   `password_hash` VARCHAR(200) NULL,
   `type` INT NULL,
   `exam_id` INT NULL,
+  `done_task_id` INT NULL,
   `created_at` DATETIME NOT NULL,
   `updated_at` DATETIME NOT NULL,
   PRIMARY KEY (`id`),
