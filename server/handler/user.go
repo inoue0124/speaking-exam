@@ -102,6 +102,40 @@ func (s *userServiceServer) ListUsers(ctx context.Context, in *empty.Empty) (*pb
 	return res, nil
 }
 
+func (s *userServiceServer) UpdateUser(ctx context.Context, in *pb.UpdateUserRequest) (*pb.User, error) {
+	user, err := s.dao.User().UpdateUser(ctx, in.Id, in.LoginId, in.Password, in.Type, in.ExamId, in.DoneTaskId)
+	if err != nil {
+		return nil, err
+	}
+	// object.userからpb.userに変換
+	res := &pb.User{
+		Id:         user.Id,
+		LoginId:    user.LoginId,
+		Type:       user.Type,
+		ExamId:     user.ExamId,
+		DoneTaskId: user.DoneTaskId,
+		CreatedAt:  timestamppb.New(user.CreatedAt),
+		UpdatedAt:  timestamppb.New(user.UpdatedAt)}
+	return res, nil
+}
+
+func (s *userServiceServer) UpdateDoneTaskId(ctx context.Context, in *pb.UpdateDoneTaskIdRequest) (*pb.User, error) {
+	user, err := s.dao.User().UpdateDoneTaskId(ctx, in.DoneTaskId)
+	if err != nil {
+		return nil, err
+	}
+	// object.userからpb.userに変換
+	res := &pb.User{
+		Id:         user.Id,
+		LoginId:    user.LoginId,
+		Type:       user.Type,
+		ExamId:     user.ExamId,
+		DoneTaskId: user.DoneTaskId,
+		CreatedAt:  timestamppb.New(user.CreatedAt),
+		UpdatedAt:  timestamppb.New(user.UpdatedAt)}
+	return res, nil
+}
+
 func (s *userServiceServer) AuthFuncOverride(ctx context.Context, fullMethodName string) (context.Context, error) {
 	// Login がコールされた場合は認証のチェックをskipする
 	if fullMethodName == "/speakingExam.UserService/Login" {
@@ -113,7 +147,7 @@ func (s *userServiceServer) AuthFuncOverride(ctx context.Context, fullMethodName
 		return ctx, err
 	}
 
-	if fullMethodName == "/speakingExam.UserService/CreateUsers" || fullMethodName == "/speakingExam.UserService/ListUsers" {
+	if fullMethodName == "/speakingExam.UserService/CreateUsers" || fullMethodName == "/speakingExam.UserService/ListUsers" || fullMethodName == "/speakingExam.UserService/UpdateUser" {
 		ctx, err := middleware.AuthAdmin(ctx)
 		if err != nil {
 			return ctx, err

@@ -23,8 +23,17 @@ func NewTask(db *gorm.DB, s3 *s3.S3) repository.Task {
 }
 
 func (r *task) ListTasks(ctx context.Context, examId int64, typeInt int32) ([]*object.Task, error) {
+	// ユーザ情報を取得
+	userId := ctx.Value("userId").(int64)
+	user := new(object.User)
+	user.Id = userId
+	result := r.db.Where(user).First(&user)
+	if result.Error != nil {
+		return nil, result.Error
+	}
+	// タスク一覧を取得
 	tasks := new([]*object.Task)
-	result := r.db.Find(tasks, "exam_id=? and type=?", examId, typeInt)
+	result = r.db.Find(tasks, "exam_id=? and type=? and id>?", examId, typeInt, user.DoneTaskId)
 	if result.Error != nil {
 		return nil, result.Error
 	}

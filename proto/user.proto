@@ -13,6 +13,8 @@ service UserService {
   rpc GetCurrentUser(google.protobuf.Empty) returns (User);
   rpc CreateUsers(CreateUsersRequest) returns (CreateUsersResponse);
   rpc ListUsers(google.protobuf.Empty) returns (ListUsersResponse);
+  rpc UpdateUser(UpdateUserRequest) returns (User);
+  rpc UpdateDoneTaskId(UpdateDoneTaskIdRequest) returns (User);
 }
 
 message LoginRequest {
@@ -37,6 +39,19 @@ message CreateUsersResponse {
 
 message ListUsersResponse {
   repeated User user = 1;
+}
+
+message UpdateUserRequest {
+  int64 id = 1;
+  string login_id = 2;
+  string password = 3;
+  int64 type = 4;
+  int64 exam_id = 5;
+  int64 done_task_id = 6;
+}
+
+message UpdateDoneTaskIdRequest {
+  int64 done_task_id = 6;
 }
 
 message User {

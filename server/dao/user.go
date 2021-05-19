@@ -78,3 +78,54 @@ func (r *user) ListUsers(ctx context.Context) ([]*object.User, error) {
 	}
 	return *users, nil
 }
+
+func (r *user) UpdateUser(ctx context.Context, userId int64, loginId string, password string, userType int64, examId int64, doneTaskId int64) (*object.User, error) {
+	// Get user data from userId
+	user := new(object.User)
+	user.Id = userId
+	result := r.db.Where(user).First(&user)
+	if result.Error != nil {
+		return nil, result.Error
+	}
+	// アップデート用のユーザを作成
+	userUpdated := new(object.User)
+	if loginId != "" {
+		userUpdated.LoginId = loginId
+	}
+	if password != "" {
+		userUpdated.SetPassword(password)
+	}
+	if userType != 0 {
+		userUpdated.Type = userType
+	}
+	if examId != 0 {
+		userUpdated.ExamId = examId
+	}
+	if doneTaskId != 0 {
+		userUpdated.DoneTaskId = doneTaskId
+	}
+	// アップデート実行
+	result = r.db.Model(&user).Update(&userUpdated)
+	if result.Error != nil {
+		return nil, result.Error
+	}
+	return user, nil
+}
+
+func (r *user) UpdateDoneTaskId(ctx context.Context, doneTaskId int64) (*object.User, error) {
+	// Get user data
+	user, err := r.GetCurrentUser(ctx)
+	if err != nil {
+		return nil, err
+	}
+	// アップデート用ユーザ作成。doneタスクIDは小さいものには変更できない。
+	userUpdated := new(object.User)
+	if doneTaskId > user.DoneTaskId {
+		userUpdated.DoneTaskId = doneTaskId
+	}
+	result := r.db.Model(&user).Update(&userUpdated)
+	if result.Error != nil {
+		return nil, result.Error
+	}
+	return user, nil
+}

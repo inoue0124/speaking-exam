@@ -84,7 +84,7 @@ func (r *auth) ValidateAdmin(ctx context.Context, user *object.User) (context.Co
 	if result.Error != nil {
 		return nil, result.Error
 	}
-	if user.Type != 0 {
+	if user.Type != 2 {
 		return nil, fmt.Errorf("not authorized")
 	}
 	return ctx, nil

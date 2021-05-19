@@ -10,9 +10,9 @@ export function useRequireLogin() {
   useEffect(()=>{
     if(isAuthChecking) return
     if(!currentUser) router.push("/login")
-    if(currentUser.getType() !== 0 && router.pathname.includes('admin')) {
+    if(currentUser.getType() !== 2 && router.pathname.includes('admin')) {
       router.push("/login")
-      message.error("fobidden")
+      message.error("forbidden")
     }
   },[isAuthChecking, currentUser])
 }

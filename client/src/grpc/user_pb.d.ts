@@ -122,6 +122,62 @@ export namespace ListUsersResponse {
   }
 }
 
+export class UpdateUserRequest extends jspb.Message {
+  getId(): number;
+  setId(value: number): UpdateUserRequest;
+
+  getLoginId(): string;
+  setLoginId(value: string): UpdateUserRequest;
+
+  getPassword(): string;
+  setPassword(value: string): UpdateUserRequest;
+
+  getType(): number;
+  setType(value: number): UpdateUserRequest;
+
+  getExamId(): number;
+  setExamId(value: number): UpdateUserRequest;
+
+  getDoneTaskId(): number;
+  setDoneTaskId(value: number): UpdateUserRequest;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): UpdateUserRequest.AsObject;
+  static toObject(includeInstance: boolean, msg: UpdateUserRequest): UpdateUserRequest.AsObject;
+  static serializeBinaryToWriter(message: UpdateUserRequest, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): UpdateUserRequest;
+  static deserializeBinaryFromReader(message: UpdateUserRequest, reader: jspb.BinaryReader): UpdateUserRequest;
+}
+
+export namespace UpdateUserRequest {
+  export type AsObject = {
+    id: number,
+    loginId: string,
+    password: string,
+    type: number,
+    examId: number,
+    doneTaskId: number,
+  }
+}
+
+export class UpdateDoneTaskIdRequest extends jspb.Message {
+  getDoneTaskId(): number;
+  setDoneTaskId(value: number): UpdateDoneTaskIdRequest;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): UpdateDoneTaskIdRequest.AsObject;
+  static toObject(includeInstance: boolean, msg: UpdateDoneTaskIdRequest): UpdateDoneTaskIdRequest.AsObject;
+  static serializeBinaryToWriter(message: UpdateDoneTaskIdRequest, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): UpdateDoneTaskIdRequest;
+  static deserializeBinaryFromReader(message: UpdateDoneTaskIdRequest, reader: jspb.BinaryReader): UpdateDoneTaskIdRequest;
+}
+
+export namespace UpdateDoneTaskIdRequest {
+  export type AsObject = {
+    doneTaskId: number,
+  }
+}
+
 export class User extends jspb.Message {
   getId(): number;
   setId(value: number): User;

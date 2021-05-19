@@ -25,7 +25,6 @@ export const ProgressStepper: React.FC = () => {
   })()
   return (
     <Steps current={current} style={{width: "60%", marginBottom: 50}}>
-      {console.log(current)}
       <Step title="Reading" />
       <Step title="Shadowing" />
       <Step title="Role Playing" />

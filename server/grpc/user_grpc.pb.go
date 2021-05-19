@@ -23,6 +23,8 @@ type UserServiceClient interface {
 	GetCurrentUser(ctx context.Context, in *empty.Empty, opts ...grpc.CallOption) (*User, error)
 	CreateUsers(ctx context.Context, in *CreateUsersRequest, opts ...grpc.CallOption) (*CreateUsersResponse, error)
 	ListUsers(ctx context.Context, in *empty.Empty, opts ...grpc.CallOption) (*ListUsersResponse, error)
+	UpdateUser(ctx context.Context, in *UpdateUserRequest, opts ...grpc.CallOption) (*User, error)
+	UpdateDoneTaskId(ctx context.Context, in *UpdateDoneTaskIdRequest, opts ...grpc.CallOption) (*User, error)
 }
 
 type userServiceClient struct {
@@ -69,6 +71,24 @@ func (c *userServiceClient) ListUsers(ctx context.Context, in *empty.Empty, opts
 	return out, nil
 }
 
+func (c *userServiceClient) UpdateUser(ctx context.Context, in *UpdateUserRequest, opts ...grpc.CallOption) (*User, error) {
+	out := new(User)
+	err := c.cc.Invoke(ctx, "/speakingExam.UserService/UpdateUser", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *userServiceClient) UpdateDoneTaskId(ctx context.Context, in *UpdateDoneTaskIdRequest, opts ...grpc.CallOption) (*User, error) {
+	out := new(User)
+	err := c.cc.Invoke(ctx, "/speakingExam.UserService/UpdateDoneTaskId", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // UserServiceServer is the server API for UserService service.
 // All implementations must embed UnimplementedUserServiceServer
 // for forward compatibility
@@ -77,6 +97,8 @@ type UserServiceServer interface {
 	GetCurrentUser(context.Context, *empty.Empty) (*User, error)
 	CreateUsers(context.Context, *CreateUsersRequest) (*CreateUsersResponse, error)
 	ListUsers(context.Context, *empty.Empty) (*ListUsersResponse, error)
+	UpdateUser(context.Context, *UpdateUserRequest) (*User, error)
+	UpdateDoneTaskId(context.Context, *UpdateDoneTaskIdRequest) (*User, error)
 	mustEmbedUnimplementedUserServiceServer()
 }
 
@@ -95,6 +117,12 @@ func (UnimplementedUserServiceServer) CreateUsers(context.Context, *CreateUsersR
 }
 func (UnimplementedUserServiceServer) ListUsers(context.Context, *empty.Empty) (*ListUsersResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListUsers not implemented")
+}
+func (UnimplementedUserServiceServer) UpdateUser(context.Context, *UpdateUserRequest) (*User, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateUser not implemented")
+}
+func (UnimplementedUserServiceServer) UpdateDoneTaskId(context.Context, *UpdateDoneTaskIdRequest) (*User, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateDoneTaskId not implemented")
 }
 func (UnimplementedUserServiceServer) mustEmbedUnimplementedUserServiceServer() {}
 
@@ -181,6 +209,42 @@ func _UserService_ListUsers_Handler(srv interface{}, ctx context.Context, dec fu
 	return interceptor(ctx, in, info, handler)
 }
 
+func _UserService_UpdateUser_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateUserRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServiceServer).UpdateUser(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/speakingExam.UserService/UpdateUser",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServiceServer).UpdateUser(ctx, req.(*UpdateUserRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _UserService_UpdateDoneTaskId_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateDoneTaskIdRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServiceServer).UpdateDoneTaskId(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/speakingExam.UserService/UpdateDoneTaskId",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServiceServer).UpdateDoneTaskId(ctx, req.(*UpdateDoneTaskIdRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // UserService_ServiceDesc is the grpc.ServiceDesc for UserService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -203,6 +267,14 @@ var UserService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "ListUsers",
 			Handler:    _UserService_ListUsers_Handler,
+		},
+		{
+			MethodName: "UpdateUser",
+			Handler:    _UserService_UpdateUser_Handler,
+		},
+		{
+			MethodName: "UpdateDoneTaskId",
+			Handler:    _UserService_UpdateDoneTaskId_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

@@ -17,11 +17,17 @@ CREATE TABLE `users` (
   `updated_at` DATETIME NOT NULL,
   PRIMARY KEY (`id`),
   INDEX `fk_exam_id_idx` (`exam_id`),
+  INDEX `fk_done_task_id_idx` (`done_task_id`),
   CONSTRAINT `fk_user_exam_id`
     FOREIGN KEY (`exam_id`)
     REFERENCES `exams` (`id`)
-    ON DELETE SET NULL
-    ON UPDATE CASCADE
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_user_task_id`
+    FOREIGN KEY (`done_task_id`)
+    REFERENCES `tasks` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION
 );
 
 CREATE TABLE `tasks` (
@@ -41,8 +47,8 @@ CREATE TABLE `tasks` (
   CONSTRAINT `fk_task_exam_id`
     FOREIGN KEY (`exam_id`)
     REFERENCES `exams` (`id`)
-    ON DELETE CASCADE
-    ON UPDATE CASCADE
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION
 );
 
 CREATE TABLE `recordings` (

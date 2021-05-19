@@ -196,5 +196,85 @@ export class UserServiceClient {
     this.methodInfoListUsers);
   }
 
+  methodInfoUpdateUser = new grpcWeb.AbstractClientBase.MethodInfo(
+    user_pb.User,
+    (request: user_pb.UpdateUserRequest) => {
+      return request.serializeBinary();
+    },
+    user_pb.User.deserializeBinary
+  );
+
+  updateUser(
+    request: user_pb.UpdateUserRequest,
+    metadata: grpcWeb.Metadata | null): Promise<user_pb.User>;
+
+  updateUser(
+    request: user_pb.UpdateUserRequest,
+    metadata: grpcWeb.Metadata | null,
+    callback: (err: grpcWeb.Error,
+               response: user_pb.User) => void): grpcWeb.ClientReadableStream<user_pb.User>;
+
+  updateUser(
+    request: user_pb.UpdateUserRequest,
+    metadata: grpcWeb.Metadata | null,
+    callback?: (err: grpcWeb.Error,
+               response: user_pb.User) => void) {
+    if (callback !== undefined) {
+      return this.client_.rpcCall(
+        this.hostname_ +
+          '/speakingExam.UserService/UpdateUser',
+        request,
+        metadata || {},
+        this.methodInfoUpdateUser,
+        callback);
+    }
+    return this.client_.unaryCall(
+    this.hostname_ +
+      '/speakingExam.UserService/UpdateUser',
+    request,
+    metadata || {},
+    this.methodInfoUpdateUser);
+  }
+
+  methodInfoUpdateDoneTaskId = new grpcWeb.AbstractClientBase.MethodInfo(
+    user_pb.User,
+    (request: user_pb.UpdateDoneTaskIdRequest) => {
+      return request.serializeBinary();
+    },
+    user_pb.User.deserializeBinary
+  );
+
+  updateDoneTaskId(
+    request: user_pb.UpdateDoneTaskIdRequest,
+    metadata: grpcWeb.Metadata | null): Promise<user_pb.User>;
+
+  updateDoneTaskId(
+    request: user_pb.UpdateDoneTaskIdRequest,
+    metadata: grpcWeb.Metadata | null,
+    callback: (err: grpcWeb.Error,
+               response: user_pb.User) => void): grpcWeb.ClientReadableStream<user_pb.User>;
+
+  updateDoneTaskId(
+    request: user_pb.UpdateDoneTaskIdRequest,
+    metadata: grpcWeb.Metadata | null,
+    callback?: (err: grpcWeb.Error,
+               response: user_pb.User) => void) {
+    if (callback !== undefined) {
+      return this.client_.rpcCall(
+        this.hostname_ +
+          '/speakingExam.UserService/UpdateDoneTaskId',
+        request,
+        metadata || {},
+        this.methodInfoUpdateDoneTaskId,
+        callback);
+    }
+    return this.client_.unaryCall(
+    this.hostname_ +
+      '/speakingExam.UserService/UpdateDoneTaskId',
+    request,
+    metadata || {},
+    this.methodInfoUpdateDoneTaskId);
+  }
+
 }
 
