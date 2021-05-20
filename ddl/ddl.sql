@@ -22,11 +22,6 @@ CREATE TABLE `users` (
     FOREIGN KEY (`exam_id`)
     REFERENCES `exams` (`id`)
     ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_user_task_id`
-    FOREIGN KEY (`done_task_id`)
-    REFERENCES `tasks` (`id`)
-    ON DELETE NO ACTION
     ON UPDATE NO ACTION
 );
 

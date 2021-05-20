@@ -5,8 +5,10 @@ import { useSetRecoilState } from 'recoil'
 import { currentUserState } from '../../../hooks/states/currentUser'
 import { UserServiceClient } from "../../../grpc/UserServiceClientPb"
 import { message } from 'antd'
+import { TaskServiceClient } from "../../../grpc/TaskServiceClientPb"
+import { GetTaskRequest, TaskType } from "../../../grpc/task_pb"
 
-export const useLoginForm = (client: UserServiceClient) => {
+export const useLoginForm = (userServiceClient: UserServiceClient, taskServiceClient: TaskServiceClient) => {
   const [loginId, setLoginId] = useState<string>("")
   const [password, setPassword] = useState<string>("")
   const [isLoading, setIsLoading] = useState<boolean>(false)
@@ -19,21 +21,63 @@ export const useLoginForm = (client: UserServiceClient) => {
     const req = new LoginRequest()
     req.setLoginId(loginId)
     req.setPassword(password)
-    client.login(req, null, (err, res) => {
+    userServiceClient.login(req, null, (err, res) => {
       if (err) {
         setIsLoading(false)
         message.error(err.message)
         return
       }
-      localStorage.setItem("token", res.getToken())
-      localStorage.setItem("user", JSON.stringify(res.getUser().toObject()))
-      setCurrentUser(res.getUser())
-      // typeによってリダイレクト先を変更
-      if (res.getUser().getType() === 2) {
+      const user = res.getUser()
+      const token = res.getToken()
+      localStorage.setItem("token", token)
+      localStorage.setItem("user", JSON.stringify(user.toObject()))
+      setCurrentUser(user)
+      // アドミンの場合、管理画面にリダイレクト
+      if (user.getType() === 2) {
         router.push("/admin/users")
-      } else {
-        router.push("/")
+        return
       }
+      // 実施済みのタスクを取得する
+      const req = new GetTaskRequest()
+      req.setId(user.getDoneTaskId())
+      const metadata = {'Authorization': 'bearer ' + token}
+      taskServiceClient.getTask(req, metadata, (err, res) => {
+        if (err) {
+          if (err.message === 'not found') {
+            router.push("/")
+          } else {
+            setIsLoading(false)
+            message.error(err.message)
+          }
+          return
+        }
+        const taskType = res.getType()
+        console.log(res.toObject())
+        // typeによってリダイレクト先を変更
+        switch(taskType) {
+          case TaskType.READING:
+            router.push("/reading")
+            break
+          case TaskType.SHADOWING:
+            router.push("/shadowing")
+            break
+          case TaskType.ROLE_PLAYING:
+            router.push("/roleplaying")
+            break
+          case TaskType.PICTURE_DESCRIPTION:
+            router.push("/picturedescription")
+            break
+          case TaskType.STORY_RETELLING:
+            router.push("/storyretelling")
+            break
+          case TaskType.OPINION_TELLING:
+            router.push("/opiniontelling")
+            break
+          default:
+            router.push("/")
+            break
+        }
+      })
     })
   }
   
@@ -59,7 +103,7 @@ export const useLoginForm = (client: UserServiceClient) => {
         login()
       }
     },
-    [client, loginId, password]
+    [userServiceClient, loginId, password]
   )
 
   const onClickLoginBtn = useCallback(
@@ -67,7 +111,7 @@ export const useLoginForm = (client: UserServiceClient) => {
       event.preventDefault()
       login()
     },
-    [client, loginId, password]
+    [userServiceClient, loginId, password]
   )
 
   return {

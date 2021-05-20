@@ -53,6 +53,11 @@ export const useStoryRetelling = (client: RecordingServiceClient, tasks: Task.As
       const beep = new Audio('/beep.mp3')
       // beep終了後に提示音声を再生開始する
       beep.addEventListener('ended', () => {
+        // urlが空の場合は次のステップへ
+        if (task.audioUrl === "") {
+          incrementStep()
+          return
+        }
         const modelAudio = new Audio(task.audioUrl)
         // モデル音声が終わったら5秒の準備時間を与える
         modelAudio.addEventListener('ended', () => {

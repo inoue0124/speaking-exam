@@ -8,8 +8,8 @@ type Props = {
 }
 
 export const LoginFormContainer: React.FC<Props> = ({ clients }) => {
-  const userServiceClient = clients.userServiceClient
-  const loginFormState = useLoginForm(userServiceClient)
+  const { userServiceClient, taskServiceClient } = clients
+  const loginFormState = useLoginForm(userServiceClient, taskServiceClient)
   return (
     <LoginForm {...loginFormState} />
   )

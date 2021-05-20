@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"fmt"
 	"speaking-exam/server/dao"
 	pb "speaking-exam/server/grpc"
 
@@ -45,6 +46,10 @@ func (s *taskServiceServer) ListTasks(ctx context.Context, in *pb.ListTasksReque
 }
 
 func (s *taskServiceServer) GetTask(ctx context.Context, in *pb.GetTaskRequest) (*pb.Task, error) {
+	// 初期値の場合
+	if in.Id == 0 {
+		return nil, fmt.Errorf("not found")
+	}
 	task, err := s.dao.Task().GetTask(ctx, in.Id)
 	if err != nil {
 		return nil, err
