@@ -32,6 +32,19 @@ export const useTable = (userClient: UserServiceClient, examClient: ExamServiceC
     }      
     return result
   }
+  const downloadCSV = () => {
+    var csv = '\ufeff' + 'ログインID,パスワード,テストID,テスト名\n'
+    generateUsers.forEach(el => {
+      var line = el['loginId'] + ',' + el['password'] + ',' 
+      + el['examId'] + ',' + el['examName'] +'\n'
+      csv += line
+    })
+    let blob = new Blob([csv], { type: 'text/csv' })
+    let link = document.createElement('a')
+    link.href = window.URL.createObjectURL(blob)
+    link.download = 'password_list.csv'
+    link.click()
+  }
   useEffect(()=>{
     if (confirmLoading) return
     const req = new Empty()
@@ -92,6 +105,7 @@ export const useTable = (userClient: UserServiceClient, examClient: ExamServiceC
         message.error(err.message)
         return
       }
+      downloadCSV()
       setConfirmLoading(false)
       setIsShowModal(false)
       setGenerateUsers([])
