@@ -94,6 +94,7 @@ func (s *userServiceServer) ListUsers(ctx context.Context, in *empty.Empty) (*pb
 		pbUser.Type = user.Type
 		pbUser.ExamId = user.ExamId
 		pbUser.DoneTaskId = user.DoneTaskId
+		pbUser.DoneTaskType = user.DoneTaskType
 		pbUser.CreatedAt = timestamppb.New(user.CreatedAt)
 		pbUser.UpdatedAt = timestamppb.New(user.UpdatedAt)
 		pbUsers = append(pbUsers, pbUser)

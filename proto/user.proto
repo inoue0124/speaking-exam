@@ -61,6 +61,7 @@ message User {
   int64 type = 4;
   int64 exam_id = 5;
   int64 done_task_id = 6;
-  google.protobuf.Timestamp created_at = 7;
-  google.protobuf.Timestamp updated_at = 8;
+  int32 done_task_type = 7;
+  google.protobuf.Timestamp created_at = 8;
+  google.protobuf.Timestamp updated_at = 9;
 }
