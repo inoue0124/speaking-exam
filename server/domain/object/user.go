@@ -15,6 +15,7 @@ type User struct {
 	Type         int64
 	ExamId       int64
 	DoneTaskId   int64
+	DoneTaskType int32     `gorm:"-"` // 本来はTaskTypeとするべきだが妥協
 	CreatedAt    time.Time `gorm:"type:datetime()"`
 	UpdatedAt    time.Time `gorm:"type:datetime()"`
 }

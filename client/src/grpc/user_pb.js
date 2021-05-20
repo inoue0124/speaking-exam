@@ -1555,6 +1555,7 @@ proto.speakingExam.User.toObject = function(includeInstance, msg) {
     type: jspb.Message.getFieldWithDefault(msg, 4, 0),
     examId: jspb.Message.getFieldWithDefault(msg, 5, 0),
     doneTaskId: jspb.Message.getFieldWithDefault(msg, 6, 0),
+    doneTaskType: jspb.Message.getFieldWithDefault(msg, 7, 0),
     createdAt: (f = msg.getCreatedAt()) && google_protobuf_timestamp_pb.Timestamp.toObject(includeInstance, f),
     updatedAt: (f = msg.getUpdatedAt()) && google_protobuf_timestamp_pb.Timestamp.toObject(includeInstance, f)
   };
@@ -1618,11 +1619,15 @@ proto.speakingExam.User.deserializeBinaryFromReader = function(msg, reader) {
       msg.setDoneTaskId(value);
       break;
     case 7:
+      var value = /** @type {number} */ (reader.readInt32());
+      msg.setDoneTaskType(value);
+      break;
+    case 8:
       var value = new google_protobuf_timestamp_pb.Timestamp;
       reader.readMessage(value,google_protobuf_timestamp_pb.Timestamp.deserializeBinaryFromReader);
       msg.setCreatedAt(value);
       break;
-    case 8:
+    case 9:
       var value = new google_protobuf_timestamp_pb.Timestamp;
       reader.readMessage(value,google_protobuf_timestamp_pb.Timestamp.deserializeBinaryFromReader);
       msg.setUpdatedAt(value);
@@ -1698,10 +1703,17 @@ proto.speakingExam.User.serializeBinaryToWriter = function(message, writer) {
       f
     );
   }
+  f = message.getDoneTaskType();
+  if (f !== 0) {
+    writer.writeInt32(
+      7,
+      f
+    );
+  }
   f = message.getCreatedAt();
   if (f != null) {
     writer.writeMessage(
-      7,
+      8,
       f,
       google_protobuf_timestamp_pb.Timestamp.serializeBinaryToWriter
     );
@@ -1709,7 +1721,7 @@ proto.speakingExam.User.serializeBinaryToWriter = function(message, writer) {
   f = message.getUpdatedAt();
   if (f != null) {
     writer.writeMessage(
-      8,
+      9,
       f,
       google_protobuf_timestamp_pb.Timestamp.serializeBinaryToWriter
     );
@@ -1826,12 +1838,30 @@ proto.speakingExam.User.prototype.setDoneTaskId = function(value) {
 
 
 /**
- * optional google.protobuf.Timestamp created_at = 7;
+ * optional int32 done_task_type = 7;
+ * @return {number}
+ */
+proto.speakingExam.User.prototype.getDoneTaskType = function() {
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 7, 0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.speakingExam.User} returns this
+ */
+proto.speakingExam.User.prototype.setDoneTaskType = function(value) {
+  return jspb.Message.setProto3IntField(this, 7, value);
+};
+
+
+/**
+ * optional google.protobuf.Timestamp created_at = 8;
  * @return {?proto.google.protobuf.Timestamp}
  */
 proto.speakingExam.User.prototype.getCreatedAt = function() {
   return /** @type{?proto.google.protobuf.Timestamp} */ (
-    jspb.Message.getWrapperField(this, google_protobuf_timestamp_pb.Timestamp, 7));
+    jspb.Message.getWrapperField(this, google_protobuf_timestamp_pb.Timestamp, 8));
 };
 
 
@@ -1840,7 +1870,7 @@ proto.speakingExam.User.prototype.getCreatedAt = function() {
  * @return {!proto.speakingExam.User} returns this
 */
 proto.speakingExam.User.prototype.setCreatedAt = function(value) {
-  return jspb.Message.setWrapperField(this, 7, value);
+  return jspb.Message.setWrapperField(this, 8, value);
 };
 
 
@@ -1858,17 +1888,17 @@ proto.speakingExam.User.prototype.clearCreatedAt = function() {
  * @return {boolean}
  */
 proto.speakingExam.User.prototype.hasCreatedAt = function() {
-  return jspb.Message.getField(this, 7) != null;
+  return jspb.Message.getField(this, 8) != null;
 };
 
 
 /**
- * optional google.protobuf.Timestamp updated_at = 8;
+ * optional google.protobuf.Timestamp updated_at = 9;
  * @return {?proto.google.protobuf.Timestamp}
  */
 proto.speakingExam.User.prototype.getUpdatedAt = function() {
   return /** @type{?proto.google.protobuf.Timestamp} */ (
-    jspb.Message.getWrapperField(this, google_protobuf_timestamp_pb.Timestamp, 8));
+    jspb.Message.getWrapperField(this, google_protobuf_timestamp_pb.Timestamp, 9));
 };
 
 
@@ -1877,7 +1907,7 @@ proto.speakingExam.User.prototype.getUpdatedAt = function() {
  * @return {!proto.speakingExam.User} returns this
 */
 proto.speakingExam.User.prototype.setUpdatedAt = function(value) {
-  return jspb.Message.setWrapperField(this, 8, value);
+  return jspb.Message.setWrapperField(this, 9, value);
 };
 
 
@@ -1895,7 +1925,7 @@ proto.speakingExam.User.prototype.clearUpdatedAt = function() {
  * @return {boolean}
  */
 proto.speakingExam.User.prototype.hasUpdatedAt = function() {
-  return jspb.Message.getField(this, 8) != null;
+  return jspb.Message.getField(this, 9) != null;
 };
 
 

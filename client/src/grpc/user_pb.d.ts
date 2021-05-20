@@ -197,6 +197,9 @@ export class User extends jspb.Message {
   getDoneTaskId(): number;
   setDoneTaskId(value: number): User;
 
+  getDoneTaskType(): number;
+  setDoneTaskType(value: number): User;
+
   getCreatedAt(): google_protobuf_timestamp_pb.Timestamp | undefined;
   setCreatedAt(value?: google_protobuf_timestamp_pb.Timestamp): User;
   hasCreatedAt(): boolean;
@@ -223,6 +226,7 @@ export namespace User {
     type: number,
     examId: number,
     doneTaskId: number,
+    doneTaskType: number,
     createdAt?: google_protobuf_timestamp_pb.Timestamp.AsObject,
     updatedAt?: google_protobuf_timestamp_pb.Timestamp.AsObject,
   }
