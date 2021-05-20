@@ -72,7 +72,7 @@ func (r *user) CreateUsers(ctx context.Context, loginIds []string, passwords []s
 func (r *user) ListUsers(ctx context.Context) ([]*object.User, error) {
 	// Create user list
 	users := new([]*object.User)
-	result := r.db.Find(users)
+	result := r.db.Table("users").Select("users.*, tasks.type 'done_task_type'").Joins("left join tasks on tasks.id = users.done_task_id").Scan(&users)
 	if result.Error != nil {
 		return nil, result.Error
 	}

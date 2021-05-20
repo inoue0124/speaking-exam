@@ -54,6 +54,7 @@ export const useTable = (userClient: UserServiceClient, examClient: ExamServiceC
         message.error(err.message)
         return
       }
+      console.log(res.toObject())
       setUsers(res.toObject())
       setIsLoadingData(false)
     })

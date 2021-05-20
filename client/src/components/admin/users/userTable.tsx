@@ -2,6 +2,8 @@ import React from "react";
 import { Button, Table } from 'antd'
 import { useTable } from "../../../containers/admin/users/table/hooks/useTable";
 import { Timestamp } from "google-protobuf/google/protobuf/timestamp_pb"
+import { TaskType } from "../../../grpc/task_pb"
+import { keyOfTaskType } from "../../../grpc/keyOfTaskType";
 
 type Props = ReturnType<typeof useTable>
 
@@ -31,6 +33,17 @@ export const UserTable: React.FC<Props> = (props) => {
             {props.exams?.examList.find((exam) => exam.id === record.examId)?.name}
           </>
       )}
+    },
+    {
+      title: '終了タスク名',
+      key: 'doneTaskId',
+      render: (_, record) => {
+        return (
+          <>
+            {keyOfTaskType(record.doneTaskType)}
+          </>
+        )
+      }
     },
     {
       title: '作成日',
