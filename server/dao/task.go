@@ -69,3 +69,42 @@ func (r *task) ListTasks(ctx context.Context, examId int64, typeInt int32) ([]*o
 	}
 	return *tasks, nil
 }
+
+func (r *task) GetTask(ctx context.Context, id int64) (*object.Task, error) {
+	// タスクを取得
+	task := new(object.Task)
+	task.Id = id
+	result := r.db.Find(task)
+	if result.Error != nil {
+		return nil, result.Error
+	}
+	// objectkeyからpresigned urlに変換する
+	if task.TextObjKey != "" {
+		req, _ := r.s3.GetObjectRequest(&s3.GetObjectInput{
+			Bucket: aws.String(getEnvStr("AWS_S3_BUCKET")),
+			Key:    aws.String(task.TextObjKey),
+		})
+		if urlStr, err := req.Presign(15 * time.Minute); err == nil {
+			task.TextUrl = urlStr
+		}
+	}
+	if task.ImageObjKey != "" {
+		req, _ := r.s3.GetObjectRequest(&s3.GetObjectInput{
+			Bucket: aws.String(getEnvStr("AWS_S3_BUCKET")),
+			Key:    aws.String(task.ImageObjKey),
+		})
+		if urlStr, err := req.Presign(15 * time.Minute); err == nil {
+			task.ImageUrl = urlStr
+		}
+	}
+	if task.AudioObjKey != "" {
+		req, _ := r.s3.GetObjectRequest(&s3.GetObjectInput{
+			Bucket: aws.String(getEnvStr("AWS_S3_BUCKET")),
+			Key:    aws.String(task.AudioObjKey),
+		})
+		if urlStr, err := req.Presign(15 * time.Minute); err == nil {
+			task.AudioUrl = urlStr
+		}
+	}
+	return task, nil
+}

@@ -9,6 +9,7 @@ import "google/protobuf/timestamp.proto";
 
 service TaskService {
   rpc ListTasks(ListTasksRequest) returns (ListTasksResponse);
+  rpc GetTask(GetTaskRequest) returns (Task);
 }
 
 message ListTasksRequest {
@@ -18,6 +19,10 @@ message ListTasksRequest {
 
 message ListTasksResponse {
   repeated Task task = 1;
+}
+
+message GetTaskRequest {
+  int64 id = 1;
 }
 
 message Task {

@@ -45,6 +45,24 @@ export namespace ListTasksResponse {
   }
 }
 
+export class GetTaskRequest extends jspb.Message {
+  getId(): number;
+  setId(value: number): GetTaskRequest;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): GetTaskRequest.AsObject;
+  static toObject(includeInstance: boolean, msg: GetTaskRequest): GetTaskRequest.AsObject;
+  static serializeBinaryToWriter(message: GetTaskRequest, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): GetTaskRequest;
+  static deserializeBinaryFromReader(message: GetTaskRequest, reader: jspb.BinaryReader): GetTaskRequest;
+}
+
+export namespace GetTaskRequest {
+  export type AsObject = {
+    id: number,
+  }
+}
+
 export class Task extends jspb.Message {
   getId(): number;
   setId(value: number): Task;

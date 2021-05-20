@@ -75,5 +75,45 @@ export class TaskServiceClient {
     this.methodInfoListTasks);
   }
 
+  methodInfoGetTask = new grpcWeb.AbstractClientBase.MethodInfo(
+    task_pb.Task,
+    (request: task_pb.GetTaskRequest) => {
+      return request.serializeBinary();
+    },
+    task_pb.Task.deserializeBinary
+  );
+
+  getTask(
+    request: task_pb.GetTaskRequest,
+    metadata: grpcWeb.Metadata | null): Promise<task_pb.Task>;
+
+  getTask(
+    request: task_pb.GetTaskRequest,
+    metadata: grpcWeb.Metadata | null,
+    callback: (err: grpcWeb.Error,
+               response: task_pb.Task) => void): grpcWeb.ClientReadableStream<task_pb.Task>;
+
+  getTask(
+    request: task_pb.GetTaskRequest,
+    metadata: grpcWeb.Metadata | null,
+    callback?: (err: grpcWeb.Error,
+               response: task_pb.Task) => void) {
+    if (callback !== undefined) {
+      return this.client_.rpcCall(
+        this.hostname_ +
+          '/speakingExam.TaskService/GetTask',
+        request,
+        metadata || {},
+        this.methodInfoGetTask,
+        callback);
+    }
+    return this.client_.unaryCall(
+    this.hostname_ +
+      '/speakingExam.TaskService/GetTask',
+    request,
+    metadata || {},
+    this.methodInfoGetTask);
+  }
+
 }
 

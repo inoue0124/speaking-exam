@@ -8,7 +8,7 @@ CREATE TABLE `exams` (
 
 CREATE TABLE `users` (
   `id` INT NOT NULL AUTO_INCREMENT,
-  `login_id` VARCHAR(200) NOT NULL,
+  `login_id` VARCHAR(200) NOT NULL UNIQUE,
   `password_hash` VARCHAR(200) NULL,
   `type` INT NULL,
   `exam_id` INT NULL,

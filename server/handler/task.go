@@ -43,3 +43,24 @@ func (s *taskServiceServer) ListTasks(ctx context.Context, in *pb.ListTasksReque
 	res := &pb.ListTasksResponse{Task: pbTasks}
 	return res, nil
 }
+
+func (s *taskServiceServer) GetTask(ctx context.Context, in *pb.GetTaskRequest) (*pb.Task, error) {
+	task, err := s.dao.Task().GetTask(ctx, in.Id)
+	if err != nil {
+		return nil, err
+	}
+	// object.taskからpb.taskに変換
+	pbTask := new(pb.Task)
+	pbTask.Id = task.Id
+	pbTask.ExamId = task.ExamId
+	pbTask.Type = pb.TaskType(int32(task.Type))
+	pbTask.TextUrl = task.TextUrl
+	pbTask.ImageUrl = task.ImageUrl
+	pbTask.AudioUrl = task.AudioUrl
+	pbTask.MsBeforeStarting = task.MsBeforeStarting
+	pbTask.MsPreparing = task.MsPreparing
+	pbTask.MsRecording = task.MsRecording
+	pbTask.CreatedAt = timestamppb.New(task.CreatedAt)
+	pbTask.UpdatedAt = timestamppb.New(task.UpdatedAt)
+	return pbTask, nil
+}
