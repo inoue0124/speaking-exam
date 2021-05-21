@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"time"
 
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
@@ -22,6 +23,9 @@ func initDb() (*gorm.DB, error) {
 	if err != nil {
 		return nil, err
 	}
+	db.DB().SetMaxOpenConns(50)
+	db.DB().SetMaxIdleConns(50)
+	db.DB().SetConnMaxLifetime(100 * time.Second)
 	return db, nil
 }
 
