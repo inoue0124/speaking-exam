@@ -21,8 +21,11 @@ export const Instruction: React.FC = () => {
       </Paragraph>
       <Paragraph>
         <Title level={2}>B.  Shadowing　（シャドーイング）</Title>
-        There are five texts. When you listen to the text, please speak it aloud at the same time as the speaker.
         <Text type="danger">Please use earphones when you take the test.</Text>
+        <Text> There are five texts.</Text>
+        <Text> In each text, </Text><br />
+        1) at first, when you listen to the text, please speak it aloud at the same time as the speaker. <br />
+        2) then, you will see the script which you just listened to. Please read it aloud at the same time as the speaker.
       </Paragraph>
       <Paragraph>
         <Title level={2}>C.  Role Playing　（状況対応）</Title>
