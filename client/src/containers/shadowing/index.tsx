@@ -25,14 +25,17 @@ export const ShadowingContainer: React.FC<Props> = ({ clients }) => {
       {step===0 ? (
         <>
         <Paragraph>
-          There are five texts. When you listen to the text, please speak it aloud at the same time as the speaker.
-          <Text type="danger">Please use earphones when you take the test.</Text>
+          <Text type="danger">Please use earphones when you take the test.</Text><br />
+          <Text>There are five texts.</Text><br />
+          <Text>In each text, </Text><br />
+          1) at first, when you listen to the text, please speak it aloud at the same time as the speaker. <br />
+          2) then, you will see the script which you just listened to. Please read it aloud at the same time as the speaker.
         </Paragraph>
-          <Row justify="center">
-            <Button type="primary" onClick={incrementStep}>
-              Next
-            </Button>
-          </Row>
+        <Row justify="center">
+          <Button type="primary" onClick={incrementStep}>
+            Next
+          </Button>
+        </Row>
         </>
       ) : (
         <Shadowing {...shadowingState} />
