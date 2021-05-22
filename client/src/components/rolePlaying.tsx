@@ -24,7 +24,6 @@ export const RolePlaying: React.FC<Props> = ({
         )}
         {isRecording && (
           <>
-          <Spin tip="Recording..."></Spin>
           <Progress
             strokeColor={{
               '0%': '#108ee9',
@@ -35,6 +34,7 @@ export const RolePlaying: React.FC<Props> = ({
             status="active"
             width={50}
           />
+          <Spin tip="Recording..."></Spin>
           </>
         )}
       </Row>

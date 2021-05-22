@@ -28,7 +28,6 @@ export const PictureDescription: React.FC<Props> = ({
     
     {isRecording && (
       <Row justify="center">
-      <Spin tip="Recording..."></Spin>
       <Progress
         strokeColor={{
           '0%': '#108ee9',
@@ -39,6 +38,7 @@ export const PictureDescription: React.FC<Props> = ({
         status={isRecording ? "active" : "normal"}
         width={50}
       />
+      <Spin tip="Recording..."></Spin>
       </Row>
     )}
     </>
