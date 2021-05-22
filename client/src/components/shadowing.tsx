@@ -36,7 +36,7 @@ export const Shadowing: React.FC<Props> = ({
             danger
             icon={isRecording ? "■ " : <AudioFilled />}
           >
-            {isRecording ? "Stop recording" : isRecordedShadow ? "Record again" : "Record"}
+            {isRecording ? "Stop recording" : isRecordedShadow ? "Record again" : "Start"}
           </Button>
           <Button
             type="primary"
@@ -54,7 +54,7 @@ export const Shadowing: React.FC<Props> = ({
           onClick={onClickNextBtn}
           disabled={isRecording || !isRecordedShadow || isPlaying}
         >
-          Next
+          { isScriptShadow ? "Submit" : "Next" }
         </Button>
       </Row>
       </>
