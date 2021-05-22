@@ -1,5 +1,5 @@
 import React from "react"
-import { Button, Row, Space, Progress, Typography } from 'antd'
+import { Button, Row, Space, Spin, Progress, Typography } from 'antd'
 import { AudioFilled, CaretRightOutlined } from '@ant-design/icons'
 import { useRecordingCheck } from "../containers/Top/hooks/useRecordingCheck"
 
@@ -22,6 +22,9 @@ export const RecordingCheck: React.FC<Props> = ({
     <Title>MICROPHONE TEST</Title>
     <Title level={2}>Click <AudioFilled /> to start recording, and then click <CaretRightOutlined /> to check if your voice is recorded clearly.</Title>
     <Row justify="center" style={{ marginTop: 150 }}>
+      {(isRecorded || isRecording) && (
+        <Paragraph>Recording progress is shown in this bar.</Paragraph>
+      )}
       <Progress
         strokeColor={{
           '0%': '#108ee9',
@@ -32,9 +35,9 @@ export const RecordingCheck: React.FC<Props> = ({
         status={isRecording ? "active" : "normal"}
         width={50}
         />
-      {(isRecorded || isRecording) && (
-        <Paragraph>Recording progress is shown in this bar.</Paragraph>
-      )}
+        {isRecording && (
+          <Spin tip="Recording..."></Spin>
+        )}
     </Row>
     <Row justify="center" style={{marginTop: 50}}>
       <Space>
