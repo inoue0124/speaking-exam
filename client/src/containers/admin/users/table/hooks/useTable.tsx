@@ -1,6 +1,7 @@
-import { CreateUsersRequest, ListUsersResponse } from "../../../../../grpc/user_pb"
+import { CreateUsersRequest, ListUsersResponse, User } from "../../../../../grpc/user_pb"
 import { Empty } from "google-protobuf/google/protobuf/empty_pb"
 import { useState, useEffect } from "react"
+import { Input } from 'antd'
 import { Exam, ListExamsResponse } from "../../../../../grpc/exam_pb"
 import { UserServiceClient } from "../../../../../grpc/UserServiceClientPb"
 import { ExamServiceClient } from "../../../../../grpc/ExamServiceClientPb"
@@ -23,6 +24,8 @@ export const useTable = (userClient: UserServiceClient, examClient: ExamServiceC
   const [isShowModal, setIsShowModal] = useState<boolean>(false)
   const [confirmLoading, setConfirmLoading] = useState<boolean>(false)
   const [isLoadingData, setIsLoadingData] = useState<boolean>(true)
+  const [searchText, setSearchText] = useState<string>('')
+  const [dataSource, setDatasource] = useState<User.AsObject[]>()
   const getRandomStr = (len: number) => {
     const LENGTH = len
     const SOURCE = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+-@*~^"
@@ -56,6 +59,7 @@ export const useTable = (userClient: UserServiceClient, examClient: ExamServiceC
       }
       console.log(res.toObject())
       setUsers(res.toObject())
+      setDatasource(res.toObject().userList)
       setIsLoadingData(false)
     })
   }, [confirmLoading])
@@ -117,6 +121,20 @@ export const useTable = (userClient: UserServiceClient, examClient: ExamServiceC
     setIsShowModal(false)
     setGenerateUsers([])
   }
+  const searchInput = (
+    <Input
+      placeholder="ログインID検索"
+      value={searchText}
+      onChange={e => {
+        const currValue = e.target.value
+        setSearchText(currValue)
+        const filteredData = users.userList.filter(user =>
+          user.loginId.includes(currValue)
+        )
+        setDatasource(filteredData)
+      }}
+    />
+  )
   
   return {
     users,
@@ -128,6 +146,8 @@ export const useTable = (userClient: UserServiceClient, examClient: ExamServiceC
     confirmLoading,
     selectedExam,
     isLoadingData,
+    searchInput,
+    dataSource,
     setIsShowModal,
     setNumGenerate,
     onClickGenerateBtn,

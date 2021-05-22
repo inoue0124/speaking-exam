@@ -11,23 +11,28 @@ export const RecordingTable: React.FC<Props> = (props) => {
       title: '録音ID',
       dataIndex: 'id',
       key: 'id',
+      sorter: (a, b) => a.id - b.id
     },
     {
       title: 'ユーザID',
       dataIndex: 'userId',
       key: 'userId',
-      filters: props.filters,
-      onFilter: (value, record) => record.userId === value
+      filters: props.userFilter,
+      onFilter: (value, record) => record.userId === value,
+      sorter: (a, b) => a.userId - b.userId
     },
     {
       title: 'タスクID',
       dataIndex: 'taskId',
       key: 'taskId',
+      filters: props.taskFilter,
+      onFilter: (value, record) => record.taskId === value,
+      sorter: (a, b) => a.taskId - b.taskId
     },
     {
       title: 'ファイル名',
       dataIndex: 'audioObjKey',
-      key: 'audioObjKey',
+      key: 'audioObjKey'
     },
     {
       title: '作成日',
@@ -40,7 +45,8 @@ export const RecordingTable: React.FC<Props> = (props) => {
           <>
             {timestamp.toDate().toLocaleString()}
           </>
-      )}
+      )},
+      sorter: (a, b) => a.createdAt.seconds - b.createdAt.seconds
     }
   ]
   const rowSelection = {

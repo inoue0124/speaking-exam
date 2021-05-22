@@ -1,8 +1,7 @@
 import React from "react";
-import { Button, Table } from 'antd'
+import { Button, Table, Row, Col } from 'antd'
 import { useTable } from "../../../containers/admin/users/table/hooks/useTable";
 import { Timestamp } from "google-protobuf/google/protobuf/timestamp_pb"
-import { TaskType } from "../../../grpc/task_pb"
 import { keyOfTaskType } from "../../../grpc/keyOfTaskType";
 
 type Props = ReturnType<typeof useTable>
@@ -13,6 +12,7 @@ export const UserTable: React.FC<Props> = (props) => {
       title: 'ユーザID',
       dataIndex: 'id',
       key: 'id',
+      sorter: (a, b) => a.id - b.id
     },
     {
       title: 'ログインID',
@@ -56,17 +56,23 @@ export const UserTable: React.FC<Props> = (props) => {
           <>
             {timestamp.toDate().toLocaleString()}
           </>
-      )}
+      )},
+      sorter: (a, b) => a.createdAt.seconds - b.createdAt.seconds
     }
   ]
   return (
     <>
-      <Button onClick={()=>props.setIsShowModal(true)} type="primary" style={{ marginBottom: 16 }}>
-        新規登録
-      </Button>
+      <Row>
+        <Button onClick={()=>props.setIsShowModal(true)} type="primary" style={{ marginBottom: 16, marginRight: 8 }}>
+          新規登録
+        </Button>
+        <Col>
+          {props.searchInput}
+        </Col>
+      </Row>
       <Table
         rowKey={user => user.id}
-        dataSource={props.users?.userList}
+        dataSource={props.dataSource}
         columns={columns}
         pagination={{showSizeChanger: true}}
         loading={props.isLoadingData}
