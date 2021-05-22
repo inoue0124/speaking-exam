@@ -51,9 +51,11 @@ func (r *recording) CreateRecording(ctx context.Context, taskId int64, audioData
 	recording := new(object.Recording)
 	recording.UserId = userId
 	recording.TaskId = taskId
-	// キー名 record/U0001/U0001_T001_reading_210516101612.webm
-	recording.AudioObjKey = "record/U" +
-		fmt.Sprintf("%04d", userId) +
+	// キー名 record/T001_reading/U0001_T001_reading_210516101612.webm
+	recording.AudioObjKey = "record/T" +
+		fmt.Sprintf("%03d", taskId) +
+		"_" +
+		object.TaskType(task.Type).ToString() +
 		"/U" +
 		fmt.Sprintf("%04d", userId) +
 		"_T" +
