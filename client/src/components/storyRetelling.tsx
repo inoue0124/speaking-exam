@@ -8,13 +8,15 @@ export const StoryRetelling: React.FC<Props> = ({
   countBeforeStarting,
   countRecording,
   isRecording,
-  percent
+  percent,
+  progressText
 }) => {
   const { Text } = Typography
   const sCountBeforeStarting = Math.ceil(countBeforeStarting)
   const sCountRecording = Math.ceil(countRecording)
   return (
     <>
+      {progressText}
       <Row justify="center">
         {!isRecording && (
           <>

@@ -18,6 +18,7 @@ export const useRolePlaying = (client: RecordingServiceClient, tasks: Task.AsObj
   const [isRecording, setIsRecording] = useState<boolean>(false)
   const isSkipRender = tasks.length === 0 || index < 0 || index === tasks.length
   const [audio, setAudio] = useState<Blob>(undefined)
+  const [progressText, setProgressText] = useState<string>("")
   const {startRecording, stopRecording} = useReactMediaRecorder({ 
     audio: true,
     onStop: (_: string, blob: Blob) => setAudio(blob)
@@ -28,6 +29,7 @@ export const useRolePlaying = (client: RecordingServiceClient, tasks: Task.AsObj
     if (isSkipRender) return
     setDoneTaskId(tasks[index-1]?.id)
     setTask(tasks[index])
+    setProgressText((index + 1) + '/' +tasks.length)
   }, [index])
 
   // テキスト表示前の処理
@@ -90,6 +92,7 @@ export const useRolePlaying = (client: RecordingServiceClient, tasks: Task.AsObj
     isPreparing,
     isRecording,
     percent,
-    task
+    task,
+    progressText
   }
 }

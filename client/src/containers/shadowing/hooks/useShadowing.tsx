@@ -19,6 +19,7 @@ export const useShadowing = (client: RecordingServiceClient, tasks: Task.AsObjec
   const [modelAudio, setModelAudio] = useState<HTMLAudioElement>(undefined)
   const [recordedAudio, setRecordedAudio] = useState<HTMLAudioElement>(undefined)
   const [recordedAudioBlob, setRecordedAudioBlob] = useState<Blob>(undefined)
+  const [progressText, setProgressText] = useState<string>("")
   const {startRecording, stopRecording} = useReactMediaRecorder({ 
     audio: true,
     onStop: (blobUrl: string, blob: Blob) => {
@@ -35,6 +36,7 @@ export const useShadowing = (client: RecordingServiceClient, tasks: Task.AsObjec
     setIsRecorded(false)
     setIsScriptShadow(false)
     setIsRecordedShadow(false)
+    setProgressText((index + 1) + '/' +tasks.length)
   }, [index])
 
   // カウントダウン前の処理
@@ -127,6 +129,7 @@ export const useShadowing = (client: RecordingServiceClient, tasks: Task.AsObjec
     isScriptShadow,
     isPlaying,
     task,
+    progressText,
     onClickRecordBtn,
     onClickStopBtn,
     onClickPlayBtn,

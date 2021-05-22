@@ -10,13 +10,15 @@ export const PictureDescription: React.FC<Props> = ({
   isPreparing,
   isRecording,
   percent,
-  task
+  task,
+  progressText
 }) => {
   const sCountPreparing = Math.ceil(countPreparing)
   const sCountRecording = Math.ceil(countRecording)
   const { Text } = Typography
   return (
     <>
+    {progressText}
     <Row justify="center">
       <img src={task?.imageUrl} style={{height: "80vh"}} />
     </Row>

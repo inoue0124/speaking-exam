@@ -18,6 +18,7 @@ export const useReading = (client: RecordingServiceClient, tasks: Task.AsObject[
   const [isRecording, setIsRecording] = useState<boolean>(false)
   const isSkipRender = tasks.length === 0 || index < 0 || index === tasks.length
   const [audio, setAudio] = useState<Blob>(undefined)
+  const [progressText, setProgressText] = useState<string>("")
   const {startRecording, stopRecording} = useReactMediaRecorder({ 
     audio: true,
     onStop: (_: string, blob: Blob) => setAudio(blob)
@@ -28,6 +29,7 @@ export const useReading = (client: RecordingServiceClient, tasks: Task.AsObject[
     if (isSkipRender) return
     setDoneTaskId(tasks[index-1]?.id)
     setTask(tasks[index])
+    setProgressText((index + 1) + '/' +tasks.length)
   }, [index])
 
   // カウントダウン前の処理
@@ -86,6 +88,7 @@ export const useReading = (client: RecordingServiceClient, tasks: Task.AsObject[
     isPreparing,
     isRecording,
     percent,
-    task
+    task,
+    progressText
   }
 }

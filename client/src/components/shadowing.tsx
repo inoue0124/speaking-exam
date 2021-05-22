@@ -13,6 +13,7 @@ export const Shadowing: React.FC<Props> = ({
   isScriptShadow,
   isPlaying,
   task,
+  progressText,
   onClickRecordBtn,
   onClickStopBtn,
   onClickPlayBtn,
@@ -24,6 +25,7 @@ export const Shadowing: React.FC<Props> = ({
   const sCountBefore = Math.ceil(countBefore)
   return (
     <>
+    {progressText}
     {isScriptShadow ? (
       <>
       <img src={task?.textUrl} width={'100%'} />
