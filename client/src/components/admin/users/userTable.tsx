@@ -63,7 +63,18 @@ export const UserTable: React.FC<Props> = (props) => {
   return (
     <>
       <Row>
-        <Button onClick={()=>props.setIsShowModal(true)} type="primary" style={{ marginBottom: 16, marginRight: 8 }}>
+        <Button
+          type="primary"
+          onClick={props.onClickDownloadCSVBtn}
+          style={{ marginBottom: 16, marginRight: 8 }}
+        >
+          CSVダウンロード
+        </Button>
+        <Button 
+          onClick={()=>props.setIsShowModal(true)}
+          type="primary"
+          style={{ marginRight: 8 }}
+        >
           新規登録
         </Button>
         <Col>

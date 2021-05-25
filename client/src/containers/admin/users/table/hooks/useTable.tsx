@@ -1,11 +1,13 @@
 import { CreateUsersRequest, ListUsersResponse, User } from "../../../../../grpc/user_pb"
 import { Empty } from "google-protobuf/google/protobuf/empty_pb"
-import { useState, useEffect } from "react"
+import { useState, useEffect, useCallback } from "react"
 import { Input } from 'antd'
 import { Exam, ListExamsResponse } from "../../../../../grpc/exam_pb"
 import { UserServiceClient } from "../../../../../grpc/UserServiceClientPb"
 import { ExamServiceClient } from "../../../../../grpc/ExamServiceClientPb"
 import { message } from 'antd'
+import { Timestamp } from "google-protobuf/google/protobuf/timestamp_pb"
+import { keyOfTaskType } from "../../../../../grpc/keyOfTaskType";
 
 export type GenerateUser = {
   loginId: string
@@ -36,6 +38,23 @@ export const useTable = (userClient: UserServiceClient, examClient: ExamServiceC
     return result
   }
   const downloadCSV = () => {
+    var csv = '\ufeff' + 'ユーザID,ログインID,テストID,テスト名,終了タスク名,作成日\n'
+    users.userList.forEach(el => {
+      const timestamp = new Timestamp()
+      timestamp.setSeconds(el.createdAt.seconds)
+      timestamp.setNanos(el.createdAt.nanos)
+      var line = el['id'] + ',' + el['loginId'] + ',' 
+      + el['examId'] + ',' + exams.examList.find((exam) => exam.id === el['examId']).name + ','
+      + keyOfTaskType(el['doneTaskType']) + ',' + timestamp.toDate().toLocaleString() + '\n'
+      csv += line
+    })
+    let blob = new Blob([csv], { type: 'text/csv' })
+    let link = document.createElement('a')
+    link.href = window.URL.createObjectURL(blob)
+    link.download = 'user_list.csv'
+    link.click()
+  }
+  const downloadGeneratedUserCSV = () => {
     var csv = '\ufeff' + 'ログインID,パスワード,テストID,テスト名\n'
     generateUsers.forEach(el => {
       var line = el['loginId'] + ',' + el['password'] + ',' 
@@ -110,7 +129,7 @@ export const useTable = (userClient: UserServiceClient, examClient: ExamServiceC
         message.error(err.message)
         return
       }
-      downloadCSV()
+      downloadGeneratedUserCSV()
       setConfirmLoading(false)
       setIsShowModal(false)
       setGenerateUsers([])
@@ -121,6 +140,9 @@ export const useTable = (userClient: UserServiceClient, examClient: ExamServiceC
     setIsShowModal(false)
     setGenerateUsers([])
   }
+  const onClickDownloadCSVBtn = useCallback(() => {
+    downloadCSV()
+  }, [users])
   const searchInput = (
     <Input
       placeholder="ログインID検索"
@@ -153,6 +175,7 @@ export const useTable = (userClient: UserServiceClient, examClient: ExamServiceC
     onClickGenerateBtn,
     onSelectExam,
     onClickModalOk,
-    onClickModalCancel
+    onClickModalCancel,
+    onClickDownloadCSVBtn
   }
 }

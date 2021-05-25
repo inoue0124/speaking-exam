@@ -60,21 +60,28 @@ export const RecordingTable: React.FC<Props> = (props) => {
     <>
       <Button
         type="primary"
-        style={{ marginBottom: 16 }}
+        style={{ marginBottom: 16, marginRight: 8 }}
+        disabled={props.isDownloading}
+        onClick={props.onClickDownloadCSVBtn}
+      >
+        CSVダウンロード
+      </Button>
+      <Button
+        type="primary"
         disabled={!props.hasSelected || props.isDownloading}
         loading={props.isDownloading}
         onClick={props.onClickDownloadBtn}>
-        一括ダウンロード
+        選択音声ダウンロード
       </Button>
       <span style={{ marginLeft: 8 }}>
         {props.hasSelected ? `${props.selectedRecordingKeys.length}項目を選択中です。` : ''}
       </span>
       <Table
         rowSelection={rowSelection}
-        rowKey={recording => recording.audioObjKey}
+        rowKey={recording => recording.id}
         dataSource={props.recordings?.recordingList}
         columns={columns}
-        pagination={{showSizeChanger: true}}
+        pagination={{showSizeChanger: true, pageSizeOptions: ['10', '20', '50', '100', '500', '1000']}}
         loading={props.isLoadingData}
       />
     </>
