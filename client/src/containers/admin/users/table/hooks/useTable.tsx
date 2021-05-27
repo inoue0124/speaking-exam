@@ -76,7 +76,6 @@ export const useTable = (userClient: UserServiceClient, examClient: ExamServiceC
         message.error(err.message)
         return
       }
-      console.log(res.toObject())
       setUsers(res.toObject())
       setDatasource(res.toObject().userList)
       setIsLoadingData(false)
@@ -142,7 +141,7 @@ export const useTable = (userClient: UserServiceClient, examClient: ExamServiceC
   }
   const onClickDownloadCSVBtn = useCallback(() => {
     downloadCSV()
-  }, [users])
+  }, [users, exams])
   const searchInput = (
     <Input
       placeholder="ログインID検索"

@@ -26,7 +26,7 @@ export const OpinionTellingContainer: React.FC<Props> = ({ clients }) => {
         <>
         <Paragraph>
           There are two situations. You will have two minutes to formulate an opinion according to the situation.
-          You may take any memos. When you hear the beep, you will have one minute to express your opinion.
+          You may take any memos. When you hear the beep, you will have two minute to express your opinion.
         </Paragraph>
           <Row justify="center">
             <Button type="primary" onClick={incrementStep}>
