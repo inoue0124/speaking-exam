@@ -1,14 +1,14 @@
-import { UserServiceClient } from "../grpc/UserServiceClientPb"
-import { TaskServiceClient } from "../grpc/TaskServiceClientPb"
-import { ExamServiceClient } from "../grpc/ExamServiceClientPb"
-import { RecordingServiceClient } from "../grpc/RecordingServiceClientPb"
+import { UserServiceClient } from "../grpc/UserServiceClientPb";
+import { TaskServiceClient } from "../grpc/TaskServiceClientPb";
+import { ExamServiceClient } from "../grpc/ExamServiceClientPb";
+import { RecordingServiceClient } from "../grpc/RecordingServiceClientPb";
 
 export type GRPCClients = {
-  userServiceClient: UserServiceClient
-  taskServiceClient: TaskServiceClient
-  examServiceClient: ExamServiceClient
-  recordingServiceClient: RecordingServiceClient
-}
+  userServiceClient: UserServiceClient;
+  taskServiceClient: TaskServiceClient;
+  examServiceClient: ExamServiceClient;
+  recordingServiceClient: RecordingServiceClient;
+};
 
 // 開発
 // export const gRPCClients = {
@@ -20,8 +20,16 @@ export type GRPCClients = {
 
 // 本番
 export const gRPCClients = {
-  userServiceClient: new UserServiceClient(`https://api-speaking.komabastar.com`),
-  taskServiceClient: new TaskServiceClient(`https://api-speaking.komabastar.com`),
-  examServiceClient: new ExamServiceClient(`https://api-speaking.komabastar.com`),
-  recordingServiceClient: new RecordingServiceClient(`https://api-speaking.komabastar.com`)
-}
+  userServiceClient: new UserServiceClient(
+    `https://api-speaking.komabastar.com`
+  ),
+  taskServiceClient: new TaskServiceClient(
+    `https://api-speaking.komabastar.com`
+  ),
+  examServiceClient: new ExamServiceClient(
+    `https://api-speaking.komabastar.com`
+  ),
+  recordingServiceClient: new RecordingServiceClient(
+    `https://api-speaking.komabastar.com`
+  ),
+};
