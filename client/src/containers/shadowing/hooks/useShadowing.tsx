@@ -1,125 +1,142 @@
-import { Dispatch, SetStateAction, useEffect, SyntheticEvent, useState } from "react"
-import { useValueRef } from "../.../../../../hooks/useValueRef"
-import { Task } from "../../../grpc/task_pb"
-import { useReactMediaRecorder } from "react-media-recorder"
-import { RecordingServiceClient } from "../../../grpc/RecordingServiceClientPb"
-import { upload } from "../.../../../../utility/upload"
+import {
+  Dispatch,
+  SetStateAction,
+  useEffect,
+  SyntheticEvent,
+  useState,
+} from "react";
+import { useValueRef } from "../.../../../../hooks/useValueRef";
+import { Task } from "../../../grpc/task_pb";
+import { useReactMediaRecorder } from "react-media-recorder";
+import { RecordingServiceClient } from "../../../grpc/RecordingServiceClientPb";
+import { upload } from "../.../../../../utility/upload";
 
-export const useShadowing = (client: RecordingServiceClient, tasks: Task.AsObject[], index: number, incrementStep: ()=>void, setDoneTaskId: Dispatch<SetStateAction<number>>) => {
-  const [countBefore, setCountBefore] = useState<number>()
-  const refCountBefore = useValueRef(countBefore)
-  const [task, setTask] = useState<Task.AsObject>()
-  const [timerBefore, setTimerBefore] = useState<any>()
-  const [isRecording, setIsRecording] = useState<boolean>(false)
-  const [isRecorded, setIsRecorded] = useState<boolean>(false)
-  const [isRecordedShadow, setIsRecordedShadow] = useState<boolean>(false)
-  const [isPlaying, setIsPlaying] = useState<boolean>(false)
-  const [isScriptShadow, setIsScriptShadow] = useState<boolean>(false)
-  const isSkipRender = tasks.length === 0 || index < 0 || index === tasks.length
-  const [modelAudio, setModelAudio] = useState<HTMLAudioElement>(undefined)
-  const [recordedAudio, setRecordedAudio] = useState<HTMLAudioElement>(undefined)
-  const [recordedAudioBlob, setRecordedAudioBlob] = useState<Blob>(undefined)
-  const [progressText, setProgressText] = useState<string>("")
-  const {startRecording, stopRecording} = useReactMediaRecorder({ 
+export const useShadowing = (
+  client: RecordingServiceClient,
+  tasks: Task.AsObject[],
+  index: number,
+  incrementStep: () => void,
+  setDoneTaskId: Dispatch<SetStateAction<number>>
+) => {
+  const [countBefore, setCountBefore] = useState<number>();
+  const refCountBefore = useValueRef(countBefore);
+  const [task, setTask] = useState<Task.AsObject>();
+  const [timerBefore, setTimerBefore] = useState<any>();
+  const [isRecording, setIsRecording] = useState<boolean>(false);
+  const [isRecorded, setIsRecorded] = useState<boolean>(false);
+  const [isRecordedShadow, setIsRecordedShadow] = useState<boolean>(false);
+  const [isPlaying, setIsPlaying] = useState<boolean>(false);
+  const [isScriptShadow, setIsScriptShadow] = useState<boolean>(false);
+  const isSkipRender =
+    tasks.length === 0 || index < 0 || index === tasks.length;
+  const [modelAudio, setModelAudio] = useState<HTMLAudioElement>(undefined);
+  const [recordedAudio, setRecordedAudio] =
+    useState<HTMLAudioElement>(undefined);
+  const [recordedAudioBlob, setRecordedAudioBlob] = useState<Blob>(undefined);
+  const [progressText, setProgressText] = useState<string>("");
+  const { startRecording, stopRecording } = useReactMediaRecorder({
     audio: true,
     onStop: (blobUrl: string, blob: Blob) => {
-      setRecordedAudioBlob(blob)
-      setRecordedAudio(new Audio(blobUrl))
-    }
-  })
+      setRecordedAudioBlob(blob);
+      setRecordedAudio(new Audio(blobUrl));
+    },
+  });
 
   // タスク切り替え処理
   useEffect(() => {
-    if (isSkipRender) return
-    setDoneTaskId(tasks[index-1]?.id)
-    setTask(tasks[index])
-    setIsRecorded(false)
-    setIsScriptShadow(false)
-    setIsRecordedShadow(false)
-    setProgressText((index + 1) + '/' +tasks.length)
-  }, [index])
+    if (isSkipRender) return;
+    setDoneTaskId(tasks[index - 1]?.id);
+    setTask(tasks[index]);
+    setIsRecorded(false);
+    setIsScriptShadow(false);
+    setIsRecordedShadow(false);
+    setProgressText(index + 1 + "/" + tasks.length);
+  }, [index]);
 
   // カウントダウン前の処理
   useEffect(() => {
-    if (isSkipRender) return
-    setModelAudio(new Audio(task.audioUrl))
-    setCountBefore(task.msBeforeStarting / 1000)
+    if (isSkipRender) return;
+    setModelAudio(new Audio(task.audioUrl));
+    setCountBefore(task.msBeforeStarting / 1000);
     // テキスト提示前のカウントダウンタイマー
-    setTimerBefore(setInterval(() => {
-      setCountBefore(refCountBefore.current - 1)
-    }, 1000))
-  }, [task])
+    setTimerBefore(
+      setInterval(() => {
+        setCountBefore(refCountBefore.current - 1);
+      }, 1000)
+    );
+  }, [task]);
 
   // カウントダウン後の処理
   useEffect(() => {
     if (countBefore <= 0) {
-      clearInterval(timerBefore)
-      const beep = new Audio('/beep.mp3')
-      beep.addEventListener('ended', () => {
-        startRecording()
-        setIsRecording(true)
-        modelAudio.play()
-        modelAudio.addEventListener('ended', () => {
-          stopRecording()
-          setIsRecording(false)
-          setIsRecorded(true)
-        })
-      })
-      beep.play()
+      clearInterval(timerBefore);
+      const beep = new Audio("/beep.mp3");
+      beep.addEventListener("ended", () => {
+        startRecording();
+        setIsRecording(true);
+        modelAudio.play();
+        modelAudio.addEventListener("ended", () => {
+          stopRecording();
+          setIsRecording(false);
+          setIsRecorded(true);
+        });
+      });
+      beep.play();
     }
-  }, [countBefore])
+  }, [countBefore]);
 
   // 録音終了後の処理
   useEffect(() => {
-    if (isSkipRender) return
+    if (isSkipRender) return;
     // スクリプトシャドーの場合はアップロードをスキップ
-    if (!isScriptShadow) upload(client, task, recordedAudioBlob)
-    setIsScriptShadow(true)
-    setIsRecorded(false)
-  }, [recordedAudioBlob])
+    if (!isScriptShadow) upload(client, task, recordedAudioBlob);
+    // スクリプトシャドーを削除
+    // setIsScriptShadow(true);
+    // setIsRecorded(false);
+  }, [recordedAudioBlob]);
 
-  const onClickRecordBtn = ((event: SyntheticEvent) => {
-    event.preventDefault()
-    startRecording()
-    setIsRecordedShadow(false)
-    setIsRecording(true)
-    modelAudio.play()
-    modelAudio.addEventListener('ended', () => {
-      stopRecording()
-      setIsRecording(false)
-      setIsRecordedShadow(true)
-    })
-  })
+  const onClickRecordBtn = (event: SyntheticEvent) => {
+    event.preventDefault();
+    startRecording();
+    setIsRecordedShadow(false);
+    setIsRecording(true);
+    modelAudio.play();
+    modelAudio.addEventListener("ended", () => {
+      stopRecording();
+      setIsRecording(false);
+      setIsRecordedShadow(true);
+    });
+  };
 
-  const onClickStopBtn = ((event: SyntheticEvent) => {
-    event.preventDefault()
-    stopRecording()
-    setIsRecording(false)
-    modelAudio.pause()
-    modelAudio.currentTime = 0
-  })
+  const onClickStopBtn = (event: SyntheticEvent) => {
+    event.preventDefault();
+    stopRecording();
+    setIsRecording(false);
+    modelAudio.pause();
+    modelAudio.currentTime = 0;
+  };
 
-  const onClickPlayBtn = ((event: SyntheticEvent) => {
-    event.preventDefault()
-    recordedAudio.addEventListener('ended', () => {
-      setIsPlaying(false)
-    })
-    recordedAudio.play()
-    setIsPlaying(true)
-  })
+  const onClickPlayBtn = (event: SyntheticEvent) => {
+    event.preventDefault();
+    recordedAudio.addEventListener("ended", () => {
+      setIsPlaying(false);
+    });
+    recordedAudio.play();
+    setIsPlaying(true);
+  };
 
-  const onClickStopPlayBtn = ((event: SyntheticEvent) => {
-    event.preventDefault()
-    recordedAudio.pause()
-    recordedAudio.currentTime = 0
-    setIsPlaying(false)
-  })
+  const onClickStopPlayBtn = (event: SyntheticEvent) => {
+    event.preventDefault();
+    recordedAudio.pause();
+    recordedAudio.currentTime = 0;
+    setIsPlaying(false);
+  };
 
-  const onClickNextBtn = ((event: SyntheticEvent) => {
-    event.preventDefault()
-    upload(client, task, recordedAudioBlob)
-    incrementStep()
-  })
+  const onClickNextBtn = (event: SyntheticEvent) => {
+    event.preventDefault();
+    // upload(client, task, recordedAudioBlob);
+    incrementStep();
+  };
 
   return {
     countBefore,
@@ -134,6 +151,6 @@ export const useShadowing = (client: RecordingServiceClient, tasks: Task.AsObjec
     onClickStopBtn,
     onClickPlayBtn,
     onClickStopPlayBtn,
-    onClickNextBtn
-  }
-}
+    onClickNextBtn,
+  };
+};
