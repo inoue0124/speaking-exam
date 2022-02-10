@@ -33,7 +33,7 @@ func (r *task) ListTasks(ctx context.Context, examId int64, typeInt int32) ([]*o
 	}
 	// タスク一覧を取得
 	tasks := new([]*object.Task)
-	result = r.db.Find(tasks, "exam_id=? and type=? and id>?", examId, typeInt, user.DoneTaskId)
+	result = r.db.Find(tasks, "exam_id=? and type=?", examId, typeInt)
 	if result.Error != nil {
 		return nil, result.Error
 	}
