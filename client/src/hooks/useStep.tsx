@@ -1,24 +1,24 @@
-import { useState, SyntheticEvent, useEffect } from "react"
-import { useRouter } from 'next/router'
+import { useState, SyntheticEvent, useEffect } from "react";
+import { useRouter } from "next/router";
 
 export const useStep = (lastStep: number, nextRoute: string) => {
-  const [step, setStep] = useState<number>(0)
-  const router = useRouter()
-  
-  const incrementStep = (() => {
-    setStep(step + 1)
-  })
+  const [step, setStep] = useState<number>(0);
+  const router = useRouter();
 
-  useEffect(()=>{
+  const incrementStep = () => {
+    setStep(step + 1);
+  };
+
+  useEffect(() => {
     // taskリスト読込中はlastStepが0になるのでリダイレクトしない
-    if (lastStep === 0) return
+    if (lastStep === 0) return;
     if (step >= lastStep) {
-      router.push(nextRoute)
+      router.push(nextRoute);
     }
-  },[step])
+  }, [step]);
 
   return {
     step,
-    incrementStep
-  }
-}
+    incrementStep,
+  };
+};

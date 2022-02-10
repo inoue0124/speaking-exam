@@ -1,9 +1,9 @@
-import React from "react"
-import { Result, Row } from 'antd'
-import { useRequireLogin } from "../hooks/useRequireLogin"
+import React from "react";
+import { Result, Row } from "antd";
+import { useRequireLogin } from "../hooks/useRequireLogin";
 
 const Finish: React.FC = ({}) => {
-  useRequireLogin()
+  useRequireLogin();
   return (
     <>
       <Result
@@ -11,10 +11,9 @@ const Finish: React.FC = ({}) => {
         title="The test has been finished!"
         subTitle="Please close your browser."
       />
-      <Row justify="center">
-    </Row>
+      <Row justify="center"></Row>
     </>
-  )
-}
+  );
+};
 
-export default Finish
+export default Finish;
