@@ -8,8 +8,12 @@ import {
 import { RecordingServiceClient } from "../../../../../grpc/RecordingServiceClientPb";
 import { message } from "antd";
 import { Timestamp } from "google-protobuf/google/protobuf/timestamp_pb";
+import { LambdaClient } from "../../../../../gateways/lambdaClient";
 
-export const useTable = (recordingClient: RecordingServiceClient) => {
+export const useTable = (
+  recordingClient: RecordingServiceClient,
+  lambdaClient: LambdaClient
+) => {
   const [recordings, setRecordings] =
     useState<ListRecordingsResponse.AsObject>();
   const [selectedRecordingKeys, setSelectedRecordingKeys] = useState<number[]>(
@@ -66,26 +70,23 @@ export const useTable = (recordingClient: RecordingServiceClient) => {
       setIsLoadingData(false);
     });
   }, [setRecordings]);
-  const onClickDownloadBtn = useCallback(() => {
+  const onClickDownloadBtn = useCallback(async () => {
     setIsDownloading(true);
-    const req = new DownloadRecordingsRequest();
-    req.setAudioObjKeysList(
-      selectedRecordingKeys.flatMap(
+    const headers = new Headers({
+      Accept: "application/zip",
+    });
+    const params = {
+      audioObjKeys: selectedRecordingKeys.flatMap(
         (id) =>
           recordings.recordingList.find((recording) => recording.id == id)
             .audioObjKey
-      )
-    );
-    const metadata = {
-      Authorization: "bearer " + localStorage.getItem("token"),
+      ),
     };
-    const stream = recordingClient.downloadRecordings(req, metadata);
-    const audioData = [];
-    stream.on("data", (data: DownloadRecordingsResponse) => {
-      audioData.push(data.getAudioData());
-    });
-    stream.on("end", () => {
-      const blob = new Blob(audioData, { type: "application/zip" });
+    try {
+      const audioData = await (
+        await lambdaClient.execute("/download_audio", "POST", headers, params)
+      ).arrayBuffer();
+      const blob = new Blob([audioData]);
       const url = (window.URL || window.webkitURL).createObjectURL(blob);
       const a = document.createElement("a");
       a.download = "record.zip";
@@ -93,11 +94,11 @@ export const useTable = (recordingClient: RecordingServiceClient) => {
       a.click();
       downloadCSV();
       setIsDownloading(false);
-    });
-    stream.on("error", (err) => {
+    } catch (err) {
+      console.log(err);
       message.error(err.message);
       setIsDownloading(false);
-    });
+    }
   }, [selectedRecordingKeys]);
   const onSelectChange = (selectedRowKeys) => {
     setSelectedRecordingKeys(selectedRowKeys);

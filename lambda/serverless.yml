@@ -1,0 +1,35 @@
+service: lambda
+frameworkVersion: "3"
+
+provider:
+  name: aws
+  runtime: python3.9
+  httpApi:
+    cors:
+      allowedOrigins:
+        - http://localhost:3000
+      allowedHeaders:
+        - Content-Type
+        - Accept
+      allowedMethods:
+        - POST
+
+  iam:
+    role:
+      statements:
+        - Effect: Allow
+          Action:
+            - "s3:GetObject"
+          Resource:
+            - "arn:aws:s3:::speaking-exam/*"
+
+functions:
+  hello:
+    handler: handler.download_audio
+    events:
+      - httpApi:
+          path: /download_audio
+          method: post
+
+plugins:
+  - serverless-python-requirements
