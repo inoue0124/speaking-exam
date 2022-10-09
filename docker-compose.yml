@@ -40,6 +40,7 @@ services:
   db:
     container_name: spk_db
     image: mysql:5.7
+    platform: linux/amd64
     environment:
       - TZ=Asia/Tokyo
     volumes:
