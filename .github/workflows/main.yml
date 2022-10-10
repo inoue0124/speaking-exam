@@ -64,6 +64,9 @@ jobs:
       - name: build
         working-directory: ./client
         run: yarn build
+        env:
+          NEXT_PUBLIC_LAMBDA_URL: ${{ secrets.NEXT_PUBLIC_LAMBDA_URL }}
+          NEXT_PUBLIC_API_URL: ${{ secrets.NEXT_PUBLIC_API_URL }}
 
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v1
