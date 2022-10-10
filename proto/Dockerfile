@@ -2,7 +2,7 @@ FROM golang AS gen_go_grpc
 
 ARG VER=v1.0.0
 
-RUN GOBIN=/ GO111MODULE=on go get google.golang.org/grpc/cmd/protoc-gen-go-grpc
+RUN GOBIN=/ GO111MODULE=on go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@latest
 
 FROM debian:buster-slim
 

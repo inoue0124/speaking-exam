@@ -8,8 +8,12 @@ import {
 import { RecordingServiceClient } from "../../../../../grpc/RecordingServiceClientPb";
 import { message } from "antd";
 import { Timestamp } from "google-protobuf/google/protobuf/timestamp_pb";
+import { LambdaClient } from "../../../../../gateways/lambdaClient";
 
-export const useTable = (recordingClient: RecordingServiceClient) => {
+export const useTable = (
+  recordingClient: RecordingServiceClient,
+  lambdaClient: LambdaClient
+) => {
   const [recordings, setRecordings] =
     useState<ListRecordingsResponse.AsObject>();
   const [selectedRecordingKeys, setSelectedRecordingKeys] = useState<number[]>(
@@ -17,7 +21,7 @@ export const useTable = (recordingClient: RecordingServiceClient) => {
   );
   const [isDownloading, setIsDownloading] = useState<boolean>(false);
   const [isLoadingData, setIsLoadingData] = useState<boolean>(true);
-  const downloadCSV = () => {
+  const generateCSVData = () => {
     var csv = "\ufeff" + "録音ID,ユーザID,タスクID,ファイル名,作成日\n";
     var list;
     if (hasSelected) {
@@ -40,15 +44,20 @@ export const useTable = (recordingClient: RecordingServiceClient) => {
         "," +
         el["taskId"] +
         "," +
-        el["audioObjKey"] +
+        el["audioObjKey"].split(".")[0] +
+        ".mp3" +
         "," +
         timestamp.toDate().toLocaleString() +
         "\n";
       csv += line;
     });
-    let blob = new Blob([csv], { type: "text/csv" });
+    const blob = new Blob([csv], { type: "text/csv" });
+    return blob;
+  };
+  const downloadCSV = () => {
+    const csv = generateCSVData();
     let link = document.createElement("a");
-    link.href = window.URL.createObjectURL(blob);
+    link.href = window.URL.createObjectURL(csv);
     link.download = "record_list.csv";
     link.click();
   };
@@ -66,7 +75,7 @@ export const useTable = (recordingClient: RecordingServiceClient) => {
       setIsLoadingData(false);
     });
   }, [setRecordings]);
-  const onClickDownloadBtn = useCallback(() => {
+  const onClickDownloadWebmBtn = useCallback(() => {
     setIsDownloading(true);
     const req = new DownloadRecordingsRequest();
     req.setAudioObjKeysList(
@@ -99,6 +108,45 @@ export const useTable = (recordingClient: RecordingServiceClient) => {
       setIsDownloading(false);
     });
   }, [selectedRecordingKeys]);
+  const onClickDownloadMp3Btn = useCallback(async () => {
+    setIsDownloading(true);
+    const email = window.prompt(
+      "ダウンロードURLを送信するメールアドレスを入力してください。",
+      ""
+    );
+    const csv = generateCSVData();
+    const fileReader = new FileReader();
+    fileReader.onload = async () => {
+      const base64Csv = fileReader.result;
+      if (base64Csv instanceof ArrayBuffer) {
+        throw Error("csv読み込みエラー");
+      }
+      const headers = new Headers({
+        Accept: "application/json",
+      });
+      const params = {
+        audioObjKeys: selectedRecordingKeys.flatMap(
+          (id) =>
+            recordings.recordingList.find((recording) => recording.id == id)
+              .audioObjKey
+        ),
+        email,
+        csv: base64Csv.split(",")[1],
+      };
+      try {
+        lambdaClient.execute("/download_audio", "POST", headers, params);
+        window.alert(
+          "MP3へ変換完了後、ダウンロードURLを送信します。時間がかかる場合があるのでしばらくお待ちください。"
+        );
+        setIsDownloading(false);
+      } catch (err) {
+        console.log(err);
+        message.error(err.message);
+        setIsDownloading(false);
+      }
+    };
+    fileReader.readAsDataURL(csv);
+  }, [selectedRecordingKeys]);
   const onSelectChange = (selectedRowKeys) => {
     setSelectedRecordingKeys(selectedRowKeys);
   };
@@ -130,7 +178,8 @@ export const useTable = (recordingClient: RecordingServiceClient) => {
     taskFilter,
     isDownloading,
     isLoadingData,
-    onClickDownloadBtn,
+    onClickDownloadWebmBtn,
+    onClickDownloadMp3Btn,
     onClickDownloadCSVBtn,
     onSelectChange,
   };

@@ -65,11 +65,20 @@ export const RecordingTable: React.FC<Props> = (props) => {
       </Button>
       <Button
         type="primary"
+        style={{ marginRight: 8 }}
         disabled={!props.hasSelected || props.isDownloading}
         loading={props.isDownloading}
-        onClick={props.onClickDownloadBtn}
+        onClick={props.onClickDownloadWebmBtn}
       >
-        選択音声ダウンロード
+        WEBMダウンロード
+      </Button>
+      <Button
+        type="primary"
+        disabled={!props.hasSelected || props.isDownloading}
+        loading={props.isDownloading}
+        onClick={props.onClickDownloadMp3Btn}
+      >
+        MP3ダウンロード
       </Button>
       <span style={{ marginLeft: 8 }}>
         {props.hasSelected

@@ -1,0 +1,90 @@
+service: lambda
+frameworkVersion: "3"
+useDotenv: true
+
+provider:
+  name: aws
+  runtime: python3.9
+  region: ap-northeast-1
+  stage: prd
+  httpApi:
+    cors:
+      allowedOrigins:
+        - http://localhost:3000
+      allowedHeaders:
+        - Content-Type
+        - Accept
+      allowedMethods:
+        - POST
+
+  iam:
+    role:
+      statements:
+        - Effect: Allow
+          Action:
+            - "s3:GetObject"
+            - "s3:PutObject"
+            - "s3:PutObjectAcl"
+            - "s3:ListBucket"
+          Resource:
+            - "arn:aws:s3:::${env:BUCKET_NAME}/*"
+            - "arn:aws:s3:::${env:ZIP_BUCKET_NAME}/*"
+        - Effect: "Allow"
+          Action:
+            - "sqs:SendMessage"
+            - "sqs:GetQueueUrl"
+          Resource: "arn:aws:sqs:${self:provider.region}:${env:ACCOUNT_ID}:${env:QUEUE_NAME}"
+        - Effect: "Allow"
+          Action:
+            - "sqs:ListQueues"
+          Resource: "arn:aws:sqs:${self:provider.region}:${env:ACCOUNT_ID}:*"
+
+functions:
+  speaking_exam_download_audio:
+    handler: download_audio.download_audio
+    timeout: 600
+    layers:
+      - !Ref FfmpegLambdaLayer
+    environment:
+      BUCKET_NAME: ${env:BUCKET_NAME}
+      ZIP_BUCKET_NAME: ${env:ZIP_BUCKET_NAME}
+      GMAIL_ACCOUNT: ${env:GMAIL_ACCOUNT}
+      GMAIL_PASSWORD: ${env:GMAIL_PASSWORD}
+    events:
+      - sqs:
+          arn:
+            Fn::GetAtt:
+              - StartDownloadAudioQueue
+              - Arn
+
+  speaking_exam_send_start_download_queue:
+    handler: send_start_download_queue.send_start_download_queue
+    environment:
+      QUEUE_NAME: ${env:QUEUE_NAME}
+      SERVICE_URL: ${env:SERVICE_URL}
+      ZIP_BUCKET_NAME: ${env:ZIP_BUCKET_NAME}
+    events:
+      - httpApi:
+          path: /download_audio
+          method: post
+
+resources:
+  Resources:
+    StartDownloadAudioQueue:
+      Type: "AWS::SQS::Queue"
+      Properties:
+        QueueName: "StartDownloadAudioQueue.fifo"
+        VisibilityTimeout: 600
+        FifoQueue: True
+
+layers:
+  ffmpeg:
+    path: layers/ffmpeg
+
+plugins:
+  - serverless-python-requirements
+  - serverless-offline
+
+custom:
+  serverless-offline:
+    httpPort: 4000
