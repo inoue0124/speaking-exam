@@ -10,7 +10,7 @@ provider:
   httpApi:
     cors:
       allowedOrigins:
-        - http://localhost:3000
+        - ${env:SERVICE_URL}
       allowedHeaders:
         - Content-Type
         - Accept

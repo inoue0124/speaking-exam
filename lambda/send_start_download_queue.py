@@ -49,7 +49,7 @@ def send_start_download_queue(event, context):
     return {
         'statusCode': 200,
         "headers": {
-            "Access-Control-Allow-Origin": "http://localhost:3000",
+            "Access-Control-Allow-Origin": SERVICE_URL,
             "Access-Control-Allow-Credentials": "true"
         },
         'body': json.dumps('Queue is sent.')
