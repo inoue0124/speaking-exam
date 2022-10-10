@@ -42,7 +42,7 @@ provider:
 functions:
   speaking_exam_download_audio:
     handler: download_audio.download_audio
-    timeout: 600
+    timeout: 900
     layers:
       - !Ref FfmpegLambdaLayer
     environment:
@@ -74,7 +74,7 @@ resources:
       Type: "AWS::SQS::Queue"
       Properties:
         QueueName: "StartDownloadAudioQueue.fifo"
-        VisibilityTimeout: 600
+        VisibilityTimeout: 900
         FifoQueue: True
 
 layers:
