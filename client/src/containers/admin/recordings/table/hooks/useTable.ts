@@ -21,7 +21,7 @@ export const useTable = (
   );
   const [isDownloading, setIsDownloading] = useState<boolean>(false);
   const [isLoadingData, setIsLoadingData] = useState<boolean>(true);
-  const downloadCSV = () => {
+  const generateCSVData = () => {
     var csv = "\ufeff" + "録音ID,ユーザID,タスクID,ファイル名,作成日\n";
     var list;
     if (hasSelected) {
@@ -44,15 +44,20 @@ export const useTable = (
         "," +
         el["taskId"] +
         "," +
-        el["audioObjKey"] +
+        el["audioObjKey"].split(".")[0] +
+        ".mp3" +
         "," +
         timestamp.toDate().toLocaleString() +
         "\n";
       csv += line;
     });
-    let blob = new Blob([csv], { type: "text/csv" });
+    const blob = new Blob([csv], { type: "text/csv" });
+    return blob;
+  };
+  const downloadCSV = () => {
+    const csv = generateCSVData();
     let link = document.createElement("a");
-    link.href = window.URL.createObjectURL(blob);
+    link.href = window.URL.createObjectURL(csv);
     link.download = "record_list.csv";
     link.click();
   };
@@ -70,23 +75,26 @@ export const useTable = (
       setIsLoadingData(false);
     });
   }, [setRecordings]);
-  const onClickDownloadBtn = useCallback(async () => {
+  const onClickDownloadWebmBtn = useCallback(() => {
     setIsDownloading(true);
-    const headers = new Headers({
-      Accept: "application/zip",
-    });
-    const params = {
-      audioObjKeys: selectedRecordingKeys.flatMap(
+    const req = new DownloadRecordingsRequest();
+    req.setAudioObjKeysList(
+      selectedRecordingKeys.flatMap(
         (id) =>
           recordings.recordingList.find((recording) => recording.id == id)
             .audioObjKey
-      ),
+      )
+    );
+    const metadata = {
+      Authorization: "bearer " + localStorage.getItem("token"),
     };
-    try {
-      const audioData = await (
-        await lambdaClient.execute("/download_audio", "POST", headers, params)
-      ).arrayBuffer();
-      const blob = new Blob([audioData]);
+    const stream = recordingClient.downloadRecordings(req, metadata);
+    const audioData = [];
+    stream.on("data", (data: DownloadRecordingsResponse) => {
+      audioData.push(data.getAudioData());
+    });
+    stream.on("end", () => {
+      const blob = new Blob(audioData, { type: "application/zip" });
       const url = (window.URL || window.webkitURL).createObjectURL(blob);
       const a = document.createElement("a");
       a.download = "record.zip";
@@ -94,11 +102,50 @@ export const useTable = (
       a.click();
       downloadCSV();
       setIsDownloading(false);
-    } catch (err) {
-      console.log(err);
+    });
+    stream.on("error", (err) => {
       message.error(err.message);
       setIsDownloading(false);
-    }
+    });
+  }, [selectedRecordingKeys]);
+  const onClickDownloadMp3Btn = useCallback(async () => {
+    setIsDownloading(true);
+    const email = window.prompt(
+      "ダウンロードURLを送信するメールアドレスを入力してください。",
+      ""
+    );
+    const csv = generateCSVData();
+    const fileReader = new FileReader();
+    fileReader.onload = async () => {
+      const base64Csv = fileReader.result;
+      if (base64Csv instanceof ArrayBuffer) {
+        throw Error("csv読み込みエラー");
+      }
+      const headers = new Headers({
+        Accept: "application/json",
+      });
+      const params = {
+        audioObjKeys: selectedRecordingKeys.flatMap(
+          (id) =>
+            recordings.recordingList.find((recording) => recording.id == id)
+              .audioObjKey
+        ),
+        email,
+        csv: base64Csv.split(",")[1],
+      };
+      try {
+        lambdaClient.execute("/download_audio", "POST", headers, params);
+        window.alert(
+          "MP3へ変換完了後、ダウンロードURLを送信します。時間がかかる場合があるのでしばらくお待ちください。"
+        );
+        setIsDownloading(false);
+      } catch (err) {
+        console.log(err);
+        message.error(err.message);
+        setIsDownloading(false);
+      }
+    };
+    fileReader.readAsDataURL(csv);
   }, [selectedRecordingKeys]);
   const onSelectChange = (selectedRowKeys) => {
     setSelectedRecordingKeys(selectedRowKeys);
@@ -131,7 +178,8 @@ export const useTable = (
     taskFilter,
     isDownloading,
     isLoadingData,
-    onClickDownloadBtn,
+    onClickDownloadWebmBtn,
+    onClickDownloadMp3Btn,
     onClickDownloadCSVBtn,
     onSelectChange,
   };

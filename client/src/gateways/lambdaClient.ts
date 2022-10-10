@@ -1,6 +1,6 @@
 export type HTTPMethod = "GET" | "POST" | "PUT" | "DELETE";
 export class LambdaClient {
-  baseUrl: string = "https://2yk2vm9l8h.execute-api.us-east-1.amazonaws.com";
+  baseUrl: string = process.env.NEXT_PUBLIC_LAMBDA_URL;
 
   async execute(
     endpoint: string,

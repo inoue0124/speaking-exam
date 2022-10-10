@@ -19,3 +19,7 @@ var/
 # Serverless directories
 .serverless
 node_modules
+.env
+__pycache__
+!layers/*/bin/.gitignore
+layers/*/bin/*
